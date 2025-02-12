@@ -1,16 +1,16 @@
 package dao;
 
 import util.DBConnection;
-import model.Warehouse;
+import model.Warehouse2;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WarehouseDAO {
+public class WarehouseDAO2 {
 
-    public List<Warehouse> getAllWarehouses() {
-        List<Warehouse> warehouses = new ArrayList<>();
+    public List<Warehouse2> getAllWarehouses() {
+        List<Warehouse2> warehouses = new ArrayList<>();
         String sql = "SELECT * FROM Warehouses";
 
         try (Connection conn = DBConnection.getConnection();
@@ -18,7 +18,7 @@ public class WarehouseDAO {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                warehouses.add(new Warehouse(
+                warehouses.add(new Warehouse2(
                         rs.getInt("WarehouseID"),
                         rs.getString("Name"),
                         rs.getString("Location")
@@ -30,7 +30,7 @@ public class WarehouseDAO {
         return warehouses;
     }
 
-    public Warehouse getWarehouseById(int id) {
+    public Warehouse2 getWarehouseById(int id) {
         String sql = "SELECT * FROM Warehouses WHERE WarehouseID = ?";
         
         try (Connection conn = DBConnection.getConnection();
@@ -39,7 +39,7 @@ public class WarehouseDAO {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Warehouse(
+                    return new Warehouse2(
                             rs.getInt("WarehouseID"),
                             rs.getString("Name"),
                             rs.getString("Location")
@@ -52,7 +52,7 @@ public class WarehouseDAO {
         return null;
     }
 
-    public Warehouse getWarehouseByName(String name) {
+    public Warehouse2 getWarehouseByName(String name) {
         String sql = "SELECT * FROM Warehouses WHERE Name = ?";
         
         try (Connection conn = DBConnection.getConnection();
@@ -61,7 +61,7 @@ public class WarehouseDAO {
             stmt.setString(1, name);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Warehouse(
+                    return new Warehouse2(
                             rs.getInt("WarehouseID"),
                             rs.getString("Name"),
                             rs.getString("Location")
@@ -74,7 +74,7 @@ public class WarehouseDAO {
         return null;
     }
 
-    public boolean addWarehouse(Warehouse warehouse) {
+    public boolean addWarehouse(Warehouse2 warehouse) {
         String sql = "INSERT INTO Warehouses (Name, Location) VALUES (?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
@@ -89,7 +89,7 @@ public class WarehouseDAO {
         return false;
     }
 
-    public boolean updateWarehouse(Warehouse warehouse) {
+    public boolean updateWarehouse(Warehouse2 warehouse) {
         String sql = "UPDATE Warehouses SET Name = ?, Location = ? WHERE WarehouseID = ?";
 
         try (Connection conn = DBConnection.getConnection();

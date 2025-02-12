@@ -1,7 +1,7 @@
 package controller;
 
-import dao.WarehouseDAO;
-import model.Warehouse;
+import dao.WarehouseDAO2;
+import model.Warehouse2;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,14 +9,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class WarehouseServlet extends HttpServlet {
+public class WarehouseServlet2 extends HttpServlet {
 
-    private final WarehouseDAO warehouseDAO = new WarehouseDAO();
+    private final WarehouseDAO2 warehouseDAO = new WarehouseDAO2();
 
     @Override
 protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    List<Warehouse> warehouses = warehouseDAO.getAllWarehouses();
+    List<Warehouse2> warehouses = warehouseDAO.getAllWarehouses();
     request.setAttribute("warehouses", warehouses);
 
     String warehouseId = request.getParameter("warehouseId");
@@ -29,7 +29,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     if (id != null) {
         try {
             int warehouseIdInt = Integer.parseInt(id);
-            Warehouse warehouse = warehouseDAO.getWarehouseById(warehouseIdInt);
+            Warehouse2 warehouse = warehouseDAO.getWarehouseById(warehouseIdInt);
             request.setAttribute("warehouseToEdit", warehouse);
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -75,7 +75,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         String name = request.getParameter("name");
         String location = request.getParameter("location");
         if (name != null && location != null && !name.trim().isEmpty() && !location.trim().isEmpty()) {
-            warehouseDAO.addWarehouse(new Warehouse(0, name, location));
+            warehouseDAO.addWarehouse(new Warehouse2(0, name, location));
         }
     }
 
@@ -86,7 +86,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
         if (idStr != null && name != null && location != null) {
             int id = Integer.parseInt(idStr);
-            warehouseDAO.updateWarehouse(new Warehouse(id, name, location));
+            warehouseDAO.updateWarehouse(new Warehouse2(id, name, location));
         }
     }
 

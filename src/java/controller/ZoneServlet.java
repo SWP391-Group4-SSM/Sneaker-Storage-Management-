@@ -1,6 +1,6 @@
 package controller;
 
-import dao.WarehouseDAO;
+import dao.WarehouseDAO2;
 import dao.ZoneDAO;
 import model.Zone;
 import jakarta.servlet.ServletException;
@@ -26,7 +26,7 @@ public class ZoneServlet extends HttpServlet {
             try {
                 int warehouseId = Integer.parseInt(warehouseIdStr);
                 List<Zone> zones = zoneDAO.getZonesByWarehouseId(warehouseId);
-                String warehouseName = new WarehouseDAO().getWarehouseNameById(warehouseId);
+                String warehouseName = new WarehouseDAO2().getWarehouseNameById(warehouseId);
 
                 request.setAttribute("zones", zones);
                 request.setAttribute("warehouseId", warehouseId);

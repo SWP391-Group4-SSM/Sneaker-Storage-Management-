@@ -2,10 +2,10 @@ package controller;
 
 import dao.BinDAO;
 import dao.ZoneDAO;
-import dao.WarehouseDAO;
+import dao.WarehouseDAO2;
 import model.Bin;
 import model.Zone;
-import model.Warehouse;
+import model.Warehouse2;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +18,7 @@ public class BinServlet extends HttpServlet {
 
     private final BinDAO binDAO = new BinDAO();
     private final ZoneDAO zoneDAO = new ZoneDAO();
-    private final WarehouseDAO warehouseDAO = new WarehouseDAO();
+    private final WarehouseDAO2 warehouseDAO = new WarehouseDAO2();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -158,7 +158,7 @@ public class BinServlet extends HttpServlet {
             request.setAttribute("zoneCapacity", zone.getCapacity()); // 🔹 Lấy tổng Capacity của Zone
             request.setAttribute("warehouseId", zone.getWarehouseId());
 
-            Warehouse warehouse = warehouseDAO.getWarehouseById(zone.getWarehouseId());
+            Warehouse2 warehouse = warehouseDAO.getWarehouseById(zone.getWarehouseId());
             if (warehouse != null) {
                 request.setAttribute("warehouseName", warehouse.getName());
             }

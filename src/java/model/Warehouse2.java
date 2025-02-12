@@ -2,17 +2,17 @@ package model;
 
 import java.sql.Timestamp;
 
-public class Warehouse {
+public class Warehouse2 {
 
     private int id;
     private String name;
     private String location;
     private Timestamp createdAt;
 
-    public Warehouse() {
+    public Warehouse2() {
     }
 
-    public Warehouse(int id, String name, String location) {
+    public Warehouse2(int id, String name, String location) {
         this.id = id;
         this.name = name;
         this.location = location;
