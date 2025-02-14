@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Product Details</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/productDetail.css">
 </head>
 <body>
     <div class="details-container">

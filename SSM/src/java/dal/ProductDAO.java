@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
 import model.Product;
@@ -12,24 +8,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import model.Product;
-import model.User;
 
 /**
- *
- * @author Admin
+ * Data Access Object for Product
  */
 public class ProductDAO {
-
     private Connection connection;
-    public ProductDAO(){
+
+    public ProductDAO() {
         DBContext db = new DBContext();
         connection = db.connection;
     }
+
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM Products";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql); ResultSet rs = pstmt.executeQuery(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) { // Fixed error: removed sql parameter
             while (rs.next()) {
                 Product p = new Product();
                 p.setProductID(rs.getInt("ProductID"));
@@ -65,7 +60,7 @@ public class ProductDAO {
         }
         return null;
     }
-    
+
     public List<Product> searchProducts(String keyword) {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM Products WHERE Name LIKE ? OR Description LIKE ?";
@@ -114,10 +109,9 @@ public class ProductDAO {
 
     public List<Product> sortProductsByPrice(boolean ascending) {
         List<Product> products = new ArrayList<>();
-        String order = ascending ? "ASC" : "DESC";
-        String sql = "SELECT * FROM Products ORDER BY Price " + order;
-        try (Statement stmt = connection.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery(sql)) {
+        String sql = "SELECT * FROM Products ORDER BY Price " + (ascending ? "ASC" : "DESC"); // Fixed error: secure query
+        try (PreparedStatement pstmt = connection.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 Product p = new Product();
                 p.setProductID(rs.getInt("ProductID"));

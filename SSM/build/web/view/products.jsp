@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Products List</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/products.css">
 </head>
 <body>
     <h1>Products List</h1>
@@ -14,7 +14,7 @@
         <button type="submit">Search</button>
     </form>
 
-    <form action=poductList" method="get">
+    <form action=productList method="get">
         <input type="hidden" name="action" value="filter">
         <input type="number" name="minPrice" placeholder="Min Price" required>
         <input type="number" name="maxPrice" placeholder="Max Price" required>
