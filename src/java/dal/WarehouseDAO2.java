@@ -1,4 +1,4 @@
-package dao;
+package dal;
 
 import util.DBConnection;
 import model.Warehouse2;

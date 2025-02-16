@@ -7,19 +7,17 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Warehouse Management</title>
-        
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="CSS/style.css">
     </head>
     <body>
-        <a href="warehouseservlet" class="btn btn-secondary mb-3">🔙 Back to Home</a>
+        <a href="login" class="btn btn-secondary mb-3">🔙 Back to Login</a>
         <div class="container mt-4">
             <h2 class="text-center mb-4">Warehouse Management</h2>
             <div class="row">
-                <!-- Warehouse List -->
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="card p-3">
-                        <h4 class="mb-3">📋 Warehouse List</h4>
+                        <h4 class="mb-3" style="text-align: center"> Warehouse List</h4>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -59,10 +57,9 @@
                     </div>
                 </div>
 
-                <!-- Warehouse Form -->
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="card p-3">
-                        <h4 class="text-center">🏭 Manage Warehouse</h4>
+                        <h4 class="text-center">Manage Warehouse</h4>
                         <form method="post" action="warehouseservlet">
                             <input type="hidden" name="id" value="<%= request.getAttribute("warehouseToEdit") != null ? ((Warehouse2) request.getAttribute("warehouseToEdit")).getId() : "" %>">
 

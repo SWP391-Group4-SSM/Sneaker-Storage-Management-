@@ -1,7 +1,7 @@
 package controller;
 
-import dao.WarehouseDAO2;
-import dao.ZoneDAO;
+import dal.WarehouseDAO2;
+import dal.ZoneDAO;
 import model.Zone;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -43,7 +43,7 @@ public class ZoneServlet extends HttpServlet {
             }
         }
 
-        request.getRequestDispatcher("/zone.jsp").forward(request, response);
+        request.getRequestDispatcher("view/zone.jsp").forward(request, response);
     }
 
     @Override
@@ -58,12 +58,14 @@ public class ZoneServlet extends HttpServlet {
         Map<String, String> errors = new HashMap<>();
         int warehouseId = 0;
         int capacity = 0;
+
+        // Xử lý action delete
         if ("delete".equals(action)) {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
-                Zone zoneToDelete = zoneDAO.getZoneById(id); 
+                Zone zoneToDelete = zoneDAO.getZoneById(id);
                 if (zoneToDelete != null) {
-                    warehouseId = zoneToDelete.getWarehouseId(); 
+                    warehouseId = zoneToDelete.getWarehouseId();
                 }
                 zoneDAO.deleteZone(id);
                 response.sendRedirect("zoneservlet?warehouseId=" + warehouseId);
@@ -72,33 +74,38 @@ public class ZoneServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
+
+        // Validate warehouseId
         try {
             warehouseId = Integer.parseInt(warehouseIdStr);
         } catch (NumberFormatException e) {
             errors.put("warehouseId", "Invalid warehouse ID.");
         }
 
+        // Validate name
         if (name == null || name.trim().isEmpty()) {
             errors.put("name", "Zone name cannot be empty.");
         }
 
+        // Validate capacity
         try {
             capacity = Integer.parseInt(capacityStr);
             if (capacity < 0) {
-                errors.put("capacity", "Capacity must be a non-negative integer.");
+                errors.put("capacityError", "Capacity must be a non-negative integer.");
             }
         } catch (NumberFormatException e) {
-            errors.put("capacity", "Capacity must be a valid number.");
+            errors.put("capacityError", "Capacity must be a valid number.");
         }
 
+        // Xử lý action update
         if ("update".equals(action)) {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
                 Zone existingZone = zoneDAO.getZoneById(id);
-                int currentCapacity = zoneDAO.getCurrentCapacity(id); 
+                int currentCapacity = zoneDAO.getCurrentCapacity(id);
 
                 if (capacity < currentCapacity) {
-                    errors.put("capacity", "Capacity cannot be less than the current number of stored items (" + currentCapacity + ").");
+                    errors.put("capacityError", "Capacity cannot be less than the current number of stored items (" + currentCapacity + ").");
                 }
 
                 if (!errors.isEmpty()) {
@@ -112,11 +119,20 @@ public class ZoneServlet extends HttpServlet {
                 }
 
                 Zone updatedZone = new Zone(id, warehouseId, name, capacity, description);
-                zoneDAO.updateZone(updatedZone);
+                if (zoneDAO.updateZone(updatedZone)) {
+                    response.sendRedirect("zoneservlet?warehouseId=" + warehouseId);
+                } else {
+                    errors.put("general", "Failed to update zone.");
+                    request.setAttribute("errors", errors);
+                    request.setAttribute("zoneToEdit", existingZone);
+                    doGet(request, response);
+                }
+                return;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
-        } else if ("add".equals(action)) {
+        } // Xử lý action add
+        else if ("add".equals(action)) {
             if (!errors.isEmpty()) {
                 request.setAttribute("errors", errors);
                 request.setAttribute("name", name);
@@ -127,7 +143,14 @@ public class ZoneServlet extends HttpServlet {
             }
 
             Zone newZone = new Zone(0, warehouseId, name, capacity, description);
-            zoneDAO.addZone(newZone);
+            if (zoneDAO.addZone(newZone)) {
+                response.sendRedirect("zoneservlet?warehouseId=" + warehouseId);
+            } else {
+                errors.put("general", "Failed to add zone.");
+                request.setAttribute("errors", errors);
+                doGet(request, response);
+            }
+            return;
         }
 
         response.sendRedirect("zoneservlet?warehouseId=" + warehouseId);

@@ -1,8 +1,8 @@
 package controller;
 
-import dao.BinDAO;
-import dao.ZoneDAO;
-import dao.WarehouseDAO2;
+import dal.BinDAO;
+import dal.ZoneDAO;
+import dal.WarehouseDAO2;
 import model.Bin;
 import model.Zone;
 import model.Warehouse2;
@@ -38,7 +38,7 @@ public class BinServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        request.getRequestDispatcher("/bin.jsp").forward(request, response);
+        request.getRequestDispatcher("view/bin.jsp").forward(request, response);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class BinServlet extends HttpServlet {
 
             try {
                 capacity = Integer.parseInt(capacityStr);
-                if (capacity < 0) {
+                if (capacity <= 0) {
                     hasError = true;
                     request.setAttribute("capacityError", "Capacity must be a positive integer");
                 }
@@ -126,7 +126,7 @@ public class BinServlet extends HttpServlet {
                     }
                 }
                 loadCommonAttributes(request, zoneId);
-                request.getRequestDispatcher("/bin.jsp").forward(request, response);
+                request.getRequestDispatcher("view/bin.jsp").forward(request, response);
                 return;
             }
         }

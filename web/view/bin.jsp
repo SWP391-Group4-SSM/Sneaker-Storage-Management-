@@ -10,36 +10,31 @@
         <link rel="stylesheet" type="text/css" href="CSS/style.css">
     </head>
     <body>
-
-        <!-- Display Zone & Warehouse Name -->
-        <div class="container-fluid text-end p-3">
-            <h5>🏢 Warehouse: <strong><%= request.getAttribute("warehouseName") %></strong></h5>
-            <h6>📍 Zone: <strong><%= request.getAttribute("zoneName") %></strong></h6>
-        </div>
-        <!-- Hiển thị Zone Capacity -->
-        <div class="container-fluid text-center p-3">
-            <h4>📦 Zone Capacity: <strong><%= request.getAttribute("zoneCapacity") %></strong></h4>
-        </div>
-
-        <!-- Hiển thị Current Capacity -->
-        <div class="container-fluid text-center p-3">
-            <h4>📦 Current Capacity: <strong><%= request.getAttribute("currentZoneCapacity") %></strong></h4>
-        </div>
-
-
-        <!-- Back Button -->
         <a href="zoneservlet?warehouseId=<%= request.getAttribute("warehouseId") %>" class="btn btn-secondary mb-3">
-            ⬅ Back to Zones
+            Back to Zones
         </a>
+        <div class="container-fluid text-end p-3">
+            <h5>Warehouse: <strong><%= request.getAttribute("warehouseName") %></strong></h5>
+            <h6>Zone: <strong><%= request.getAttribute("zoneName") %></strong></h6>
+        </div>
+        <div class="container-fluid text-center p-3">
+            <h5>Zone Capacity: <strong><%= request.getAttribute("zoneCapacity") %></strong> | 
+                Current Capacity: <strong><%= request.getAttribute("currentZoneCapacity") %></strong>
+            </h5>
+        </div>
+
+
+
+
 
         <div class="container mt-4">
-            <h2 class="text-center mb-4">📦 Bin Management</h2>
+            <h3 class="text-center mb-4">Bin Management</h3>
 
             <div class="row">
                 <!-- Bin List -->
                 <div class="col-md-8">
                     <div class="card p-3">
-                        <h4 class="mb-3">📋 Bin List</h4>
+                        <h4 class="mb-3">Bin List</h4>
                         <table class="table table-striped table-hover">
                             <thead class="table-dark">
                                 <tr>
@@ -47,7 +42,6 @@
                                     <th>Name</th>
                                     <th>Capacity</th>
                                     <th>Current Load</th>
-                                    <th>Product ID</th>
                                     <th>Description</th>
                                     <th>Actions</th>
                                 </tr>
@@ -61,14 +55,13 @@
                                     <td><%= bin.getName() %></td>
                                     <td><%= bin.getCapacity() %></td>
                                     <td><%= bin.getCurrentLoad() %></td>
-                                    <td></td>
                                     <td><%= bin.getDescription() %></td>
                                     <td>
-                                        <a href="binservlet?action=edit&id=<%= bin.getId() %>&zoneId=<%= request.getParameter("zoneId") %>" class="btn btn-warning btn-sm">✏ Edit</a>
+                                        <a href="binservlet?action=edit&id=<%= bin.getId() %>&zoneId=<%= request.getParameter("zoneId") %>" class="btn btn-warning btn-sm">Edit</a>
                                         <form method="post" action="binservlet" style="display:inline;">
                                             <input type="hidden" name="id" value="<%= bin.getId() %>">
                                             <input type="hidden" name="zoneId" value="<%= request.getParameter("zoneId") %>">
-                                            <button type="submit" name="action" value="delete" class="btn btn-danger btn-sm">❌ Delete</button>
+                                            <button type="submit" name="action" value="delete" class="btn btn-danger btn-sm">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -81,20 +74,17 @@
                     </div>
                 </div>
 
-                <!-- Add/Edit Bin Form -->
                 <div class="col-md-4">
                     <div class="card p-3">
                         <h4 class="text-center">
                             Bin manage
                         </h4>
                         <form method="post" action="binservlet">
-                            <!-- Các trường ẩn để giữ id và zoneId -->
                             <input type="hidden" name="id" 
                                    value="<%= request.getParameter("id") != null ? request.getParameter("id") : (request.getAttribute("binToEdit") != null ? ((Bin) request.getAttribute("binToEdit")).getId() : "") %>">
                             <input type="hidden" name="zoneId" 
                                    value="<%= request.getParameter("zoneId") != null ? request.getParameter("zoneId") : (request.getAttribute("binToEdit") != null ? ((Bin) request.getAttribute("binToEdit")).getZoneId() : request.getAttribute("zoneId")) %>">
 
-                            <!-- Bin Name -->
                             <div class="mb-3">
                                 <label class="form-label">Bin Name</label>
                                 <input type="text" class="form-control" name="name" required
@@ -105,10 +95,9 @@
                                 <% } %>
                             </div>
 
-                            <!-- Capacity -->
                             <div class="mb-3">
                                 <label class="form-label">Capacity</label>
-                                <input type="number" class="form-control" name="capacity" required
+                                <input type="text" class="form-control" name="capacity" required
                                        value="<%= request.getParameter("capacity") != null ? request.getParameter("capacity")
                    : (request.getAttribute("binToEdit") != null ? ((Bin) request.getAttribute("binToEdit")).getCapacity() : "") %>">
                                 <% if(request.getAttribute("capacityError") != null) { %>
@@ -116,10 +105,9 @@
                                 <% } %>
                             </div>
 
-                            <!-- Current Load -->
                             <div class="mb-3">
                                 <label class="form-label">Current Load</label>
-                                <input type="number" class="form-control" name="currentLoad" required
+                                <input type="text" class="form-control" name="currentLoad" required
                                        value="<%= request.getParameter("currentLoad") != null ? request.getParameter("currentLoad")
                    : (request.getAttribute("binToEdit") != null ? ((Bin) request.getAttribute("binToEdit")).getCurrentLoad() : "") %>">
                                 <% if(request.getAttribute("currentLoadError") != null) { %>
@@ -127,7 +115,6 @@
                                 <% } %>
                             </div>
 
-                            <!-- Description -->
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
                                 <input type="text" class="form-control" name="description" required
@@ -135,7 +122,6 @@
                    : (request.getAttribute("binToEdit") != null ? ((Bin) request.getAttribute("binToEdit")).getDescription() : "") %>">
                             </div>
 
-                            <!-- Kiểm tra tổng Capacity không vượt quá Zone Capacity -->
                             <% if(request.getAttribute("zoneCapacityError") != null) { %>
                             <div class="mb-3 text-danger">
                                 <%= request.getAttribute("zoneCapacityError") %>

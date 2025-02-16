@@ -1,6 +1,6 @@
 package controller;
 
-import dao.WarehouseDAO2;
+import dal.WarehouseDAO2;
 import model.Warehouse2;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -36,7 +36,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
         }
     }
 
-    request.getRequestDispatcher("/warehouse.jsp").forward(request, response);
+    request.getRequestDispatcher("view/warehouse.jsp").forward(request, response);
 }
 
 
