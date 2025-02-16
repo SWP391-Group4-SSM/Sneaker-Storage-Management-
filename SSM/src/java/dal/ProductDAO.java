@@ -63,10 +63,9 @@ public class ProductDAO {
 
     public List<Product> searchProducts(String keyword) {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products WHERE Name LIKE ? OR Description LIKE ?";
+        String sql = "SELECT * FROM Products WHERE Name LIKE ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, "%" + keyword + "%");
-            pstmt.setString(2, "%" + keyword + "%");
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Product p = new Product();
@@ -126,4 +125,39 @@ public class ProductDAO {
         }
         return products;
     }
+    public int getTotalProducts() {
+    String sql = "SELECT COUNT(*) FROM Products";
+    try (PreparedStatement pstmt = connection.prepareStatement(sql);
+         ResultSet rs = pstmt.executeQuery()) {
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+    public List<Product> getProductsByPage(int page, int pageSize) {
+    List<Product> products = new ArrayList<>();
+    String sql = "SELECT * FROM Products ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        int offset = (page - 1) * pageSize;
+        pstmt.setInt(1, offset);
+        pstmt.setInt(2, pageSize);
+        try (ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Product p = new Product();
+                p.setProductID(rs.getInt("ProductID"));
+                p.setName(rs.getString("Name"));
+                p.setDescription(rs.getString("Description"));
+                p.setSku(rs.getString("SKU"));
+                p.setPrice(rs.getDouble("Price"));
+                products.add(p);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return products;
+}
 }

@@ -31,29 +31,47 @@
     </form>
 
     <table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>SKU</th>
+        <th>Price</th>
+        <th>Action</th>
+        <th>Detail</th>
+    </tr>
+    <c:forEach var="product" items="${products}">
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>SKU</th>
-            <th>Price</th>
-            <th>Action</th>
-            <th>Detail</th>
+            <td>${product.productID}</td>
+            <td>${product.name}</td>
+            <td>${product.sku}</td>
+            <td>${product.price}</td>
+            <td>
+                <a href="editProduct.jsp?id=${product.productID}">Edit</a> | 
+                <a href="ProductServlet?action=delete&id=${product.productID}" onclick="return confirm('Are you sure?');">Delete</a>
+            </td>
+            <td>
+                <a href="productDetails?id=${product.productID}">View Details</a>
+            </td>
         </tr>
-        <c:forEach var="product" items="${products}">
-            <tr>
-                <td>${product.productID}</td>
-                <td>${product.name}</td>
-                <td>${product.sku}</td>
-                <td>${product.price}</td>
-                <td>
-                    <a href="editProduct.jsp?id=${product.productID}">Edit</a> | 
-                    <a href="ProductServlet?action=delete&id=${product.productID}" onclick="return confirm('Are you sure?');">Delete</a>
-                </td>
-                <td>
-                    <a href="productDetails?id=${product.productID}">View Details</a>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
+    </c:forEach>
+</table>
+
+<!-- Phân trang -->
+<div class="pagination">
+    <c:if test="${currentPage > 1}">
+        <a href="productList?page=1">First</a>
+        <a href="productList?page=${currentPage - 1}">Previous</a>
+    </c:if>
+
+    <c:forEach begin="1" end="${totalPages}" var="i">
+        <a href="productList?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+    </c:forEach>
+
+    <c:if test="${currentPage < totalPages}">
+        <a href="productList?page=${currentPage + 1}">Next</a>
+        <a href="productList?page=${totalPages}">Last</a>
+    </c:if>
+</div>
+
 </body>
 </html>

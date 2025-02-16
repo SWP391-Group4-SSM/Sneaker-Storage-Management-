@@ -52,23 +52,35 @@ public class ProductListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String action = request.getParameter("action");
-        List<Product> products;
-        if ("search".equals(action)) {
-            String keyword = request.getParameter("keyword");
-            products = productDAO.searchProducts(keyword);
-        } else if ("filter".equals(action)) {
-            double minPrice = Double.parseDouble(request.getParameter("minPrice"));
-            double maxPrice = Double.parseDouble(request.getParameter("maxPrice"));
-            products = productDAO.filterProductsByPrice(minPrice, maxPrice);
-        } else if ("sort".equals(action)) {
-            boolean ascending = "asc".equals(request.getParameter("order"));
-            products = productDAO.sortProductsByPrice(ascending);
-        } else {
-            products = productDAO.getAllProducts();
-        }
+    int page = 1;
+    int pageSize = 3; // Số sản phẩm trên mỗi trang
 
-        request.setAttribute("products", products);
-        request.getRequestDispatcher("view/products.jsp").forward(request, response);
+    if (request.getParameter("page") != null) {
+        page = Integer.parseInt(request.getParameter("page"));
+    }
+
+    List<Product> products;
+    int totalProducts = productDAO.getTotalProducts();
+    int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
+
+    if ("search".equals(action)) {
+        String keyword = request.getParameter("keyword");
+        products = productDAO.searchProducts(keyword);
+    } else if ("filter".equals(action)) {
+        double minPrice = Double.parseDouble(request.getParameter("minPrice"));
+        double maxPrice = Double.parseDouble(request.getParameter("maxPrice"));
+        products = productDAO.filterProductsByPrice(minPrice, maxPrice);
+    } else if ("sort".equals(action)) {
+        boolean ascending = "asc".equals(request.getParameter("order"));
+        products = productDAO.sortProductsByPrice(ascending);
+    } else {
+        products = productDAO.getProductsByPage(page, pageSize);
+    }
+
+    request.setAttribute("products", products);
+    request.setAttribute("currentPage", page);
+    request.setAttribute("totalPages", totalPages);
+    request.getRequestDispatcher("view/products.jsp").forward(request, response);
     } 
 
     /** 

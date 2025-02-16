@@ -1,69 +1,24 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 0;
-    background-color: #f4f4f4;
+.pagination {
+    margin-top: 20px;
     text-align: center;
 }
 
-h1 {
-    color: #333;
-}
-
-form {
+.pagination a {
     display: inline-block;
-    margin: 10px;
-    padding: 10px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-input, select, button {
-    padding: 8px;
-    margin: 5px;
-    border: 1px solid #ccc;
+    padding: 8px 16px;
+    margin: 2px;
+    text-decoration: none;
+    color: #000;
+    border: 1px solid #ddd;
     border-radius: 5px;
 }
 
-button {
-    background-color: #28a745;
+.pagination a.active {
+    background-color: #4CAF50;
     color: white;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s;
+    border: 1px solid #4CAF50;
 }
 
-button:hover {
-    background-color: #218838;
-}
-
-table {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-th, td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-th {
-    background-color: #007bff;
-    color: white;
-}
-
-a {
-    text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-a:hover {
-    color: #0056b3;
+.pagination a:hover {
+    background-color: #ddd;
 }
