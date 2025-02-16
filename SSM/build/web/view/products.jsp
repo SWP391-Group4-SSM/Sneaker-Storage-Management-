@@ -46,6 +46,9 @@
             <td>${product.sku}</td>
             <td>${product.price}</td>
             <td>
+                <img src="${product.imageURL}" alt="${product.name}" width="100">
+            </td>
+            <td>
                 <a href="editProduct.jsp?id=${product.productID}">Edit</a> | 
                 <a href="ProductServlet?action=delete&id=${product.productID}" onclick="return confirm('Are you sure?');">Delete</a>
             </td>

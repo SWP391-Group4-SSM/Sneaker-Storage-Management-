@@ -7,18 +7,19 @@ public class Product {
     private String description;
     private String sku;
     private double price;
+    private String imageURL;
 
     public Product() {
     }
-
-    public Product(int productID, String name, String description, String sku, double price) {
+    public Product(int productID, String name, String description, String sku, double price, String imgURL) {
         this.productID = productID;
         this.name = name;
         this.description = description;
         this.sku = sku;
         this.price = price;
+        this.imageURL = imgURL;
     }
-
+    
     public int getProductID() {
         return productID;
     }
@@ -58,7 +59,15 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
-    
-    
 
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    
+    
 }

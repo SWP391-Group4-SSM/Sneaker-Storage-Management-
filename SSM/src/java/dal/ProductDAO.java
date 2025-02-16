@@ -32,6 +32,7 @@ public class ProductDAO {
                 p.setDescription(rs.getString("Description"));
                 p.setSku(rs.getString("SKU"));
                 p.setPrice(rs.getDouble("Price"));
+                p.setImageURL(rs.getString("ImageURL"));
                 products.add(p);
             }
         } catch (SQLException e) {
@@ -52,6 +53,7 @@ public class ProductDAO {
                     p.setDescription(rs.getString("Description"));
                     p.setSku(rs.getString("SKU"));
                     p.setPrice(rs.getDouble("Price"));
+                    p.setImageURL(rs.getString("ImageURL"));
                     return p;
                 }
             }
@@ -74,6 +76,7 @@ public class ProductDAO {
                     p.setDescription(rs.getString("Description"));
                     p.setSku(rs.getString("SKU"));
                     p.setPrice(rs.getDouble("Price"));
+                    p.setImageURL(rs.getString("ImageURL"));
                     products.add(p);
                 }
             }
@@ -97,6 +100,7 @@ public class ProductDAO {
                     p.setDescription(rs.getString("Description"));
                     p.setSku(rs.getString("SKU"));
                     p.setPrice(rs.getDouble("Price"));
+                    p.setImageURL(rs.getString("ImageURL"));
                     products.add(p);
                 }
             }
@@ -118,6 +122,7 @@ public class ProductDAO {
                 p.setDescription(rs.getString("Description"));
                 p.setSku(rs.getString("SKU"));
                 p.setPrice(rs.getDouble("Price"));
+                p.setImageURL(rs.getString("ImageURL"));
                 products.add(p);
             }
         } catch (SQLException e) {
@@ -152,6 +157,7 @@ public class ProductDAO {
                 p.setDescription(rs.getString("Description"));
                 p.setSku(rs.getString("SKU"));
                 p.setPrice(rs.getDouble("Price"));
+                p.setImageURL(rs.getString("ImageURL"));
                 products.add(p);
             }
         }
