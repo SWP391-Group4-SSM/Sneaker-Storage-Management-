@@ -22,28 +22,16 @@ import model.Product;
 public class ProductListServlet extends HttpServlet {
     ProductDAO productDAO = new ProductDAO();
    
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ProductListServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ProductListServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        
     } 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String action = request.getParameter("action");
+    String action = request.getParameter("action");
     int page = 1;
     int pageSize = 3; // Số sản phẩm trên mỗi trang
     if (request.getParameter("page") != null) {
@@ -78,7 +66,34 @@ public class ProductListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+        
+        if ("add".equals(action)) {
+            String name = request.getParameter("name");
+            double price = Double.parseDouble(request.getParameter("price"));
+            String description = request.getParameter("description");
+            String sku = request.getParameter("sku");
+            String imageURL = request.getParameter("imageURL");
+            Product product = new Product(name, description, sku, price, imageURL);
+            productDAO.addProduct(product);
+            response.sendRedirect("productList");
+        } else if ("edit".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String name = request.getParameter("name");
+            double price = Double.parseDouble(request.getParameter("price"));
+            String description = request.getParameter("description");
+            String sku = request.getParameter("sku");
+            String imageURL = request.getParameter("imageURL");
+            Product product = new Product(name, description, sku, price, imageURL);
+            productDAO.editProduct(product);
+            response.sendRedirect("productList");
+        } else if ("delete".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            productDAO.deleteProduct(id);
+            response.sendRedirect("ProductListServlet");
+        } else {
+            doGet(request, response);
+        }
     }
 
     @Override

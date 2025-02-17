@@ -1,7 +1,7 @@
 
 package model;
 
-public class Product {
+;public class Product {
     private int productID;
     private String name;
     private String description;
@@ -18,6 +18,14 @@ public class Product {
         this.sku = sku;
         this.price = price;
         this.imageURL = imgURL;
+    }
+
+    public Product(String name, String description, String sku, double price, String imageURL) {
+        this.name = name;
+        this.description = description;
+        this.sku = sku;
+        this.price = price;
+        this.imageURL = imageURL;
     }
     
     public int getProductID() {
