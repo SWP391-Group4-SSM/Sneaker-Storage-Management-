@@ -33,7 +33,8 @@ public class StockDAO {
                         rs.getInt("WarehouseID"),
                         rs.getInt("ZoneID"),
                         rs.getInt("BinID"),
-                        rs.getInt("Quantity")
+                        rs.getInt("Quantity"),
+                        rs.getDate("lastUpdated")
                     );
                     stockItems.add(stock);
                 }
