@@ -10,7 +10,7 @@ public class DBConnection {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         String url = "jdbc:sqlserver://localhost:1433;databaseName=SneakerManagement;encrypt=false;trustServerCertificate=true";
         String user = "sa";
-        String password = "123";
+        String password = "123456";
         return DriverManager.getConnection(url, user, password);
     } catch (SQLException | ClassNotFoundException e) {
         System.err.println("Database connection failed: " + e.getMessage());

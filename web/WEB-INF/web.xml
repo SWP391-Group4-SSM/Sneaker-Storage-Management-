@@ -6,6 +6,9 @@
     <!-- Tên ứng dụng -->
     <display-name>SneakerStorageManagement</display-name>
 
+    <welcome-file-list>
+        <welcome-file>view/login.jsp</welcome-file>
+    </welcome-file-list>
   
 
     <!-- KHAI BÁO CÁC SERVLET -->
@@ -34,6 +37,15 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
     </servlet>
+    
+     <servlet>
+        <servlet-name>ProductListServlet</servlet-name>
+        <servlet-class>controller.ProductListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductDetailsServlet</servlet-name>
+        <servlet-class>controller.ProductDetailsServlet</servlet-class>
+    </servlet>
 
     <!-- MAPPING CÁC SERVLET -->
 
@@ -61,5 +73,15 @@
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
+    
+     <servlet-mapping>
+        <servlet-name>ProductListServlet</servlet-name>
+        <url-pattern>/productList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDetailsServlet</servlet-name>
+        <url-pattern>/productDetails</url-pattern>
+    </servlet-mapping>
+    
 
 </web-app>
