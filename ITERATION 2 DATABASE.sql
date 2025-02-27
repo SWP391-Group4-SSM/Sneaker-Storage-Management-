@@ -286,7 +286,7 @@ INSERT INTO Warehouses (WarehouseID, WarehouseCode, Name, Location) VALUES
 -- Bảng WarehouseSections - Kho Thạch Thất
 INSERT INTO WarehouseSections (SectionID, WarehouseID, SectionName, Capacity, Description) VALUES
 (1, 1, N'Khu A - Thạch Thất', 1000, N'Khu vực chứa hàng hóa thông thường'),
-(2, 1, N'Khu B - Thạch Thất', 500, N'Khu vực hàng dễ vỡ');
+(2, 1, N'Khu B - Thạch Thất', 500, N'Khu vực hàng phiên bản giới hạn');
 
 -- Bảng WarehouseSections - Kho Quốc Oai
 INSERT INTO WarehouseSections (SectionID, WarehouseID, SectionName, Capacity, Description) VALUES
