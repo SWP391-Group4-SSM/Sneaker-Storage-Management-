@@ -5,6 +5,10 @@
         <servlet-name>productServlet</servlet-name>
         <servlet-class>controller.productServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PurchaseOrderServlet</servlet-name>
+        <servlet-class>controller.PurchaseOrderServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/productList</url-pattern>
@@ -16,6 +20,10 @@
     <servlet-mapping>
         <servlet-name>productServlet</servlet-name>
         <url-pattern>/productServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PurchaseOrderServlet</servlet-name>
+        <url-pattern>/purchaseOrder</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/login.jsp</welcome-file>
