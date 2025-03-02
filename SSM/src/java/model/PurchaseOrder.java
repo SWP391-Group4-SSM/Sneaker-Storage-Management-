@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -12,20 +13,21 @@ import java.util.Date;
  * @author Admin
  */
 public class PurchaseOrder {
+
     private int purchaseOrderId;
     private int supplierId;
     private int warehouseId;
     private int createdByUserId;
     private LocalDateTime orderDate;
     private String purchaseOrderStatus;
-    private int totalAmount;
+    private BigDecimal totalAmount;
     private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 
     public PurchaseOrder() {
     }
 
-    public PurchaseOrder(int purchaseOrderId, int supplierId, int warehouseId, int createdByUserId, LocalDateTime orderDate, String purchaseOrderStatus, int totalAmount, LocalDateTime createdAt, LocalDateTime updateAt) {
+    public PurchaseOrder(int purchaseOrderId, int supplierId, int warehouseId, int createdByUserId, LocalDateTime orderDate, String purchaseOrderStatus, BigDecimal totalAmount, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.purchaseOrderId = purchaseOrderId;
         this.supplierId = supplierId;
         this.warehouseId = warehouseId;
@@ -34,7 +36,7 @@ public class PurchaseOrder {
         this.purchaseOrderStatus = purchaseOrderStatus;
         this.totalAmount = totalAmount;
         this.createdAt = createdAt;
-        this.updateAt = updateAt;
+        this.updatedAt = updatedAt;
     }
 
     public int getPurchaseOrderId() {
@@ -85,11 +87,11 @@ public class PurchaseOrder {
         this.purchaseOrderStatus = purchaseOrderStatus;
     }
 
-    public int getTotalAmount() {
+    public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(int totalAmount) {
+    public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -101,12 +103,12 @@ public class PurchaseOrder {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdateAt() {
-        return updateAt;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdateAt(LocalDateTime updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }

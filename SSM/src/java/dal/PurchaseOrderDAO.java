@@ -34,9 +34,9 @@ public class PurchaseOrderDAO {
                 po.setCreatedByUserId(rs.getInt("CreatedByUserID"));
                 po.setOrderDate(rs.getTimestamp("OrderDate").toLocalDateTime());
                 po.setPurchaseOrderStatus(rs.getString("PurchaseOrderStatus"));
-                po.setTotalAmount(rs.getInt("TotalAmount"));
+                po.setTotalAmount(rs.getBigDecimal("TotalAmount"));
                 po.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
-                po.setUpdateAt(rs.getTimestamp("UpdateAt").toLocalDateTime());
+                po.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
                 purchaseOrders.add(po);
             }
         } catch (SQLException e) {

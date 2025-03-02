@@ -44,7 +44,7 @@
                 <td>${po.purchaseOrderStatus}</td>
                 <td>${po.totalAmount}</td>
                 <td>${po.createdAt}</td>
-                <td>${po.updateAt}</td>
+                <td>${po.updatedAt}</td>
                 <td>
                     <a href="purchaseOrderList?action=edit&id=${po.purchaseOrderId}">Edit</a> |
                     <a href="purchaseOrderList?action=delete&id=${po.purchaseOrderId}" onclick="return confirm('Are you sure?');">Delete</a>
