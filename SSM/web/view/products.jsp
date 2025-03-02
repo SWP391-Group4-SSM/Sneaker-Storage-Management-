@@ -7,6 +7,7 @@
     </head>
     <body>
         <h1>Products List</h1>
+        <h1>Welcome, <c:out value="${sessionScope.user.username}"/>!</h1>
         <a href="addProduct.jsp">Add New Product</a>
 
         <form action="productList" method="get">
