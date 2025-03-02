@@ -4,32 +4,26 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/web/view/login.jsp</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/web/view/productDetail.jsp</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/web/view/staffDashboard.jsp</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/dal/ProductDAO.java</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/dal/DeleveryOrderDAO.java</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/dal/WarehouseManagerDAO.java</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/web/view/products.jsp</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/model/Warehouse.java</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/model/PurchaseOrderDetail.java</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/dal/StockDAO.java</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/model/Supplier.java</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/web/view/managerDashboard.jsp</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/model/Stock.java</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/controller/PurchaseOrderServlet.java</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/dal/DBContext.java</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/controller/ProductDetailsServlet.java</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/model/PurchaseOrder.java</file>
+            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/web/view/staffDashboard.jsp</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/web/view/PurchaseOrder/purchaseOrderList.jsp</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/model/WarehouseManager.java</file>
+            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/dal/WarehouseManagerDAO.java</file>
+            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/model/Warehouse.java</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/model/Product.java</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/model/User.java</file>
+            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/dal/StockDAO.java</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/controller/LoginServlet.java</file>
-            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/dal/PurchaseOrderDAO.java</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/controller/DashboardServlet.java</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/dal/WarehouseDAO.java</file>
+            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/web/view/managerDashboard.jsp</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/dal/UserDAO.java</file>
             <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/src/java/controller/ProductListServlet.java</file>
+            <file>file:/C:/Users/Admin/Documents/5_SPRING_2024/SWP391/Sneaker-Storage-Management-/SSM/web/view/supervisorDashboard.jsp</file>
         </group>
     </open-files>
 </project-private>
