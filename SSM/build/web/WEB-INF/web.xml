@@ -9,6 +9,18 @@
         <servlet-name>PurchaseOrderServlet</servlet-name>
         <servlet-class>controller.PurchaseOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddPurchaseOrderServlet</servlet-name>
+        <servlet-class>controller.AddPurchaseOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdatePurchaseOrderServlet</servlet-name>
+        <servlet-class>controller.UpdatePurchaseOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeletePurchaseOrderServlet</servlet-name>
+        <servlet-class>controller.DeletePurchaseOrderServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/productList</url-pattern>
@@ -24,6 +36,18 @@
     <servlet-mapping>
         <servlet-name>PurchaseOrderServlet</servlet-name>
         <url-pattern>/purchaseOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPurchaseOrderServlet</servlet-name>
+        <url-pattern>/addPurchaseOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdatePurchaseOrderServlet</servlet-name>
+        <url-pattern>/updatePurchaseOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeletePurchaseOrderServlet</servlet-name>
+        <url-pattern>/deletePurchaseOrder</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/login.jsp</welcome-file>

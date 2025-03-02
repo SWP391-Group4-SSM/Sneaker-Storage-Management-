@@ -12,25 +12,28 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.util.List;
-import model.PurchaseOrder;
+
 /**
  *
  * @author Admin
  */
-public class PurchaseOrderServlet extends HttpServlet {
+public class DeletePurchaseOrderServlet extends HttpServlet {
    
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        int purchaseOrderId = Integer.parseInt(request.getParameter("id"));
         PurchaseOrderDAO poDAO = new PurchaseOrderDAO();
-        List<PurchaseOrder> poList = poDAO.getAllPurchaseOrders();
-        request.setAttribute("purchaseOrders", poList);
-        request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
+
+        if (poDAO.deletePurchaseOrder(purchaseOrderId)) {
+            response.sendRedirect("purchaseOrder");
+        } else {
+            request.setAttribute("errorMessage", "Xóa đơn hàng thất bại.");
+            request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
+        }
     } 
 
+  
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {

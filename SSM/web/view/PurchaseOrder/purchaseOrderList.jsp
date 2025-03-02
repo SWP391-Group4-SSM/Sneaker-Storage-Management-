@@ -13,10 +13,9 @@
     </style>
 </head>
 <body>
-    <c:out value="JSTL is working!" />
-    <p style="color:red;">${error}</p>
-
+     
     <h2>Danh sách Purchase Orders</h2>
+    <a href="addPurchaseOrder">Thêm mới</a>
     <table>
         <tr>
             <th>ID</th>
@@ -46,8 +45,8 @@
                 <td>${po.createdAt}</td>
                 <td>${po.updatedAt}</td>
                 <td>
-                    <a href="purchaseOrderList?action=edit&id=${po.purchaseOrderId}">Edit</a> |
-                    <a href="purchaseOrderList?action=delete&id=${po.purchaseOrderId}" onclick="return confirm('Are you sure?');">Delete</a>
+                    <a href="updatePurchaseOrder?id=${po.purchaseOrderId}">Sửa</a> | |
+                    <a href="javascript:void(0);" onclick="confirmDelete(${po.purchaseOrderId})">Xóa</a>
                 </td>
                 <td>
                     <a href="purchaseOrderDetails?id=${po.purchaseOrderId}">View Details</a>
@@ -55,5 +54,12 @@
             </tr>
         </c:forEach>
     </table>
+    <script>
+    function confirmDelete(id) {
+        if (confirm("Bạn có chắc muốn xóa đơn hàng này không?")) {
+            window.location.href = "deletePurchaseOrder?id=" + id;
+        }
+    }
+</script>
 </body>
 </html>
