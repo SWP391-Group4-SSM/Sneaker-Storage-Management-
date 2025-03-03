@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import model.PurchaseOrder;
@@ -33,16 +34,18 @@ public class AddPurchaseOrderServlet extends HttpServlet {
         int purchaseOrderId = Integer.parseInt(request.getParameter("purchaseOrderId"));
         int supplierId = Integer.parseInt(request.getParameter("supplierId"));
         int warehouseId = Integer.parseInt(request.getParameter("warehouseId"));
-        int createdByUserId = Integer.parseInt(request.getParameter("createdByUserId"));
+        
         BigDecimal totalAmount = new BigDecimal(request.getParameter("totalAmount"));
         String orderDateStr = request.getParameter("orderDate");
         LocalDateTime orderDate = LocalDateTime.parse(orderDateStr);
+        HttpSession session = request.getSession();
+        Integer userID = (Integer) session.getAttribute("userID");
       
         PurchaseOrder po = new PurchaseOrder();
         po.setPurchaseOrderId(purchaseOrderId); // Người dùng nhập ID
         po.setSupplierId(supplierId);
         po.setWarehouseId(warehouseId);
-        po.setCreatedByUserId(createdByUserId);
+        po.setCreatedByUserId(userID);
         po.setTotalAmount(totalAmount);
         po.setOrderDate(orderDate);
         PurchaseOrderDAO dao = new PurchaseOrderDAO();

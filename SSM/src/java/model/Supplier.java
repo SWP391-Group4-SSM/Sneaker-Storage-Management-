@@ -1,6 +1,4 @@
 package model;
-
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Supplier {
@@ -9,13 +7,13 @@ public class Supplier {
     private String contactEmail;
     private String contactPhone;
     private String address;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 
-    public Supplier() {
-    }
+    // Constructor
+    public Supplier() {}
 
-    public Supplier(int supplierID, String supplierName, String contactEmail, String contactPhone, String address, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Supplier(int supplierID, String supplierName, String contactEmail, String contactPhone, String address, Date createdAt, Date updatedAt) {
         this.supplierID = supplierID;
         this.supplierName = supplierName;
         this.contactEmail = contactEmail;
@@ -25,6 +23,7 @@ public class Supplier {
         this.updatedAt = updatedAt;
     }
 
+    // Getters and Setters
     public int getSupplierID() {
         return supplierID;
     }
@@ -65,22 +64,32 @@ public class Supplier {
         this.address = address;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-    
 
-    
+    @Override
+    public String toString() {
+        return "Supplier{" +
+                "supplierID=" + supplierID +
+                ", supplierName='" + supplierName + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", contactPhone='" + contactPhone + '\'' +
+                ", address='" + address + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

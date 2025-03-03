@@ -1,25 +1,25 @@
 package model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class PurchaseOrderDetail {
-    private int purchaseOrderDetailID;
-    private int purchaseOrderID;
-    private int productDetailID;
+    private int purchaseOrderDetailId;
+    private int purchaseOrderId;
+    private int productDetailId;
     private int quantityOrdered;
-    private double unitPrice;
-    private double totalPrice;
+    private BigDecimal unitPrice;
+    private BigDecimal totalPrice;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public PurchaseOrderDetail() {}
+    public PurchaseOrderDetail() {
+    }
 
-    public PurchaseOrderDetail(int purchaseOrderDetailID, int purchaseOrderID, int productDetailID,
-                               int quantityOrdered, double unitPrice, double totalPrice,
-                               LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.purchaseOrderDetailID = purchaseOrderDetailID;
-        this.purchaseOrderID = purchaseOrderID;
-        this.productDetailID = productDetailID;
+    public PurchaseOrderDetail(int purchaseOrderDetailId, int purchaseOrderId, int productDetailId, int quantityOrdered, BigDecimal unitPrice, BigDecimal totalPrice, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.purchaseOrderDetailId = purchaseOrderDetailId;
+        this.purchaseOrderId = purchaseOrderId;
+        this.productDetailId = productDetailId;
         this.quantityOrdered = quantityOrdered;
         this.unitPrice = unitPrice;
         this.totalPrice = totalPrice;
@@ -27,28 +27,28 @@ public class PurchaseOrderDetail {
         this.updatedAt = updatedAt;
     }
 
-    public int getPurchaseOrderDetailID() {
-        return purchaseOrderDetailID;
+    public int getPurchaseOrderDetailId() {
+        return purchaseOrderDetailId;
     }
 
-    public void setPurchaseOrderDetailID(int purchaseOrderDetailID) {
-        this.purchaseOrderDetailID = purchaseOrderDetailID;
+    public void setPurchaseOrderDetailId(int purchaseOrderDetailId) {
+        this.purchaseOrderDetailId = purchaseOrderDetailId;
     }
 
-    public int getPurchaseOrderID() {
-        return purchaseOrderID;
+    public int getPurchaseOrderId() {
+        return purchaseOrderId;
     }
 
-    public void setPurchaseOrderID(int purchaseOrderID) {
-        this.purchaseOrderID = purchaseOrderID;
+    public void setPurchaseOrderId(int purchaseOrderId) {
+        this.purchaseOrderId = purchaseOrderId;
     }
 
-    public int getProductDetailID() {
-        return productDetailID;
+    public int getProductDetailId() {
+        return productDetailId;
     }
 
-    public void setProductDetailID(int productDetailID) {
-        this.productDetailID = productDetailID;
+    public void setProductDetailId(int productDetailId) {
+        this.productDetailId = productDetailId;
     }
 
     public int getQuantityOrdered() {
@@ -59,19 +59,19 @@ public class PurchaseOrderDetail {
         this.quantityOrdered = quantityOrdered;
     }
 
-    public double getUnitPrice() {
+    public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
+    public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -91,4 +91,7 @@ public class PurchaseOrderDetail {
         this.updatedAt = updatedAt;
     }
     
+    
+
+
 }

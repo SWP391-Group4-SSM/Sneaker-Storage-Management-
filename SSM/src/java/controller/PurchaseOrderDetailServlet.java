@@ -5,41 +5,33 @@
 
 package controller;
 
-import dal.PurchaseOrderDAO;
-import dal.SupplierDAO;
-import dal.WarehouseDAO;
+import dal.PurchaseOrderDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
 import java.util.List;
-import model.PurchaseOrder;
-import model.Supplier;
-import model.Warehouse;
+import model.PurchaseOrderDetail;
+
 /**
  *
  * @author Admin
  */
-public class PurchaseOrderServlet extends HttpServlet {
-   
-
+public class PurchaseOrderDetailServlet extends HttpServlet {
+ 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        PurchaseOrderDAO poDAO = new PurchaseOrderDAO();
-        List<PurchaseOrder> poList = poDAO.getAllPurchaseOrders();
-        SupplierDAO supDAO = new SupplierDAO();
-        List<Supplier> suppliers = supDAO.getAllSuppliers();
-        WarehouseDAO warDAO = new WarehouseDAO();
-        List<Warehouse> warList = warDAO.getAllWarehouses();
-        request.setAttribute("purchaseOrders", poList);
-        request.setAttribute("suppliers", suppliers);
-        request.setAttribute("warList", warList);
+        int purchaseOrderId = Integer.parseInt(request.getParameter("poId"));
 
-        request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
+        PurchaseOrderDetailDAO dao = new PurchaseOrderDetailDAO();
+        List<PurchaseOrderDetail> details = dao.getPurchaseOrderDetailsByOrderId(purchaseOrderId);
+
+        request.setAttribute("purchaseOrderId", purchaseOrderId);
+        request.setAttribute("details", details);
+        request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderDetail.jsp").forward(request, response);
     } 
 
     @Override
