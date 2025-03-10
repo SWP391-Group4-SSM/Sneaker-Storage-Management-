@@ -13,6 +13,7 @@ public class UserDAO {
         connection = db.connection;
     }
 
+    // Lấy thông tin người dùng theo username
     public User getUserByUsername(String username) {
         String sql = "SELECT * FROM Users WHERE Username = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -34,10 +35,12 @@ public class UserDAO {
         return null;
     }
 
+    // Kiểm tra mật khẩu của người dùng
     public boolean checkPassword(User user, String password) {
         return user.getPasswordHash().equals(password);
     }
 
+    // Thêm người dùng mới vào cơ sở dữ liệu
     public void createUser(User user) {
         String sql = "INSERT INTO Users (Username, PasswordHash, Role, CreatedAt) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -51,6 +54,7 @@ public class UserDAO {
         }
     }
 
+    // Lấy danh sách tất cả người dùng
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM Users";
@@ -71,6 +75,7 @@ public class UserDAO {
         return users;
     }
 
+    // Cập nhật thông tin người dùng trong cơ sở dữ liệu
     public void updateUser(User user) {
         String sql = "UPDATE Users SET Username = ?, PasswordHash = ?, Role = ? WHERE UserID = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -84,7 +89,8 @@ public class UserDAO {
         }
     }
 
-     public void deleteUser(int userID) {
+    // Xóa người dùng khỏi cơ sở dữ liệu
+    public void deleteUser(int userID) {
         String sql = "DELETE FROM Users WHERE UserID = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, userID);
@@ -93,9 +99,9 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
-     
 
- public User getUserById(int userID) {
+    // Lấy thông tin người dùng theo ID
+    public User getUserById(int userID) {
         String sql = "SELECT * FROM Users WHERE UserID = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, userID);
@@ -116,8 +122,46 @@ public class UserDAO {
         return null;
     }
 
-
+    // Lấy toàn bộ danh sách người dùng (hàm gọi lại getAllUsers)
     public List<User> getAll() {
         return getAllUsers();
+    }
+
+    // 🔹 Tìm kiếm người dùng theo username và/hoặc role
+    public List<User> searchUsers(String username, String role) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM Users WHERE 1=1";
+
+        if (username != null && !username.isEmpty()) {
+            sql += " AND Username LIKE ?";
+        }
+        if (role != null && !role.isEmpty()) {
+            sql += " AND Role = ?";
+        }
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            int index = 1;
+            if (username != null && !username.isEmpty()) {
+                pstmt.setString(index++, "%" + username + "%");
+            }
+            if (role != null && !role.isEmpty()) {
+                pstmt.setString(index++, role);
+            }
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    users.add(new User(
+                            rs.getInt("UserID"),
+                            rs.getString("Username"),
+                            rs.getString("PasswordHash"),
+                            rs.getString("Role"),
+                            rs.getTimestamp("CreatedAt")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 }

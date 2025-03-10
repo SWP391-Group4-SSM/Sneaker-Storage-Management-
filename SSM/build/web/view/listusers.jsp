@@ -21,7 +21,24 @@
 <body class="bg-light">
     <div class="container mt-4">
         <h2 class="text-center mb-4">Danh Sách Người Dùng</h2>
-        
+
+        <!-- FORM TÌM KIẾM -->
+        <form action="listusers" method="get" class="mb-3 d-flex">
+            <input type="text" name="searchUsername" class="form-control me-2" 
+                   placeholder="Nhập tên người dùng" value="${searchUsername}">
+            <select name="searchRole" class="form-select me-2">
+                <option value="">-- Chọn vai trò --</option>
+                <option value="Admin" ${searchRole == 'Admin' ? 'selected' : ''}>Admin</option>
+                <option value="Editor" ${searchRole == 'Editor' ? 'selected' : ''}>Editor</option>
+                <option value="User" ${searchRole == 'User' ? 'selected' : ''}>User</option>
+                <option value="Guest" ${searchRole == 'Guest' ? 'selected' : ''}>Guest</option>
+                <option value="Moderator" ${searchRole == 'Moderator' ? 'selected' : ''}>Moderator</option>
+            </select>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i> Tìm kiếm
+            </button>
+        </form>
+
         <div class="d-flex justify-content-between mb-3">
             <a href="${pageContext.request.contextPath}/adduser" class="btn btn-success">
                 <i class="bi bi-person-plus"></i> Thêm Người Dùng
