@@ -28,11 +28,12 @@ public class LoginServlet extends HttpServlet {
         User user = userDAO.getUserByUsername(username);
         if (user != null && userDAO.checkPassword(user, password)) {
             HttpSession session = request.getSession();
-            session.setAttribute("user", user); 
+            session.setAttribute("user", user);
 
-           
             String role = user.getRole();
-            if (role.equals("Supervisor")) {
+            if (role.equals("Admin")) {
+                response.sendRedirect("listusers");
+            } else if (role.equals("Supervisor")) {
                 response.sendRedirect("dashboard");
             } else if (role.equals("Manager")) {
                 response.sendRedirect("dashboard");
@@ -46,5 +47,4 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("view/login.jsp").forward(request, response);
         }
     }
-
 }
