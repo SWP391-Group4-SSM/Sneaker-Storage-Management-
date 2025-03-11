@@ -93,7 +93,8 @@
     </head>
     <body>
         <h2>Cập nhật Đơn hàng</h2>
-        <form action="updatePurchaseOrder" method="post">
+        <form action="purchaseOrder" method="post">
+            <input type="hidden" name="action" value="edit">
             <input type="hidden" name="id" value="${purchaseOrder.purchaseOrderId}">
 
             <label for="supplierId">Mã nhà cung cấp:</label>

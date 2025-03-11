@@ -35,7 +35,7 @@ public class PurchaseOrderDetailDAO {
                 pod.setProductDetailId(rs.getInt("ProductDetailID"));
                 pod.setQuantityOrdered(rs.getInt("QuantityOrdered"));
                 pod.setUnitPrice(rs.getBigDecimal("UnitPrice"));
-                pod.setTotalPrice(rs.getBigDecimal("UnitPrice"));
+                pod.setTotalPrice(rs.getBigDecimal("TotalPrice"));
                 pod.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
                 pod.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
                 list.add(pod);
@@ -48,13 +48,14 @@ public class PurchaseOrderDetailDAO {
 
     // Thêm mới chi tiết đơn hàng
     public boolean addPurchaseOrderDetail(PurchaseOrderDetail pod) {
-        String sql = "INSERT INTO PurchaseOrderDetails (PurchaseOrderID, ProductID, Quantity, UnitPrice, CreatedAt, UpdatedAt) "
+        String sql = "insert into PurchaseOrderDetails(PurchaseOrderDetailID,PurchaseOrderID,ProductDetailID,QuantityOrdered,UnitPrice,CreatedAt,UpdatedAt) "
                 + "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, pod.getPurchaseOrderId());
-            pstmt.setInt(2, pod.getProductDetailId());
-            pstmt.setInt(3, pod.getQuantityOrdered());
-            pstmt.setBigDecimal(4, pod.getUnitPrice());
+            pstmt.setInt(1, pod.getPurchaseOrderDetailId());
+            pstmt.setInt(2, pod.getPurchaseOrderId());
+            pstmt.setInt(3, pod.getProductDetailId());
+            pstmt.setInt(4, pod.getQuantityOrdered());
+            pstmt.setBigDecimal(5, pod.getUnitPrice());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,13 +65,12 @@ public class PurchaseOrderDetailDAO {
 
     // Cập nhật chi tiết đơn hàng
     public boolean updatePurchaseOrderDetail(PurchaseOrderDetail pod) {
-        String sql = "UPDATE PurchaseOrderDetails SET Quantity = ?, UnitPrice = ?, TotalPrice = ? "
-                + "WHERE PurchaseOrderID = ? AND ProductID = ?";
+        String sql = "UPDATE PurchaseOrderDetails SET QuantityOrdered = ?, UnitPrice = ?, UpdatedAt=CURRENT_TIMESTAMP "
+                + "WHERE PurchaseOrderDetailID = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, pod.getQuantityOrdered());
             pstmt.setBigDecimal(2, pod.getUnitPrice());
-            pstmt.setInt(4, pod.getPurchaseOrderId());
-            pstmt.setInt(5, pod.getProductDetailId());
+            pstmt.setInt(3, pod.getProductDetailId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,16 +79,39 @@ public class PurchaseOrderDetailDAO {
     }
 
     // Xóa chi tiết đơn hàng
-    public boolean deletePurchaseOrderDetail(int purchaseOrderId, int productId) {
-        String sql = "DELETE FROM PurchaseOrderDetails WHERE PurchaseOrderID = ? AND ProductID = ?";
+    public boolean deletePurchaseOrderDetail(int purchaseOrderDetailId) {
+        String sql = "delete from PurchaseOrderDetails where PurchaseOrderDetailID =?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, purchaseOrderId);
-            pstmt.setInt(2, productId);
+            pstmt.setInt(1, purchaseOrderDetailId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
+    }
+    
+    public PurchaseOrderDetail getPurchaseOrderDetailById(int purchaseOrderDetailId) {
+        PurchaseOrderDetail pod = null;
+        String sql = "SELECT * FROM PurchaseOrderDetails WHERE PurchaseOrderDetailID = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, purchaseOrderDetailId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    pod = new PurchaseOrderDetail();
+                    pod.setPurchaseOrderDetailId(rs.getInt("PurchaseOrderID"));
+                    pod.setPurchaseOrderId(rs.getInt("PurchaseOrderID"));
+                    pod.setProductDetailId(rs.getInt(""));
+                    pod.setQuantityOrdered(rs.getInt("QuantityOrdered"));
+                    pod.setUnitPrice(rs.getBigDecimal("UnitPrice"));
+                    pod.setTotalPrice(rs.getBigDecimal("TotalPrice"));
+                    pod.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
+                    pod.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pod;
     }
 
     public boolean isPurchaseOrderDetailIdExists(int purchaseOrderDetailId) {

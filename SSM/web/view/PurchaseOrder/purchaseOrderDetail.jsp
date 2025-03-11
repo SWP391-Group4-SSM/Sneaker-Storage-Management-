@@ -57,8 +57,8 @@
         /* Nút */
         a {
             display: inline-block;
-            padding: 10px 15px;
-            margin-top: 15px;
+            padding: 8px 12px;
+            margin-top: 10px;
             text-decoration: none;
             font-weight: bold;
             border-radius: 5px;
@@ -82,6 +82,24 @@
             background-color: #0056b3;
         }
 
+        .btn-edit {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .btn-edit:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             table {
@@ -93,7 +111,7 @@
 <body>
     <h2>Chi tiết đơn hàng - Mã: <%= request.getAttribute("purchaseOrderId") %></h2>
     
-    <a href="addPurchaseOrderDetail" class="btn-add">Thêm mới</a>
+    <a href="purchaseOrderDetail?action=add&poId=<%= request.getAttribute("purchaseOrderId") %>" class="btn-add">Thêm mới</a>
 
     <table>
         <tr>
@@ -102,17 +120,22 @@
             <th>Số Lượng</th>
             <th>Đơn Giá</th>
             <th>Thành Tiền</th>
+            <th>Hành Động</th>
         </tr>
-        <%
-            List<PurchaseOrderDetail> details = (List<PurchaseOrderDetail>) request.getAttribute("details");
-            for (PurchaseOrderDetail pod : details) {
+        <% 
+            List<PurchaseOrderDetail> podList = (List<PurchaseOrderDetail>) request.getAttribute("podList");
+            for (PurchaseOrderDetail pod : podList) {
         %>
         <tr>
             <td><%= pod.getPurchaseOrderDetailId() %></td>
             <td><%= pod.getProductDetailId() %></td>
             <td><%= pod.getQuantityOrdered() %></td>
             <td><%= pod.getUnitPrice() %></td>
-            <td><%= pod.getUnitPrice().multiply(new java.math.BigDecimal(pod.getQuantityOrdered())) %></td>
+            <td><%= pod.getTotalPrice() %></td>
+            <td>
+                <a href="updatePurchaseOrderDetail?podId=<%= pod.getPurchaseOrderDetailId() %>" class="btn-edit">Sửa</a>
+                <a href="deletePurchaseOrderDetail?id=<%= pod.getPurchaseOrderDetailId() %>" class="btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa không?');">Xóa</a>
+            </td>
         </tr>
         <% } %>
     </table>

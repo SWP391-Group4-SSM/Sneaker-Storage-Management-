@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
 import dal.PurchaseOrderDetailDAO;
@@ -12,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.List;
 import model.PurchaseOrderDetail;
 
@@ -20,24 +20,55 @@ import model.PurchaseOrderDetail;
  * @author Admin
  */
 public class PurchaseOrderDetailServlet extends HttpServlet {
- 
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        int purchaseOrderId = Integer.parseInt(request.getParameter("poId"));
-
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
         PurchaseOrderDetailDAO dao = new PurchaseOrderDetailDAO();
-        List<PurchaseOrderDetail> details = dao.getPurchaseOrderDetailsByOrderId(purchaseOrderId);
+        if ("add".equals(action)) {
+            int purchaseOrderId = Integer.parseInt(request.getParameter("poId"));
+            request.setAttribute("purchaseOrderId", purchaseOrderId);
+            request.getRequestDispatcher("view/PurchaseOrder/addPurchaseOrderDetail.jsp").forward(request, response);
+        } else {
+            int purchaseOrderId = Integer.parseInt(request.getParameter("poId"));
+            List<PurchaseOrderDetail> podList = dao.getPurchaseOrderDetailsByOrderId(purchaseOrderId);
+            request.setAttribute("purchaseOrderId", purchaseOrderId);
+            request.setAttribute("podList", podList);
+            request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderDetail.jsp").forward(request, response);
+        }
 
-        request.setAttribute("purchaseOrderId", purchaseOrderId);
-        request.setAttribute("details", details);
-        request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderDetail.jsp").forward(request, response);
-    } 
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        if ("add".equals(action)) {
+            int purchaseOrderDetailID = Integer.parseInt(request.getParameter("purchaseOrderDetailID"));
+            int purchaseOrderID = Integer.parseInt(request.getParameter("poId"));  
+            int productDetailId = Integer.parseInt(request.getParameter("productDetailId"));  
+            int quantityOrdered = Integer.parseInt(request.getParameter("quantityOrdered"));
+            BigDecimal unitPrice = new BigDecimal(request.getParameter("unitPrice"));
+
+            PurchaseOrderDetail pod = new PurchaseOrderDetail();
+            pod.setPurchaseOrderDetailId(purchaseOrderDetailID);
+            pod.setPurchaseOrderId(purchaseOrderID);
+            pod.setProductDetailId(productDetailId);
+            pod.setQuantityOrdered(quantityOrdered);
+            pod.setUnitPrice(unitPrice);
+
+            PurchaseOrderDetailDAO dao = new PurchaseOrderDetailDAO();
+
+            boolean success = dao.addPurchaseOrderDetail(pod);
+            if (success) {
+                response.sendRedirect("purchaseOrderDetail?poId="+ purchaseOrderID);
+            } else {
+                request.setAttribute("errorMessage", "Thêm đơn hàng thất bại!");
+                request.getRequestDispatcher("view/PurchaseOrder/addPurchaseOrderDetail.jsp").forward(request, response);
+            }
+        }
     }
 
     @Override

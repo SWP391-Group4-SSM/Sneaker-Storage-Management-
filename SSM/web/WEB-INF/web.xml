@@ -29,6 +29,10 @@
         <servlet-name>AddPurchaseOrderDetailServlet</servlet-name>
         <servlet-class>controller.AddPurchaseOrderDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdatePurchaseOrderDetailServlet</servlet-name>
+        <servlet-class>controller.UpdatePurchaseOrderDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/productList</url-pattern>
@@ -64,6 +68,10 @@
     <servlet-mapping>
         <servlet-name>AddPurchaseOrderDetailServlet</servlet-name>
         <url-pattern>/addPurchaseOrderDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdatePurchaseOrderDetailServlet</servlet-name>
+        <url-pattern>/updatePurchaseOrderDetail</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/login.jsp</welcome-file>

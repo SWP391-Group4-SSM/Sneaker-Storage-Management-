@@ -28,7 +28,7 @@
             }
 
             /* Nút thêm mới */
-            a[href="addPurchaseOrder"] {
+            a[href="purchaseOrder?action=add"] {
                 display: inline-block;
                 background-color: #28a745;
                 color: white;
@@ -38,7 +38,7 @@
                 margin-bottom: 15px;
             }
 
-            a[href="addPurchaseOrder"]:hover {
+            a[href="purchaseOrder?action=add"]:hover {
                 background-color: #218838;
             }
 
@@ -118,11 +118,11 @@
     <body>
 
         <h2>Danh sách Purchase Orders</h2>
-        <a href="addPurchaseOrder">Thêm mới</a>
+        <a href="purchaseOrder?action=add">Thêm mới</a>
         <table>
             <tr>
                 <th>ID</th>
-                <th>Supplier ID</th>
+                <th>Supplier </th>
                 <th>Warehouse ID</th>
                 <th>Created By</th>
                 <th>Order Date</th>
@@ -148,15 +148,31 @@
                         </c:forEach>
                         ${supplierName}
                     </td>
-                    <td>${po.warehouseId}</td>
-                    <td>${po.createdByUserId}</td>
+                    <td>
+                        <c:set var="warehouseName" value="Không xác định" />
+                        <c:forEach var="w" items="${warList}">
+                            <c:if test="${w.warehouseID == po.warehouseId}">
+                                <c:set var="warehouseName" value="${w.name}" />
+                            </c:if>
+                        </c:forEach>
+                        ${warehouseName}
+                    </td>
+                    <td>
+                        <c:set var="userName" value="Không xác định" />
+                        <c:forEach var="u" items="${userList}">
+                            <c:if test="${u.userID == po.createdByUserId}">
+                                <c:set var="userName" value="${u.username}" />
+                            </c:if>
+                        </c:forEach>
+                        ${userName}
+                    </td>
                     <td>${po.orderDate}</td>
                     <td>${po.purchaseOrderStatus}</td>
                     <td>${po.totalAmount}</td>
                     <td>${po.createdAt}</td>
                     <td>${po.updatedAt}</td>
                     <td>
-                        <a href="updatePurchaseOrder?id=${po.purchaseOrderId}">Sửa</a> | |
+                        <a href="purchaseOrder?action=edit&id=${po.purchaseOrderId}">Sửa</a> | |
                         <a href="javascript:void(0);" onclick="confirmDelete(${po.purchaseOrderId})">Xóa</a>
                     </td>
                     <td>
@@ -169,7 +185,7 @@
         <script>
             function confirmDelete(id) {
                 if (confirm("Bạn có chắc muốn xóa đơn hàng này không?")) {
-                    window.location.href = "deletePurchaseOrder?id=" + id;
+                    window.location.href = "purchaseOrder?action=delete&id=" + id;
                 }
             }
         </script>

@@ -100,7 +100,8 @@
     </head>
     <body>
         <h2>Thêm Purchase Order</h2>
-        <form action="addPurchaseOrder" method="post">
+        <form action="purchaseOrder" method="post">
+            <input type="hidden" name="action" value="add">
             <label for="purchaseOrderId">Mã Đơn Hàng:</label>
             <input type="number" id="purchaseOrderId" name="purchaseOrderId" required>
 

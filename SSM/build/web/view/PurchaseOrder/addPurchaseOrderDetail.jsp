@@ -85,10 +85,14 @@
             <p class="error"><%= errorMessage %></p>
         <% } %>
 
-        <form action="addPurchaseOrderDetail" method="post">
+        <form action="purchaseOrderDetail" method="post">
+            <input type="hidden" name="action" value="add">
+            <input type="hidden" name="poId" value="<%= request.getAttribute("purchaseOrderId") %>">
+
+            <%= request.getAttribute("purchaseOrderId") %>
             <div class="form-group">
-                <label for="purchaseOrderID">Mã PO:</label>
-                <input type="text" id="purchaseOrderID" name="purchaseOrderID" required>
+                <label for="purchaseOrderDetailID">Mã Pod:</label>
+                <input type="text" id="purchaseOrderDetailID" name="purchaseOrderDetailID" required>
             </div>
             <div class="form-group">
                 <label for="productDetailId">Mã sản phẩm:</label>
@@ -102,12 +106,12 @@
             
             <div class="form-group">
                 <label for="unitPrice">Giá mỗi đơn vị:</label>
-                <input type="text" id="unitPrice" name="unitPrice" required>
+                <input type="text" id="unitPrice" name="unitPrice" step="0.01" required>
             </div>
 
             <button type="submit" class="btn">Thêm</button>
         </form>
-        <a href="purchaseOrder" class="back-link">Quay lại danh sách</a>
+        <a href="purchaseOrderDetail?poId=<%= request.getAttribute("purchaseOrderId") %>" class="back-link">Quay lại danh sách</a>
     </div>
 </body>
 </html>

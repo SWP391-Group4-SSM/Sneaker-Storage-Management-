@@ -1,8 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Thêm đơn hàng</title>
+        <title>Update PurchaseOrderDetail</title>
         <style>
             /* Reset mặc định */
             * {
@@ -44,7 +45,7 @@
                 margin-top: 10px;
             }
 
-            input {
+            input, select {
                 width: 100%;
                 padding: 8px;
                 margin-top: 5px;
@@ -55,7 +56,7 @@
             button {
                 width: 100%;
                 padding: 10px;
-                background-color: #007bff;
+                background-color: #28a745;
                 color: white;
                 border: none;
                 border-radius: 5px;
@@ -65,7 +66,7 @@
             }
 
             button:hover {
-                background-color: #0056b3;
+                background-color: #218838;
             }
 
             /* Nút quay lại */
@@ -82,14 +83,6 @@
                 color: #0056b3;
             }
 
-            /* Hiển thị thông báo lỗi */
-            .error-message {
-                color: red;
-                text-align: center;
-                margin-top: 10px;
-                font-weight: bold;
-            }
-
             /* Responsive */
             @media (max-width: 480px) {
                 form {
@@ -99,32 +92,18 @@
         </style>
     </head>
     <body>
-        <h2>Thêm Purchase Order</h2>
-        <form action="purchaseOrder" method="post">
-            <input type="hidden" name="action" value="add">
-            <label for="purchaseOrderId">Mã Đơn Hàng:</label>
-            <input type="number" id="purchaseOrderId" name="purchaseOrderId" required>
+        <h2>Update PurchaseOrderDetail</h2>
+        <form action="updatePurchaseOrderDetail" method="post">
+    
+            <label for="createdByUserId">Quantity:</label>
+            <input type="number" id="quantityOrdered" name="quantityOrdered" value="${purchaseOrder.createdByUserId}" required>
 
-            <label for="supplierId">Mã nhà cung cấp:</label>
-            <input type="number" id="supplierId" name="supplierId" required>
+            <label for="totalAmount">Unit Price:</label>
+            <input type="number" id="unitPrice" name="unitPrice" step="0.01" value="${purchaseOrder.totalAmount}" required>
 
-            <label for="warehouseId">Mã kho:</label>
-            <input type="number" id="warehouseId" name="warehouseId" required>
 
-            <label for="totalAmount">Tổng số tiền:</label>
-            <input type="number" id="totalAmount" name="totalAmount" step="0.01" required>
-
-            <label for="orderDate">Ngày đặt hàng:</label>
-            <input type="datetime-local" id="orderDate" name="orderDate" required>
-
-            <button type="submit">Thêm đơn hàng</button>
-            <a href="purchaseOrder">Quay lại danh sách</a>
-
-            <%-- Hiển thị thông báo lỗi nếu có --%>
-            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-            <% if (errorMessage != null) { %>
-                <p class="error-message"><%= errorMessage %></p>
-            <% } %>
+            <button type="submit">Update</button>
+            <a href="purchaseOrder">Cancel</a>
         </form>
     </body>
 </html>
