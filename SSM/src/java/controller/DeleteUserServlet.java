@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "DeleteUserServlet", urlPatterns = {"/deleteuser"})
 public class DeleteUserServlet extends HttpServlet {
-
     private final UserDAO userDAO = new UserDAO();
 
     @Override
@@ -18,10 +17,16 @@ public class DeleteUserServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             int userID = Integer.parseInt(request.getParameter("userID"));
-            userDAO.deleteUser(userID);
+            userDAO.deleteUser(userID); // Đánh dấu user là "đã xoá"
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         response.sendRedirect("listusers");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 }

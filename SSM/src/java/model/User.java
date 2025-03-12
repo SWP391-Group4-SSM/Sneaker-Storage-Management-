@@ -8,22 +8,33 @@ public class User {
     private String passwordHash;
     private String role;
     private Timestamp createdAt;
+    private boolean isDeleted;
 
-    public User(int userID, String username, String passwordHash, String role, Timestamp createdAt) {
+    // Constructor đầy đủ
+    public User(int userID, String username, String passwordHash, String role, Timestamp createdAt, boolean isDeleted) {
         this.userID = userID;
         this.username = username;
         this.passwordHash = passwordHash;
         this.role = role;
         this.createdAt = createdAt;
+        this.isDeleted = isDeleted;
     }
 
+    // Constructor khi thêm mới user (mặc định isDeleted = false)
     public User(String username, String passwordHash, String role) {
+        this(username, passwordHash, role, new Timestamp(System.currentTimeMillis()), false);
+    }
+
+    // Constructor bổ sung nếu cần timestamp cụ thể
+    public User(String username, String passwordHash, String role, Timestamp createdAt, boolean isDeleted) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.role = role;
-        this.createdAt = new Timestamp(System.currentTimeMillis());
+        this.createdAt = createdAt;
+        this.isDeleted = isDeleted;
     }
 
+    // Getter & Setter
     public int getUserID() {
         return userID;
     }
@@ -62,5 +73,13 @@ public class User {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

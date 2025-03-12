@@ -22,28 +22,20 @@
     <div class="container mt-4">
         <h2 class="text-center mb-4">Danh Sách Người Dùng</h2>
 
-        <!-- FORM TÌM KIẾM -->
+        <a href="adduser" class="btn btn-success mb-3"><i class="bi bi-plus-circle"></i> Thêm Người Dùng</a>
+        
         <form action="listusers" method="get" class="mb-3 d-flex">
             <input type="text" name="searchUsername" class="form-control me-2" 
                    placeholder="Nhập tên người dùng" value="${searchUsername}">
             <select name="searchRole" class="form-select me-2">
                 <option value="">-- Chọn vai trò --</option>
                 <option value="Admin" ${searchRole == 'Admin' ? 'selected' : ''}>Admin</option>
-                <option value="Editor" ${searchRole == 'Editor' ? 'selected' : ''}>Editor</option>
-                <option value="User" ${searchRole == 'User' ? 'selected' : ''}>User</option>
-                <option value="Guest" ${searchRole == 'Guest' ? 'selected' : ''}>Guest</option>
-                <option value="Moderator" ${searchRole == 'Moderator' ? 'selected' : ''}>Moderator</option>
+                <option value="Supervisor" ${searchRole == 'Supervisor' ? 'selected' : ''}>Supervisor</option>
+                <option value="Manager" ${searchRole == 'Manager' ? 'selected' : ''}>Manager</option>
+                <option value="Staff" ${searchRole == 'Staff' ? 'selected' : ''}>Staff</option>
             </select>
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-search"></i> Tìm kiếm
-            </button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Tìm kiếm</button>
         </form>
-
-        <div class="d-flex justify-content-between mb-3">
-            <a href="${pageContext.request.contextPath}/adduser" class="btn btn-success">
-                <i class="bi bi-person-plus"></i> Thêm Người Dùng
-            </a>
-        </div>
 
         <table class="table table-hover table-bordered bg-white">
             <thead class="table-dark">
@@ -63,19 +55,13 @@
                         <td>${user.role}</td>
                         <td>${user.createdAt}</td>
                         <td class="text-center">
-                            <a href="edituser?userID=${user.userID}" class="btn btn-warning btn-sm">
-                                <i class="bi bi-pencil"></i> Sửa
-                            </a>
-                            <button onclick="confirmDelete(${user.userID})" class="btn btn-danger btn-sm">
-                                <i class="bi bi-trash"></i> Xóa
-                            </button>
+                            <a href="edituser?userID=${user.userID}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Sửa</a>
+                            <button onclick="confirmDelete(${user.userID})" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Xóa</button>
                         </td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
