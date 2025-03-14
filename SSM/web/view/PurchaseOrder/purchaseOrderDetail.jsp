@@ -133,13 +133,19 @@
             <td><%= pod.getUnitPrice() %></td>
             <td><%= pod.getTotalPrice() %></td>
             <td>
-                <a href="updatePurchaseOrderDetail?podId=<%= pod.getPurchaseOrderDetailId() %>" class="btn-edit">Sửa</a>
-                <a href="deletePurchaseOrderDetail?id=<%= pod.getPurchaseOrderDetailId() %>" class="btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa không?');">Xóa</a>
+                <a href="purchaseOrderDetail?action=edit&poId=<%= request.getAttribute("purchaseOrderId") %>&id=<%= pod.getPurchaseOrderDetailId() %>" class="btn-edit">Sửa</a>
+                <a href="javascript:void(0);" onclick="confirmDelete(<%= request.getAttribute("purchaseOrderId") %>,<%= pod.getPurchaseOrderDetailId() %>)">Xóa</a>
             </td>
         </tr>
         <% } %>
     </table>
-    
+    <script>
+            function confirmDelete(poId,id) {
+                if (confirm("Bạn có chắc muốn xóa đơn hàng này không?")) {
+                    window.location.href = "purchaseOrderDetail?action=delete&poId=" + poId + "&id=" + id;
+                }
+            }
+        </script>
     <a href="purchaseOrder" class="btn-back">Quay lại danh sách</a>
 </body>
 </html>

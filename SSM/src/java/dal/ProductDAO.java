@@ -14,25 +14,26 @@ import java.util.List;
  */
 public class ProductDAO {
 
-    private Connection connection;
+    private Connection conn;
 
     public ProductDAO() {
         DBContext db = new DBContext();
-        connection = db.connection;
+        conn = db.connection;
     }
 
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) { // Fixed error: removed sql parameter
+        String sql = "SELECT * FROM Products WHERE isDeleted = 0";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 Product p = new Product();
-                p.setProductID(rs.getInt("ProductID"));
+                p.setProductId(rs.getInt("ProductID"));
                 p.setName(rs.getString("Name"));
                 p.setDescription(rs.getString("Description"));
                 p.setSku(rs.getString("SKU"));
-                p.setPrice(rs.getDouble("Price"));
-                p.setImageURL(rs.getString("ImageURL"));
+                p.setPrice(rs.getBigDecimal("Price"));
+                p.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
+                p.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
                 products.add(p);
             }
         } catch (SQLException e) {
@@ -40,169 +41,31 @@ public class ProductDAO {
         }
         return products;
     }
-
-    public Product getProductById(int productId) {
-        String sql = "SELECT * FROM Products WHERE ProductID = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, productId);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    Product p = new Product();
-                    p.setProductID(rs.getInt("ProductID"));
-                    p.setName(rs.getString("Name"));
-                    p.setDescription(rs.getString("Description"));
-                    p.setSku(rs.getString("SKU"));
-                    p.setPrice(rs.getDouble("Price"));
-                    p.setImageURL(rs.getString("ImageURL"));
-                    return p;
-                }
-            }
+    public boolean addProduct(Product p) {
+        String sql = "INSERT INTO Products (ProductID, Name, Description, SKU, Price, CreatedAt, UpdatedAt) "
+                   + "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, p.getProductId());
+            pstmt.setString(2, p.getName());
+            pstmt.setString(3, p.getDescription());
+            pstmt.setString(4, p.getSku());
+            pstmt.setBigDecimal(5, p.getPrice());
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    public List<Product> searchProducts(String keyword) {
-        List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products WHERE Name LIKE ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, "%" + keyword + "%");
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Product p = new Product();
-                    p.setProductID(rs.getInt("ProductID"));
-                    p.setName(rs.getString("Name"));
-                    p.setDescription(rs.getString("Description"));
-                    p.setSku(rs.getString("SKU"));
-                    p.setPrice(rs.getDouble("Price"));
-                    p.setImageURL(rs.getString("ImageURL"));
-                    products.add(p);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return products;
-    }
-
-    public List<Product> filterProductsByPrice(double minPrice, double maxPrice) {
-        List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products WHERE Price BETWEEN ? AND ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setDouble(1, minPrice);
-            pstmt.setDouble(2, maxPrice);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Product p = new Product();
-                    p.setProductID(rs.getInt("ProductID"));
-                    p.setName(rs.getString("Name"));
-                    p.setDescription(rs.getString("Description"));
-                    p.setSku(rs.getString("SKU"));
-                    p.setPrice(rs.getDouble("Price"));
-                    p.setImageURL(rs.getString("ImageURL"));
-                    products.add(p);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return products;
-    }
-
-    public List<Product> sortProductsByPrice(boolean ascending) {
-        List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products ORDER BY Price " + (ascending ? "ASC" : "DESC"); // Fixed error: secure query
-        try (PreparedStatement pstmt = connection.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                Product p = new Product();
-                p.setProductID(rs.getInt("ProductID"));
-                p.setName(rs.getString("Name"));
-                p.setDescription(rs.getString("Description"));
-                p.setSku(rs.getString("SKU"));
-                p.setPrice(rs.getDouble("Price"));
-                p.setImageURL(rs.getString("ImageURL"));
-                products.add(p);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return products;
-    }
-
-    public int getTotalProducts() {
-        String sql = "SELECT COUNT(*) FROM Products";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    public List<Product> getProductsByPage(int page, int pageSize) {
-        List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            int offset = (page - 1) * pageSize;
-            pstmt.setInt(1, offset);
-            pstmt.setInt(2, pageSize);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Product p = new Product();
-                    p.setProductID(rs.getInt("ProductID"));
-                    p.setName(rs.getString("Name"));
-                    p.setDescription(rs.getString("Description"));
-                    p.setSku(rs.getString("SKU"));
-                    p.setPrice(rs.getDouble("Price"));
-                    p.setImageURL(rs.getString("ImageURL"));
-                    products.add(p);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return products;
+        return false;
     }
     
-    public void addProduct(Product product) {
-        String sql = "INSERT INTO Products (Name, Description, SKU, Price, ImageURL) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, product.getName());
-            pstmt.setString(2, product.getDescription());
-            pstmt.setString(3, product.getSku());
-            pstmt.setDouble(4, product.getPrice());
-            pstmt.setString(5, product.getImageURL());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     public void deleteProduct(int productId) {
-        String sql = "DELETE FROM Products WHERE ProductID = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, productId);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    public void editProduct(Product product) {
-        String sql = "UPDATE Products SET Name = ?, Description = ?, SKU = ?, Price = ?, ImageURL = ? WHERE ProductID = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, product.getName());
-            pstmt.setString(2, product.getDescription());
-            pstmt.setString(3, product.getSku());
-            pstmt.setDouble(4, product.getPrice());
-            pstmt.setString(5, product.getImageURL());
-            pstmt.setInt(6, product.getProductID()); // Giả sử Product có phương thức getId()
-            pstmt.executeUpdate();
+        String sql = "UPDATE Products SET isDeleted = 1 WHERE ProductID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1,productId );
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
- 
+
 }

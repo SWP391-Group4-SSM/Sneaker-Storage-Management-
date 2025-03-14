@@ -9,30 +9,7 @@
         <servlet-name>PurchaseOrderServlet</servlet-name>
         <servlet-class>controller.PurchaseOrderServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>AddPurchaseOrderServlet</servlet-name>
-        <servlet-class>controller.AddPurchaseOrderServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdatePurchaseOrderServlet</servlet-name>
-        <servlet-class>controller.UpdatePurchaseOrderServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DeletePurchaseOrderServlet</servlet-name>
-        <servlet-class>controller.DeletePurchaseOrderServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>PurchaseOrderDetailServlet</servlet-name>
-        <servlet-class>controller.PurchaseOrderDetailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AddPurchaseOrderDetailServlet</servlet-name>
-        <servlet-class>controller.AddPurchaseOrderDetailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdatePurchaseOrderDetailServlet</servlet-name>
-        <servlet-class>controller.UpdatePurchaseOrderDetailServlet</servlet-class>
-    </servlet>
+   
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/productList</url-pattern>

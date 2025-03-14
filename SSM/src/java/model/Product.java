@@ -1,39 +1,45 @@
 
 package model;
 
-;public class Product {
-    private int productID;
+;
+
+import java.math.BigDecimal;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.security.Timestamp;
+import java.math.BigDecimal;
+
+public class Product {
+    private int productId;
     private String name;
     private String description;
     private String sku;
-    private double price;
-    private String imageURL;
+    private BigDecimal price;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private boolean isDeleted;
 
     public Product() {
     }
-    public Product(int productID, String name, String description, String sku, double price, String imgURL) {
-        this.productID = productID;
+
+    public Product(int productId, String name, String description, String sku, BigDecimal price, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted) {
+        this.productId = productId;
         this.name = name;
         this.description = description;
         this.sku = sku;
         this.price = price;
-        this.imageURL = imgURL;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.isDeleted = isDeleted;
     }
 
-    public Product(String name, String description, String sku, double price, String imageURL) {
-        this.name = name;
-        this.description = description;
-        this.sku = sku;
-        this.price = price;
-        this.imageURL = imageURL;
-    }
-    
-    public int getProductID() {
-        return productID;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public String getName() {
@@ -60,22 +66,37 @@ package model;
         this.sku = sku;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public boolean isIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     
 }

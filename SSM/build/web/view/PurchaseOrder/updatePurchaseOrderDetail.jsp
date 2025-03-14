@@ -93,13 +93,22 @@
     </head>
     <body>
         <h2>Update PurchaseOrderDetail</h2>
-        <form action="updatePurchaseOrderDetail" method="post">
-    
-            <label for="createdByUserId">Quantity:</label>
-            <input type="number" id="quantityOrdered" name="quantityOrdered" value="${purchaseOrder.createdByUserId}" required>
+        <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+        <% if (errorMessage != null) { %>
+            <p class="error"><%= errorMessage %></p>
+        <% } %>
+        
+        <form action="purchaseOrderDetail" method="post">
+            <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="poId" value="<%= request.getAttribute("purchaseOrderId") %>">
+            <%= request.getAttribute("purchaseOrderId") %>
+            <label for="quantityOrdered">purchaseOrderDetailId</label>
+            <input type="number" id="purchaseOrderDetailId" name="purchaseOrderDetailId" value="${purchaseOrderDetail.purchaseOrderDetailId}" required>
+            <label for="quantityOrdered">Quantity:</label>
+            <input type="number" id="quantityOrdered" name="quantityOrdered" value="${purchaseOrderDetail.quantityOrdered}" required>
 
-            <label for="totalAmount">Unit Price:</label>
-            <input type="number" id="unitPrice" name="unitPrice" step="0.01" value="${purchaseOrder.totalAmount}" required>
+            <label for="unitPrice">Unit Price:</label>
+            <input type="number" id="unitPrice" name="unitPrice" step="0.01" value="${purchaseOrderDetail.unitPrice}" required>
 
 
             <button type="submit">Update</button>

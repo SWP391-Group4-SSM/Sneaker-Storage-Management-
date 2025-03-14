@@ -70,7 +70,7 @@ public class PurchaseOrderDetailDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, pod.getQuantityOrdered());
             pstmt.setBigDecimal(2, pod.getUnitPrice());
-            pstmt.setInt(3, pod.getProductDetailId());
+            pstmt.setInt(3, pod.getPurchaseOrderDetailId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,9 +98,9 @@ public class PurchaseOrderDetailDAO {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     pod = new PurchaseOrderDetail();
-                    pod.setPurchaseOrderDetailId(rs.getInt("PurchaseOrderID"));
+                    pod.setPurchaseOrderDetailId(rs.getInt("PurchaseOrderDetailID"));
                     pod.setPurchaseOrderId(rs.getInt("PurchaseOrderID"));
-                    pod.setProductDetailId(rs.getInt(""));
+                    pod.setProductDetailId(rs.getInt("ProductDetailID"));
                     pod.setQuantityOrdered(rs.getInt("QuantityOrdered"));
                     pod.setUnitPrice(rs.getBigDecimal("UnitPrice"));
                     pod.setTotalPrice(rs.getBigDecimal("TotalPrice"));
