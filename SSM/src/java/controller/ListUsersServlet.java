@@ -17,21 +17,29 @@ public class ListUsersServlet extends HttpServlet {
             throws ServletException, IOException {
         UserDAO userDAO = new UserDAO();
         
-        // Nhận dữ liệu từ form tìm kiếm
         String searchUsername = request.getParameter("searchUsername");
         String searchRole = request.getParameter("searchRole");
+
+        int page = 1;
+        int pageSize = 10;
+        try {
+            page = Integer.parseInt(request.getParameter("page"));
+        } catch (NumberFormatException e) {
+            // Mặc định là trang 1 nếu không có tham số trang
+        }
 
         List<User> listUsers;
         
         if ((searchUsername != null && !searchUsername.isEmpty()) || (searchRole != null && !searchRole.isEmpty())) {
-            listUsers = userDAO.searchUsers(searchUsername, searchRole); // Lọc kết quả tìm kiếm
+            listUsers = userDAO.searchUsers(searchUsername, searchRole, page, pageSize);
         } else {
-            listUsers = userDAO.getAll(); // Hiển thị tất cả khi chưa tìm kiếm
+            listUsers = userDAO.getAll(page, pageSize);
         }
 
         request.setAttribute("data", listUsers);
         request.setAttribute("searchUsername", searchUsername);
         request.setAttribute("searchRole", searchRole);
+        request.setAttribute("currentPage", page);
         request.getRequestDispatcher("view/listusers.jsp").forward(request, response);
     }
 

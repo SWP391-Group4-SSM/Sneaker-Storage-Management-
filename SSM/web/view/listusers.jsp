@@ -21,8 +21,6 @@
 <body class="bg-light">
     <div class="container mt-4">
         <h2 class="text-center mb-4">Danh Sách Người Dùng</h2>
-
-        <a href="adduser" class="btn btn-success mb-3"><i class="bi bi-plus-circle"></i> Thêm Người Dùng</a>
         
         <form action="listusers" method="get" class="mb-3 d-flex">
             <input type="text" name="searchUsername" class="form-control me-2" 
@@ -37,6 +35,8 @@
             <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Tìm kiếm</button>
         </form>
 
+        <a href="adduser" class="btn btn-success mb-3"><i class="bi bi-plus-circle"></i> Thêm Người Dùng</a>
+
         <table class="table table-hover table-bordered bg-white">
             <thead class="table-dark">
                 <tr>
@@ -48,20 +48,45 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="user" items="${data}">
+                <c:if test="${not empty data}">
+                    <c:forEach var="user" items="${data}">
+                        <tr>
+                            <td>${user.userID}</td>
+                            <td>${user.username}</td>
+                            <td>${user.role}</td>
+                            <td>${user.createdAt}</td>
+                            <td class="text-center">
+                                <a href="edituser?userID=${user.userID}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Sửa</a>
+                                <button onclick="confirmDelete(${user.userID})" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Xóa</button>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </c:if>
+                <c:if test="${empty data}">
                     <tr>
-                        <td>${user.userID}</td>
-                        <td>${user.username}</td>
-                        <td>${user.role}</td>
-                        <td>${user.createdAt}</td>
-                        <td class="text-center">
-                            <a href="edituser?userID=${user.userID}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Sửa</a>
-                            <button onclick="confirmDelete(${user.userID})" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Xóa</button>
-                        </td>
+                        <td colspan="5" class="text-center">Không có người dùng nào</td>
                     </tr>
-                </c:forEach>
+                </c:if>
             </tbody>
         </table>
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                <c:if test="${currentPage > 1}">
+                    <li class="page-item">
+                        <a class="page-link" href="listusers?page=${currentPage - 1}&searchUsername=${searchUsername}&searchRole=${searchRole}">Trước</a>
+                    </li>
+                </c:if>
+                <li class="page-item active">
+                    <span class="page-link">${currentPage}</span>
+                </li>
+                <c:if test="${data.size() == 10}">
+                    <li class="page-item">
+                        <a class="page-link" href="listusers?page=${currentPage + 1}&searchUsername=${searchUsername}&searchRole=${searchRole}">Sau</a>
+                    </li>
+                </c:if>
+            </ul>
+        </nav>
     </div>
 </body>
 </html>

@@ -18,9 +18,10 @@ public class DBContext {
             String url = "jdbc:sqlserver://localhost:1433;databaseName=SneakerManagement";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, username, password);
+            System.out.println("Kết nối thành công đến cơ sở dữ liệu");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Kết nối không thành công đến cơ sở dữ liệu");
         }
     }
-    
 }
