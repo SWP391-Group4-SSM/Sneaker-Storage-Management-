@@ -22,7 +22,7 @@
     <div class="container mt-4">
         <h2 class="text-center mb-4">Danh Sách Người Dùng</h2>
         
-        <form action="listusers" method="get" class="mb-3 d-flex">
+        <form action="${pageContext.request.contextPath}/listusers" method="get" class="mb-3 d-flex">
             <input type="text" name="searchUsername" class="form-control me-2" 
                    placeholder="Nhập tên người dùng" value="${searchUsername}">
             <select name="searchRole" class="form-select me-2">
@@ -35,7 +35,7 @@
             <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Tìm kiếm</button>
         </form>
 
-        <a href="adduser" class="btn btn-success mb-3"><i class="bi bi-plus-circle"></i> Thêm Người Dùng</a>
+        <a href="${pageContext.request.contextPath}/adduser" class="btn btn-success mb-3"><i class="bi bi-plus-circle"></i> Thêm Người Dùng</a>
 
         <table class="table table-hover table-bordered bg-white">
             <thead class="table-dark">
@@ -56,7 +56,7 @@
                             <td>${user.role}</td>
                             <td>${user.createdAt}</td>
                             <td class="text-center">
-                                <a href="edituser?userID=${user.userID}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Sửa</a>
+                                <a href="${pageContext.request.contextPath}/edituser?userID=${user.userID}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Sửa</a>
                                 <button onclick="confirmDelete(${user.userID})" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Xóa</button>
                             </td>
                         </tr>
@@ -74,7 +74,7 @@
             <ul class="pagination justify-content-center">
                 <c:if test="${currentPage > 1}">
                     <li class="page-item">
-                        <a class="page-link" href="listusers?page=${currentPage - 1}&searchUsername=${searchUsername}&searchRole=${searchRole}">Trước</a>
+                        <a class="page-link" href="${pageContext.request.contextPath}/listusers?page=${currentPage - 1}&searchUsername=${searchUsername}&searchRole=${searchRole}">Trước</a>
                     </li>
                 </c:if>
                 <li class="page-item active">
@@ -82,7 +82,7 @@
                 </li>
                 <c:if test="${data.size() == 10}">
                     <li class="page-item">
-                        <a class="page-link" href="listusers?page=${currentPage + 1}&searchUsername=${searchUsername}&searchRole=${searchRole}">Sau</a>
+                        <a class="page-link" href="${pageContext.request.contextPath}/listusers?page=${currentPage + 1}&searchUsername=${searchUsername}&searchRole=${searchRole}">Sau</a>
                     </li>
                 </c:if>
             </ul>

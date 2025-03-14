@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
 
             // Nếu là Admin, chuyển hướng đến listusers
             if ("Admin".equals(user.getRole())) {
-                response.sendRedirect("http://localhost:9999/SSM/listusers");
+                response.sendRedirect(request.getContextPath() + "/listusers");
             } else {
                 // Nếu không phải Admin, chuyển đến trang chính
                 response.sendRedirect("home.jsp");
