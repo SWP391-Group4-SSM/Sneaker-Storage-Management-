@@ -1,4 +1,4 @@
-package controller;
+package controller.bins;
 
 import dal.BinDAO;
 import model.Bin;
@@ -16,25 +16,26 @@ public class ListBinsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        BinDAO binDAO = new BinDAO();
-
         String searchBinName = request.getParameter("searchBinName");
-
-        List<Bin> listBins;
-        if (searchBinName != null && !searchBinName.isEmpty()) {
-            listBins = binDAO.searchBins(searchBinName);
-        } else {
-            listBins = binDAO.getAll();
+        int page = 1;
+        int pageSize = 10;
+        
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
         }
 
-        request.setAttribute("data", listBins);
-        request.setAttribute("searchBinName", searchBinName);
-        request.getRequestDispatcher("view/listbins.jsp").forward(request, response);
-    }
+        BinDAO binDAO = new BinDAO();
+        List<Bin> bins;
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
+        if (searchBinName != null && !searchBinName.isEmpty()) {
+            bins = binDAO.searchBinsByName(searchBinName, page, pageSize);
+        } else {
+            bins = binDAO.getAll(page, pageSize);
+        }
+
+        request.setAttribute("data", bins);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("searchBinName", searchBinName);
+        request.getRequestDispatcher("/view/bins/listBins.jsp").forward(request, response);
     }
 }

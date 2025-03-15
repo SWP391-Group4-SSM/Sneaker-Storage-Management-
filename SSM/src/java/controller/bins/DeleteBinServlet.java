@@ -1,6 +1,6 @@
-package controller;
+package controller.bins;
 
-import dal.UserDAO;
+import dal.BinDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,20 +8,20 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "DeleteUserServlet", urlPatterns = {"/deleteuser"})
-public class DeleteUserServlet extends HttpServlet {
-    private final UserDAO userDAO = new UserDAO();
+@WebServlet(name = "DeleteBinServlet", urlPatterns = {"/deletebin"})
+public class DeleteBinServlet extends HttpServlet {
+    private final BinDAO binDAO = new BinDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            int userID = Integer.parseInt(request.getParameter("userID"));
-            userDAO.deleteUser(userID); // Đánh dấu user là "đã xoá"
+            int binID = Integer.parseInt(request.getParameter("binID"));
+            binDAO.deleteBin(binID); // Đánh dấu bin là "đã xoá"
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        response.sendRedirect("listusers");
+        response.sendRedirect("listbins");
     }
 
     @Override

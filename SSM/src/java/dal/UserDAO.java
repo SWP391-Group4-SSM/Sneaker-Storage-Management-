@@ -184,4 +184,47 @@ public class UserDAO {
         }
         return user;
     }
+
+    // Phương thức kiểm tra trùng lặp username
+    public boolean isUsernameExist(String username) {
+        String sql = "SELECT COUNT(*) FROM Users WHERE Username = ? AND isDeleted = 0";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            System.out.println(">>> SQL: " + stmt.toString());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Phương thức lấy user theo username
+    public User getUserByUsername(String username) {
+        User user = null;
+        String sql = "SELECT * FROM Users WHERE Username = ? AND isDeleted = 0";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            System.out.println(">>> SQL: " + stmt.toString());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new User(
+                        rs.getInt("userID"),
+                        rs.getString("username"),
+                        rs.getString("passwordHash"),
+                        rs.getString("role"),
+                        rs.getTimestamp("createdAt"),
+                        rs.getBoolean("isDeleted")
+                    );
+                    System.out.println(">>> User: " + user.getUsername());
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 }

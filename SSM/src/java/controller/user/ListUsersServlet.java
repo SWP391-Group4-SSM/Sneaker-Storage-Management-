@@ -1,6 +1,7 @@
-package controller;
+package controller.user;
 
 import dal.UserDAO;
+import model.User;
 import java.io.IOException;
 import java.util.List;
 import jakarta.servlet.ServletException;
@@ -8,7 +9,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.User;
 
 @WebServlet(name = "ListUsersServlet", urlPatterns = {"/listusers"})
 public class ListUsersServlet extends HttpServlet {
@@ -40,7 +40,7 @@ public class ListUsersServlet extends HttpServlet {
         request.setAttribute("searchUsername", searchUsername);
         request.setAttribute("searchRole", searchRole);
         request.setAttribute("currentPage", page);
-        request.getRequestDispatcher("view/listusers.jsp").forward(request, response);
+        request.getRequestDispatcher("view/user/listUsers.jsp").forward(request, response);
     }
 
     @Override

@@ -42,6 +42,7 @@
                             <option value="Supervisor">Supervisor</option>
                             <option value="Manager">Manager</option>
                             <option value="Staff">Staff</option>
+                            <option value="Salesrep">Salesrep</option>
                         </select>
                     </div>
 
