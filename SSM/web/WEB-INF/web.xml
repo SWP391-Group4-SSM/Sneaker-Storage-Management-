@@ -2,6 +2,42 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <display-name>SneakerStorageManagement</display-name>
     
+    <!-- Supplier Management Servlets -->
+    <servlet>
+        <servlet-name>ListSuppliersServlet</servlet-name>
+        <servlet-class>controller.supplier.ListSuppliersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddSupplierServlet</servlet-name>
+        <servlet-class>controller.supplier.AddSupplierServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditSupplierServlet</servlet-name>
+        <servlet-class>controller.supplier.EditSupplierServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteSupplierServlet</servlet-name>
+        <servlet-class>controller.supplier.DeleteSupplierServlet</servlet-class>
+    </servlet>
+
+    <!-- Supplier Management Servlet Mappings -->
+    <servlet-mapping>
+        <servlet-name>ListSuppliersServlet</servlet-name>
+        <url-pattern>/listsuppliers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSupplierServlet</servlet-name>
+        <url-pattern>/addsupplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditSupplierServlet</servlet-name>
+        <url-pattern>/editsupplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSupplierServlet</servlet-name>
+        <url-pattern>/deletesupplier</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>view/login.jsp</welcome-file>
     </welcome-file-list>
@@ -32,24 +68,6 @@
         <servlet-class>controller.user.DeleteUserServlet</servlet-class>
     </servlet>
 
-    <!-- Bin Management Servlets -->
-    <servlet>
-        <servlet-name>ListBinsServlet</servlet-name>
-        <servlet-class>controller.bins.ListBinsServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AddBinServlet</servlet-name>
-        <servlet-class>controller.bins.AddBinServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>EditBinServlet</servlet-name>
-        <servlet-class>controller.bins.EditBinServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DeleteBinServlet</servlet-name>
-        <servlet-class>controller.bins.DeleteBinServlet</servlet-class>
-    </servlet>
-
     <!-- User Management Servlet Mappings -->
     <servlet-mapping>
         <servlet-name>DashboardServlet</servlet-name>
@@ -75,6 +93,24 @@
         <servlet-name>DeleteUserServlet</servlet-name>
         <url-pattern>/deleteuser</url-pattern>
     </servlet-mapping>
+
+    <!-- Bin Management Servlets -->
+    <servlet>
+        <servlet-name>ListBinsServlet</servlet-name>
+        <servlet-class>controller.bins.ListBinsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddBinServlet</servlet-name>
+        <servlet-class>controller.bins.AddBinServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditBinServlet</servlet-name>
+        <servlet-class>controller.bins.EditBinServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteBinServlet</servlet-name>
+        <servlet-class>controller.bins.DeleteBinServlet</servlet-class>
+    </servlet>
 
     <!-- Bin Management Servlet Mappings -->
     <servlet-mapping>
