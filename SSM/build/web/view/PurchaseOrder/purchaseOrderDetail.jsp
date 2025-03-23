@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -109,9 +110,26 @@
     </head>
     <body>
         <h2>Chi tiết đơn hàng - Mã: ${purchaseOrderId}</h2>
+        <c:set var="hiddenStatuses" value="Ordered,Goods Received,Partially Received" />
+        <c:set var="nextStatus" value="" />
+        <c:choose>
+            <c:when test="${po.purchaseOrderStatus eq 'Draft'}">
+                <c:set var="nextStatus" value="Approved" />
+            </c:when>
+            <c:when test="${po.purchaseOrderStatus eq 'Approved'}">
+                <c:set var="nextStatus" value="Ordered" />
+            </c:when>
+        </c:choose>
 
         <a href="purchaseOrderDetail?action=add&poId=${purchaseOrderId}" class="btn-add">Thêm mới</a>
-
+        <form action="purchaseOrder" method="post">
+            <input type="hidden" name="action" value="updateStatus">
+            <input type="hidden" name="orderId" value="${po.purchaseOrderId}" />
+            <input type="hidden" name="currentStatus" value="${po.purchaseOrderStatus}" />
+            <c:if test="${!fn:contains(hiddenStatuses, po.purchaseOrderStatus)}">
+                <button type="submit">${nextStatus}</button>
+            </c:if>
+        </form>
         <table>
             <tr>
                 <th>Mã Chi Tiết</th>

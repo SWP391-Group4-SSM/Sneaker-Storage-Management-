@@ -39,7 +39,6 @@
             <th>Price</th>
             <th>SKU</th>
             <th>Created At</th>
-            <th>Updated At</th>
             <th>Details</th>
             
         </tr>
@@ -51,7 +50,6 @@
                 <td>${product.price}</td>
                 <td>${product.sku}</td>
                 <td>${product.createdAt}</td>
-                <td>${product.updatedAt}</td>
                 <td><a href="productDetails?proId=${product.productId}">View Details</a></td>
                 <td>
                     <a href="javascript:void(0);" onclick="confirmDelete(${product.productId})">Xóa</a>

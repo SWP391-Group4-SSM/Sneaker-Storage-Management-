@@ -134,5 +134,18 @@ public class PurchaseOrderDAO {
     }
     return false;
 }
+    
+    public boolean updatePurchaseOrderStatus(PurchaseOrder po) {
+    String sql = "update PurchaseOrders set PurchaseOrderStatus = ? where PurchaseOrderID =?";
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, po.getPurchaseOrderStatus());
+        pstmt.setInt(2, po.getPurchaseOrderId()); // Lưu ý: Đổi chỉ số do bỏ UpdatedAt
+        return pstmt.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+    
 
 }

@@ -6,6 +6,7 @@ package controller.purchaseOrder;
 
 import dal.ProductDAO;
 import dal.ProductDetailDAO;
+import dal.PurchaseOrderDAO;
 import dal.PurchaseOrderDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import model.Product;
 import model.ProductDetail;
+import model.PurchaseOrder;
 import model.PurchaseOrderDetail;
 
 public class PurchaseOrderDetailServlet extends HttpServlet {
@@ -27,6 +29,7 @@ public class PurchaseOrderDetailServlet extends HttpServlet {
         String action = request.getParameter("action");
         PurchaseOrderDetailDAO dao = new PurchaseOrderDetailDAO();
         ProductDetailDAO proDAO = new ProductDetailDAO();
+        PurchaseOrderDAO poDAO = new PurchaseOrderDAO();
         ProductDAO prDAO = new ProductDAO();
         if ("add".equals(action)) {
             int purchaseOrderId = Integer.parseInt(request.getParameter("poId"));
@@ -55,11 +58,13 @@ public class PurchaseOrderDetailServlet extends HttpServlet {
             List<PurchaseOrderDetail> podList = dao.getPurchaseOrderDetailsByOrderId(purchaseOrderId);
             List<ProductDetail> prdList = proDAO.getAllProductDetailsInData();
             List<Product> proList = prDAO.getAllProductsInData();
+            PurchaseOrder po = poDAO.getPurchaseOrderById(purchaseOrderId);
             
             request.setAttribute("purchaseOrderId", purchaseOrderId);
             request.setAttribute("prdList", prdList);
             request.setAttribute("proList", proList);
             request.setAttribute("podList", podList);
+            request.setAttribute("po", po);
             request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderDetail.jsp").forward(request, response);
         }
     }

@@ -119,6 +119,10 @@
 
         <h2>Danh sách Purchase Orders</h2>
         <a href="purchaseOrder?action=add">Thêm mới</a>
+        <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+            <% if (errorMessage != null) { %>
+            <p class="error"><%= errorMessage %></p>
+            <% } %>
         <table>
             <tr>
                 <th>ID</th>
@@ -172,9 +176,13 @@
                     <td>${po.createdAt}</td>
                     <td>${po.updatedAt}</td>
                     <td>
-                        <a href="purchaseOrder?action=edit&id=${po.purchaseOrderId}">Sửa</a> | |
+                        <c:if test="${po.purchaseOrderStatus ne 'Ordered'}">
+                            <a href="purchaseOrder?action=edit&id=${po.purchaseOrderId}">Sửa</a> | |
                         <a href="javascript:void(0);" onclick="confirmDelete(${po.purchaseOrderId})">Xóa</a>
+                        </c:if>
+                        
                     </td>
+
                     <td>
                         <a href="purchaseOrderDetail?poId=${po.purchaseOrderId}">View Details</a>
                     </td>
