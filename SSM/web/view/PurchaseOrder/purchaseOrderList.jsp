@@ -123,7 +123,7 @@
             <tr>
                 <th>ID</th>
                 <th>Supplier </th>
-                <th>Warehouse ID</th>
+                <th>Warehouse</th>
                 <th>Created By</th>
                 <th>Order Date</th>
                 <th>Status</th>

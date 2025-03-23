@@ -1,21 +1,26 @@
 package model;
 
+import java.time.LocalDateTime;
+
 public class Stock {
 
     private int stockID;
-    private int productID;
+    private int productDetailID;
     private int warehouseID;
-    private int zoneID;
     private int binID;
     private int quantity;
+    private LocalDateTime LastUpdated;
 
-    public Stock(int stockID, int productID, int warehouseID, int zoneID, int binID, int quantity) {
+    public Stock() {
+    }
+
+    public Stock(int stockID, int productDetailID, int warehouseID, int binID, int quantity, LocalDateTime LastUpdated) {
         this.stockID = stockID;
-        this.productID = productID;
+        this.productDetailID = productDetailID;
         this.warehouseID = warehouseID;
-        this.zoneID = zoneID;
         this.binID = binID;
         this.quantity = quantity;
+        this.LastUpdated = LastUpdated;
     }
 
     public int getStockID() {
@@ -26,12 +31,12 @@ public class Stock {
         this.stockID = stockID;
     }
 
-    public int getProductID() {
-        return productID;
+    public int getProductDetailID() {
+        return productDetailID;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
+    public void setProductDetailID(int productDetailID) {
+        this.productDetailID = productDetailID;
     }
 
     public int getWarehouseID() {
@@ -40,14 +45,6 @@ public class Stock {
 
     public void setWarehouseID(int warehouseID) {
         this.warehouseID = warehouseID;
-    }
-
-    public int getZoneID() {
-        return zoneID;
-    }
-
-    public void setZoneID(int zoneID) {
-        this.zoneID = zoneID;
     }
 
     public int getBinID() {
@@ -66,4 +63,15 @@ public class Stock {
         this.quantity = quantity;
     }
 
+    public LocalDateTime getLastUpdated() {
+        return LastUpdated;
+    }
+
+    public void setLastUpdated(LocalDateTime LastUpdated) {
+        this.LastUpdated = LastUpdated;
+    }
+    
+    
+
+    
 }

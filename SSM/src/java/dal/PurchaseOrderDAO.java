@@ -24,7 +24,7 @@ public class PurchaseOrderDAO {
 
     public List<PurchaseOrder> getAllPurchaseOrders() {
         List<PurchaseOrder> purchaseOrders = new ArrayList<>();
-        String sql = "SELECT * FROM PurchaseOrders";
+        String sql = "SELECT * FROM PurchaseOrders where isDeleted =0";
         try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 PurchaseOrder po = new PurchaseOrder();
@@ -44,15 +44,15 @@ public class PurchaseOrderDAO {
         }
         return purchaseOrders;
     }
+    
 
     public boolean addPurchaseOrder(PurchaseOrder po) {
     // Kiểm tra xem PurchaseOrderID đã tồn tại chưa
     if (isPurchaseOrderIdExists(po.getPurchaseOrderId())) {
         return false; // Không thêm nếu ID đã tồn tại
     }
-
     String sql = "INSERT INTO PurchaseOrders (PurchaseOrderID, SupplierID, WarehouseID, CreatedByUserID, OrderDate, PurchaseOrderStatus, TotalAmount, CreatedAt, UpdatedAt) "
-           + "VALUES (?, ?, ?, ?, ?, 'Draft', ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+           + "VALUES (?, ?, ?, ?, ?, 'Draft', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
 
     try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
         pstmt.setInt(1, po.getPurchaseOrderId()); // Tự nhập ID
@@ -60,7 +60,7 @@ public class PurchaseOrderDAO {
         pstmt.setInt(3, po.getWarehouseId());
         pstmt.setInt(4, po.getCreatedByUserId());
         pstmt.setTimestamp(5, Timestamp.valueOf(po.getOrderDate())); // Chuyển từ LocalDateTime sang Timestamp
-        pstmt.setBigDecimal(6, po.getTotalAmount());
+        
         return pstmt.executeUpdate() > 0;
     } catch (SQLException e) {
         e.printStackTrace();
@@ -86,7 +86,7 @@ public class PurchaseOrderDAO {
 }
 
     public boolean deletePurchaseOrder(int purchaseOrderId) {
-        String sql = "DELETE FROM PurchaseOrders WHERE PurchaseOrderID = ?";
+        String sql = "update PurchaseOrders set isDeleted =1 where PurchaseOrderID = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, purchaseOrderId);
             return pstmt.executeUpdate() > 0;
@@ -95,7 +95,7 @@ public class PurchaseOrderDAO {
         }
         return false;
     }
-
+    
     public PurchaseOrder getPurchaseOrderById(int purchaseOrderId) {
         PurchaseOrder po = null;
         String sql = "SELECT * FROM PurchaseOrders WHERE PurchaseOrderID = ?";
@@ -134,6 +134,5 @@ public class PurchaseOrderDAO {
     }
     return false;
 }
-
 
 }

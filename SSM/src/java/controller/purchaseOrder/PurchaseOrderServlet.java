@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.purchaseOrder;
 
 import dal.PurchaseOrderDAO;
 import dal.SupplierDAO;
@@ -34,8 +34,14 @@ public class PurchaseOrderServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         PurchaseOrderDAO poDAO = new PurchaseOrderDAO();
+        SupplierDAO suDAO = new SupplierDAO();
+        WarehouseDAO wuDAO = new WarehouseDAO();
 
         if ("add".equals(action)) {
+            List<Supplier> suppliers = suDAO.getAllSuppliers();
+            request.setAttribute("suppliers", suppliers);
+            List<Warehouse> warehouses = wuDAO.getAllWarehouses();
+            request.setAttribute("warehouses", warehouses);
             request.getRequestDispatcher("view/PurchaseOrder/addPurchaseOrder.jsp").forward(request, response);
         } else if ("edit".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
@@ -74,8 +80,6 @@ public class PurchaseOrderServlet extends HttpServlet {
             int purchaseOrderId = Integer.parseInt(request.getParameter("purchaseOrderId"));
         int supplierId = Integer.parseInt(request.getParameter("supplierId"));
         int warehouseId = Integer.parseInt(request.getParameter("warehouseId"));
-        
-        BigDecimal totalAmount = new BigDecimal(request.getParameter("totalAmount"));
         String orderDateStr = request.getParameter("orderDate");
         LocalDateTime orderDate = LocalDateTime.parse(orderDateStr);
         HttpSession session = request.getSession();
@@ -86,7 +90,6 @@ public class PurchaseOrderServlet extends HttpServlet {
         po.setSupplierId(supplierId);
         po.setWarehouseId(warehouseId);
         po.setCreatedByUserId(userID);
-        po.setTotalAmount(totalAmount);
         po.setOrderDate(orderDate);
         PurchaseOrderDAO dao = new PurchaseOrderDAO();
 
@@ -126,6 +129,7 @@ public class PurchaseOrderServlet extends HttpServlet {
         }
     }
 
+    
     @Override
     public String getServletInfo() {
         return "Short description";

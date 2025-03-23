@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.product;
 
 import dal.ProductDAO;
 import java.io.IOException;
@@ -28,8 +28,17 @@ public class ProductListServlet extends HttpServlet {
         ProductDAO dao = new ProductDAO();
         if ("add".equals(action)) {
             request.getRequestDispatcher("view/Product/addProduct.jsp").forward(request, response);
-        } else {
+        }else if ("delete".equals(action)) {
+            int proId = Integer.parseInt(request.getParameter("proId"));
+            if (dao.deleteProduct(proId)) {
+                response.sendRedirect("productList");
+            } else {
+                request.setAttribute("errorMessage", "Xóa đơn hàng thất bại.");
+                request.getRequestDispatcher("view/Product/productList.jsp").forward(request, response);
+            }
+        }else {
             List<Product> productList = dao.getAllProducts();
+            
             request.setAttribute("productList", productList);
             request.getRequestDispatcher("view/Product/productList.jsp").forward(request, response);
         }
@@ -63,7 +72,6 @@ public class ProductListServlet extends HttpServlet {
                 request.getRequestDispatcher("view/Product/addProduct.jsp").forward(request, response);
             }
         }
-
     }
 
     @Override

@@ -41,6 +41,7 @@
             <th>Created At</th>
             <th>Updated At</th>
             <th>Details</th>
+            
         </tr>
         <c:forEach var="product" items="${productList}">
             <tr>
@@ -52,8 +53,18 @@
                 <td>${product.createdAt}</td>
                 <td>${product.updatedAt}</td>
                 <td><a href="productDetails?proId=${product.productId}">View Details</a></td>
+                <td>
+                    <a href="javascript:void(0);" onclick="confirmDelete(${product.productId})">Xóa</a>
+                </td>
             </tr>
         </c:forEach>
     </table>
+    <script>
+            function confirmDelete(id) {
+                if (confirm("Bạn có chắc muốn xóa đơn hàng này không?")) {
+                    window.location.href = "productList?action=delete&proId=" +id ;
+                }
+            }
+        </script>
 </body>
 </html>

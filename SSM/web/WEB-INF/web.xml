@@ -7,9 +7,16 @@
     </servlet>
     <servlet>
         <servlet-name>PurchaseOrderServlet</servlet-name>
-        <servlet-class>controller.PurchaseOrderServlet</servlet-class>
+        <servlet-class>controller.purchaseOrder.PurchaseOrderServlet</servlet-class>
     </servlet>
-   
+    <servlet>
+        <servlet-name>PurchaseOrderDetailServlet</servlet-name>
+        <servlet-class>controller.purchaseOrder.PurchaseOrderDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StockServlet</servlet-name>
+        <servlet-class>controller.stock.StockServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/productList</url-pattern>
@@ -19,36 +26,16 @@
         <url-pattern>/productDetails</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>productServlet</servlet-name>
-        <url-pattern>/productServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>PurchaseOrderServlet</servlet-name>
         <url-pattern>/purchaseOrder</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddPurchaseOrderServlet</servlet-name>
-        <url-pattern>/addPurchaseOrder</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdatePurchaseOrderServlet</servlet-name>
-        <url-pattern>/updatePurchaseOrder</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeletePurchaseOrderServlet</servlet-name>
-        <url-pattern>/deletePurchaseOrder</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PurchaseOrderDetailServlet</servlet-name>
         <url-pattern>/purchaseOrderDetail</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddPurchaseOrderDetailServlet</servlet-name>
-        <url-pattern>/addPurchaseOrderDetail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdatePurchaseOrderDetailServlet</servlet-name>
-        <url-pattern>/updatePurchaseOrderDetail</url-pattern>
+        <servlet-name>StockServlet</servlet-name>
+        <url-pattern>/stock</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/login.jsp</welcome-file>
@@ -63,11 +50,11 @@
     </servlet>
     <servlet>
         <servlet-name>ProductListServlet</servlet-name>
-        <servlet-class>controller.ProductListServlet</servlet-class>
+        <servlet-class>controller.product.ProductListServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProductDetailsServlet</servlet-name>
-        <servlet-class>controller.ProductDetailsServlet</servlet-class>
+        <servlet-class>controller.product.ProductDetailsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DashboardServlet</servlet-name>

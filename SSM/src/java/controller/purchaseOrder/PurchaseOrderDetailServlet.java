@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.purchaseOrder;
 
+import dal.ProductDAO;
+import dal.ProductDetailDAO;
 import dal.PurchaseOrderDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,12 +15,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.List;
+import model.Product;
+import model.ProductDetail;
 import model.PurchaseOrderDetail;
 
-/**
- *
- * @author Admin
- */
 public class PurchaseOrderDetailServlet extends HttpServlet {
 
     @Override
@@ -26,8 +26,12 @@ public class PurchaseOrderDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         PurchaseOrderDetailDAO dao = new PurchaseOrderDetailDAO();
+        ProductDetailDAO proDAO = new ProductDetailDAO();
+        ProductDAO prDAO = new ProductDAO();
         if ("add".equals(action)) {
             int purchaseOrderId = Integer.parseInt(request.getParameter("poId"));
+            List<ProductDetail> productList = proDAO.getAllProductDetails();
+            request.setAttribute("productList", productList);
             request.setAttribute("purchaseOrderId", purchaseOrderId);
             request.getRequestDispatcher("view/PurchaseOrder/addPurchaseOrderDetail.jsp").forward(request, response);
         } else if ("delete".equals(action)) {
@@ -49,7 +53,12 @@ public class PurchaseOrderDetailServlet extends HttpServlet {
         } else {
             int purchaseOrderId = Integer.parseInt(request.getParameter("poId"));
             List<PurchaseOrderDetail> podList = dao.getPurchaseOrderDetailsByOrderId(purchaseOrderId);
+            List<ProductDetail> prdList = proDAO.getAllProductDetailsInData();
+            List<Product> proList = prDAO.getAllProductsInData();
+            
             request.setAttribute("purchaseOrderId", purchaseOrderId);
+            request.setAttribute("prdList", prdList);
+            request.setAttribute("proList", proList);
             request.setAttribute("podList", podList);
             request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderDetail.jsp").forward(request, response);
         }

@@ -15,32 +15,25 @@ public class StockDAO {
     }
 
 
-    public List<Stock> getStockForStaff(int staffID) {
-        List<Stock> stockItems = new ArrayList<>();
-        String sql = "SELECT s.* FROM Stock s " +
-                    "INNER JOIN UserWarehouses uw ON s.WarehouseID = uw.WarehouseID " +
-                    "WHERE uw.UserID = ?";
-                    
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, staffID);
-            
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Stock stock = new Stock(
-                        rs.getInt("StockID"),
-                        rs.getInt("ProductID"),
-                        rs.getInt("WarehouseID"),
-                        rs.getInt("ZoneID"),
-                        rs.getInt("BinID"),
-                        rs.getInt("Quantity")
-                    );
-                    stockItems.add(stock);
-                }
+    public List<Stock> getAllStocks() {
+        List<Stock> stocks = new ArrayList<>();
+        String sql = "select * from Stock";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Stock s = new Stock();
+                s.setStockID(rs.getInt("StockID"));
+                s.setProductDetailID(rs.getInt("ProductDetailID"));
+                s.setWarehouseID(rs.getInt("WarehouseID"));
+                s.setBinID(rs.getInt("BinID"));
+                s.setQuantity(rs.getInt("Quantity"));
+                s.setLastUpdated(rs.getTimestamp("LastUpdated").toLocalDateTime());
+                stocks.add(s);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Consider logging the error and throwing a custom exception
         }
-        return stockItems;
+        return stocks;
     }
+    
+    
 }
