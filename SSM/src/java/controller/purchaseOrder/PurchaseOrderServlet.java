@@ -36,6 +36,13 @@ public class PurchaseOrderServlet extends HttpServlet {
         PurchaseOrderDAO poDAO = new PurchaseOrderDAO();
         SupplierDAO suDAO = new SupplierDAO();
         WarehouseDAO wuDAO = new WarehouseDAO();
+        int page = 1;
+        int pageSize = 05;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+        int totalOrders = poDAO.getTotalNumberPurchaseOrders();
+        int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
 
         if ("add".equals(action)) {
             List<Supplier> suppliers = suDAO.getAllSuppliers();
@@ -57,7 +64,7 @@ public class PurchaseOrderServlet extends HttpServlet {
                 request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
             }
         } else {
-            List<PurchaseOrder> poList = poDAO.getAllPurchaseOrders();
+            List<PurchaseOrder> poList = poDAO.getAllPurchaseOrders(page, pageSize);
             List<Supplier> suppliers = new SupplierDAO().getAllSuppliers();
             List<Warehouse> warList = new WarehouseDAO().getAllWarehouses();
             List<User> userList = new UserDAO().getAllUsers();
@@ -66,6 +73,8 @@ public class PurchaseOrderServlet extends HttpServlet {
             request.setAttribute("suppliers", suppliers);
             request.setAttribute("warList", warList);
             request.setAttribute("userList", userList);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
             request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
         }
     }
@@ -128,27 +137,27 @@ public class PurchaseOrderServlet extends HttpServlet {
             response.sendRedirect("purchaseOrder");
         } else if ("updateStatus".equals(action)) {
             try {
-            int orderId = Integer.parseInt(request.getParameter("orderId"));
-            String currentStatus = request.getParameter("currentStatus");
-            String newStatus = getNextStatus(currentStatus);
+                int orderId = Integer.parseInt(request.getParameter("orderId"));
+                String currentStatus = request.getParameter("currentStatus");
+                String newStatus = getNextStatus(currentStatus);
 
-            PurchaseOrder po = new PurchaseOrder();
-            po.setPurchaseOrderId(orderId);
-            po.setPurchaseOrderStatus(newStatus);
-            
-            boolean updated = poDAO.updatePurchaseOrderStatus(po);
-            if (updated) {
-                response.sendRedirect("purchaseOrder"); // Chuyển hướng về danh sách đơn hàng
-            } else {
-                request.setAttribute("errorMessage", "Cập nhật trạng thái thất bại!");
-                request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
+                PurchaseOrder po = new PurchaseOrder();
+                po.setPurchaseOrderId(orderId);
+                po.setPurchaseOrderStatus(newStatus);
+
+                boolean updated = poDAO.updatePurchaseOrderStatus(po);
+                if (updated) {
+                    response.sendRedirect("purchaseOrder"); // Chuyển hướng về danh sách đơn hàng
+                } else {
+                    request.setAttribute("errorMessage", "Cập nhật trạng thái thất bại!");
+                    request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
+                }
+            } catch (Exception e) {
+                e.printStackTrace(); // In lỗi ra console
             }
-        } catch (Exception e) {
-            e.printStackTrace(); // In lỗi ra console
-        }
         }
     }
-    
+
     private String getNextStatus(String currentStatus) {
         switch (currentStatus) {
             case "Draft":
@@ -159,6 +168,7 @@ public class PurchaseOrderServlet extends HttpServlet {
                 return currentStatus;
         }
     }
+
     @Override
     public String getServletInfo() {
         return "Short description";

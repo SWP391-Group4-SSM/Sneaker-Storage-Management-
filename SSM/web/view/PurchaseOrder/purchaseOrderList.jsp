@@ -120,9 +120,9 @@
         <h2>Danh sách Purchase Orders</h2>
         <a href="purchaseOrder?action=add">Thêm mới</a>
         <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-            <% if (errorMessage != null) { %>
-            <p class="error"><%= errorMessage %></p>
-            <% } %>
+        <% if (errorMessage != null) { %>
+        <p class="error"><%= errorMessage %></p>
+        <% } %>
         <table>
             <tr>
                 <th>ID</th>
@@ -178,9 +178,9 @@
                     <td>
                         <c:if test="${po.purchaseOrderStatus ne 'Ordered'}">
                             <a href="purchaseOrder?action=edit&id=${po.purchaseOrderId}">Sửa</a> | |
-                        <a href="javascript:void(0);" onclick="confirmDelete(${po.purchaseOrderId})">Xóa</a>
+                            <a href="javascript:void(0);" onclick="confirmDelete(${po.purchaseOrderId})">Xóa</a>
                         </c:if>
-                        
+
                     </td>
 
                     <td>
@@ -190,6 +190,22 @@
             </c:forEach>
 
         </table>
+        <!-- Phân trang -->
+        <div style="text-align: center; margin-top: 20px;">
+            <c:if test="${totalPages > 1}">
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <a href="purchaseOrder?page=${i}" 
+                       style="padding: 8px 12px; margin: 0 5px;
+                       text-decoration: none; border: 1px solid #007bff;
+                       color: ${i == currentPage ? 'white' : '#007bff'};
+                       background-color: ${i == currentPage ? '#007bff' : 'white'};
+                       border-radius: 4px;">
+                        ${i}
+                    </a>
+                </c:forEach>
+            </c:if>
+        </div>
+
         <script>
             function confirmDelete(id) {
                 if (confirm("Bạn có chắc muốn xóa đơn hàng này không?")) {

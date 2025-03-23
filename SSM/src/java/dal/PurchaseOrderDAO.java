@@ -22,10 +22,15 @@ public class PurchaseOrderDAO {
         conn = db.connection;
     }
 
-    public List<PurchaseOrder> getAllPurchaseOrders() {
-        List<PurchaseOrder> purchaseOrders = new ArrayList<>();
-        String sql = "SELECT * FROM PurchaseOrders where isDeleted =0";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+    public List<PurchaseOrder> getAllPurchaseOrders(int page, int pageSize) {
+    List<PurchaseOrder> purchaseOrders = new ArrayList<>();
+    String sql = "SELECT * FROM PurchaseOrders WHERE isDeleted = 0 ORDER BY PurchaseOrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+    
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setInt(1, (page - 1) * pageSize); // OFFSET
+        pstmt.setInt(2, pageSize); // FETCH NEXT
+        
+        try (ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 PurchaseOrder po = new PurchaseOrder();
                 po.setPurchaseOrderId(rs.getInt("PurchaseOrderID"));
@@ -39,12 +44,12 @@ public class PurchaseOrderDAO {
                 po.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
                 purchaseOrders.add(po);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return purchaseOrders;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-    
+    return purchaseOrders;
+}
 
     public boolean addPurchaseOrder(PurchaseOrder po) {
     // Kiểm tra xem PurchaseOrderID đã tồn tại chưa
@@ -67,7 +72,6 @@ public class PurchaseOrderDAO {
     }
     return false;
 }
-
 
     public boolean updatePurchaseOrder(PurchaseOrder po) {
     String sql = "UPDATE PurchaseOrders SET SupplierID=?, WarehouseID=?, CreatedByUserID=?, PurchaseOrderStatus=?, TotalAmount=?, UpdatedAt=CURRENT_TIMESTAMP WHERE PurchaseOrderID=?";
@@ -147,5 +151,19 @@ public class PurchaseOrderDAO {
     return false;
 }
     
+    public int getTotalNumberPurchaseOrders() {
+    int total = 0;
+    String sql = "SELECT COUNT(*) FROM PurchaseOrders WHERE isDeleted = 0";
+    try (PreparedStatement pstmt = conn.prepareStatement(sql);
+         ResultSet rs = pstmt.executeQuery()) {
+        if (rs.next()) {
+            total = rs.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return total;
+}
 
+    
 }

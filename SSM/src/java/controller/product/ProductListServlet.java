@@ -26,9 +26,18 @@ public class ProductListServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         ProductDAO dao = new ProductDAO();
+        int page = 1;
+        int pageSize = 5; // Số sản phẩm trên mỗi trang
+
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+
+        int totalRecords = dao.getTotalProducts();
+        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
         if ("add".equals(action)) {
             request.getRequestDispatcher("view/Product/addProduct.jsp").forward(request, response);
-        }else if ("delete".equals(action)) {
+        } else if ("delete".equals(action)) {
             int proId = Integer.parseInt(request.getParameter("proId"));
             if (dao.deleteProduct(proId)) {
                 response.sendRedirect("productList");
@@ -36,9 +45,10 @@ public class ProductListServlet extends HttpServlet {
                 request.setAttribute("errorMessage", "Xóa đơn hàng thất bại.");
                 request.getRequestDispatcher("view/Product/productList.jsp").forward(request, response);
             }
-        }else {
-            List<Product> productList = dao.getAllProducts();
-            
+        } else {
+            List<Product> productList = dao.getAllProducts(page, pageSize);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
             request.setAttribute("productList", productList);
             request.getRequestDispatcher("view/Product/productList.jsp").forward(request, response);
         }

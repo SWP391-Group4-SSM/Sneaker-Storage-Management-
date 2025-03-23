@@ -21,26 +21,30 @@ public class ProductDAO {
         conn = db.connection;
     }
 
-    public List<Product> getAllProducts() {
-        List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products WHERE isDeleted = 0";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                Product p = new Product();
-                p.setProductId(rs.getInt("ProductID"));
-                p.setName(rs.getString("Name"));
-                p.setDescription(rs.getString("Description"));
-                p.setSku(rs.getString("SKU"));
-                p.setPrice(rs.getBigDecimal("Price"));
-                p.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
-                p.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
-                products.add(p);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public List<Product> getAllProducts(int page, int pageSize) {
+    List<Product> products = new ArrayList<>();
+    String sql = "SELECT * FROM Products WHERE isDeleted = 0 ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setInt(1, (page - 1) * pageSize);
+        pstmt.setInt(2, pageSize);
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            Product p = new Product();
+            p.setProductId(rs.getInt("ProductID"));
+            p.setName(rs.getString("Name"));
+            p.setDescription(rs.getString("Description"));
+            p.setSku(rs.getString("SKU"));
+            p.setPrice(rs.getBigDecimal("Price"));
+            p.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
+            p.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
+            products.add(p);
         }
-        return products;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return products;
+}
+
     public List<Product> getAllProductsInData() {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM Products ";
@@ -87,5 +91,17 @@ public class ProductDAO {
         }
         return false;
     }
+    public int getTotalProducts() {
+    int total = 0;
+    String sql = "SELECT COUNT(*) FROM Products WHERE isDeleted = 0";
+    try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+        if (rs.next()) {
+            total = rs.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return total;
+}
     
 }

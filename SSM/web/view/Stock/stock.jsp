@@ -81,6 +81,20 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <div style="text-align: center; margin-top: 20px;">
+                <c:if test="${totalPages > 1}">
+                    <c:forEach begin="1" end="${totalPages}" var="i">
+                        <a href="stock?page=${i}" 
+                           style="padding: 8px 12px; margin: 0 5px;
+                           text-decoration: none; border: 1px solid #007bff;
+                           color: ${i == currentPage ? 'white' : '#007bff'};
+                           background-color: ${i == currentPage ? '#007bff' : 'white'};
+                           border-radius: 4px;">
+                            ${i}
+                        </a>
+                    </c:forEach>
+                </c:if>
+            </div>
         </div>
     </body>
 </html>

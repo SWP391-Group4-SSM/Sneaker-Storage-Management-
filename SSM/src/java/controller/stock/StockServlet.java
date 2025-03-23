@@ -32,18 +32,29 @@ public class StockServlet extends HttpServlet {
         ProductDAO proDAO = new ProductDAO();
         ProductDetailDAO prdDAO = new ProductDetailDAO();
         WarehouseDAO wDAO = new WarehouseDAO();
-        
-        List<Stock> stocks = stDAO.getAllStocks();
+        int page = 1;
+        int pageSize = 10; // Số lượng bản ghi mỗi trang
+
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+
+        int totalRecords = stDAO.getTotalStocks();
+        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+        List<Stock> stocks = stDAO.getAllStocks(page, pageSize);
         List<Bin> bins = binDAO.getAllBins();
         List<Product> products = proDAO.getAllProductsInData();
         List<ProductDetail> productDetails = prdDAO.getAllProductDetailsInData();
         List<Warehouse> warehouses = wDAO.getAllWarehouses();
-        
+
         request.setAttribute("stocks", stocks);
         request.setAttribute("bins", bins);
         request.setAttribute("products", products);
         request.setAttribute("productDetails", productDetails);
         request.setAttribute("warehouses", warehouses);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
         request.getRequestDispatcher("view/Stock/stock.jsp").forward(request, response);
     }
 
