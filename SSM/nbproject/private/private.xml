@@ -3,35 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/dal/WarehouseDAO.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/user/EditUserServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/model/Product.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/bins/EditBinServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/user/AddUserServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/user/ListUsersServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/dal/BinDAO.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/dal/StockDAO.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/model/Bin.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/DashboardServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/web/view/login.jsp</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/dal/DBContext.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/dal/UserDAO.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/web/view/bins/editBin.jsp</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/bins/DeleteBinServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/web/view/managerDashboard.jsp</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/user/DeleteUserServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/web/view/bins/addBin.jsp</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/bins/AddBinServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/web/view/bins/listBins.jsp</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/web/view/user/listUsers.jsp</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/web/view/user/addUser.jsp</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/LoginServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/web/META-INF/context.xml</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/model/Stock.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/model/User.java</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/web/view/user/editUser.jsp</file>
-            <file>file:/C:/Users/ADMIN/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/bins/ListBinsServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/dal/SupplierDAO.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/bins/ListBinsServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/supplier/ListSuppliersServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/supplier/EditSupplierServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/supplier/AddSupplierServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/user/ListUsersServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/supplier/DeleteSupplierServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/bins/DeleteBinServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/dal/UserDAO.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/dal/BinDAO.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/bins/EditBinServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/user/EditUserServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/user/DeleteUserServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/user/AddUserServlet.java</file>
+            <file>file:/C:/Users/ADMIN/OneDrive/Documents/GitHub/Sneaker-Storage-Management-/SSM/src/java/controller/bins/AddBinServlet.java</file>
         </group>
     </open-files>
 </project-private>

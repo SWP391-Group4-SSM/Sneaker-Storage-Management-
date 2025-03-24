@@ -1,6 +1,7 @@
 package controller.bins;
 
 import dal.BinDAO;
+import dal.StockDAO;
 import model.Bin;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -47,6 +48,22 @@ public class EditBinServlet extends HttpServlet {
         }
 
         BinDAO binDAO = new BinDAO();
+
+        // Kiểm tra trùng tên bin
+        if (binDAO.isBinNameExist(binName) && !binDAO.getBinById(binID).getBinName().equals(binName)) {
+            request.setAttribute("error", "Tên bin đã tồn tại!");
+            request.getRequestDispatcher("/view/bins/editBin.jsp").forward(request, response);
+            return;
+        }
+
+        StockDAO stockDAO = new StockDAO();
+        int totalQuantity = stockDAO.getTotalQuantityForBin(binID);
+
+        if (capacity < totalQuantity) {
+            request.setAttribute("error", "Dung tích không được nhỏ hơn tổng số lượng hiện tại trong bin!");
+            request.getRequestDispatcher("/view/bins/editBin.jsp").forward(request, response);
+            return;
+        }
 
         // Tạo Bin mới với thông tin đã cập nhật
         Bin updatedBin = new Bin(binID, sectionID, binName, capacity, description, new Timestamp(System.currentTimeMillis()), false);

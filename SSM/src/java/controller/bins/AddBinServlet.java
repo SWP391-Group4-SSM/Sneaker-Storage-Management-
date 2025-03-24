@@ -66,8 +66,7 @@ public class AddBinServlet extends HttpServlet {
 
             if (success) {
                 // Chuyển hướng về danh sách bins với thông báo thành công
-                request.setAttribute("message", "Thêm bin thành công!");
-                request.getRequestDispatcher("/view/bins/listBins.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/listbins");
             } else {
                 errors.put("general", "Không thể thêm bin. Vui lòng thử lại!");
                 request.setAttribute("errors", errors);

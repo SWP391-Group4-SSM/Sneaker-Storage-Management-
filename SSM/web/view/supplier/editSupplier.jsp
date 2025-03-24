@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <a href="listSuppliers" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Quay lại</a>
+                        <a href="listsuppliers" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Quay lại</a>
                         <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Lưu thay đổi</button>
                     </div>
                 </form>
