@@ -9,6 +9,23 @@
     <body>
         <div class="container mt-4">
             <h2 class="mb-3">Stock List</h2>
+            <form method="GET" action="stock">
+                <input type="hidden" name="page" value="${currentPage}" /> <!-- Giữ lại trang hiện tại -->
+                <input type="text" name="search" value="${searchKeyword}" placeholder="Tìm kiếm sản phẩm..." />
+                <select name="warehouse">
+                    <option value="">Chọn kho hàng</option>
+                    <c:forEach var="w" items="${warehouses}">
+                        <option value="${w.warehouseID}" ${w.warehouseID == warehouseFilter ? 'selected' : ''}>
+                            ${w.name}
+                        </option>
+                    </c:forEach>
+                </select>
+                <button type="submit">Tìm kiếm</button>
+            </form>
+
+
+
+
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -81,10 +98,11 @@
                     </c:forEach>
                 </tbody>
             </table>
-            <div style="text-align: center; margin-top: 20px;">
+            <div class="pagination">
                 <c:if test="${totalPages > 1}">
-                    <c:forEach begin="1" end="${totalPages}" var="i">
-                        <a href="stock?page=${i}" 
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <a href="stock?page=${i}&search=${searchKeyword != null ? searchKeyword : ''}&warehouse=${warehouseFilter != null ? warehouseFilter : ''}" 
+                           class="${i == currentPage ? 'active' : ''}"
                            style="padding: 8px 12px; margin: 0 5px;
                            text-decoration: none; border: 1px solid #007bff;
                            color: ${i == currentPage ? 'white' : '#007bff'};
@@ -92,9 +110,13 @@
                            border-radius: 4px;">
                             ${i}
                         </a>
+
                     </c:forEach>
                 </c:if>
             </div>
+
+
+
         </div>
     </body>
 </html>
