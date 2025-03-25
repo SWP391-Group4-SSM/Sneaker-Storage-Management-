@@ -59,7 +59,7 @@ public class AddBinServlet extends HttpServlet {
             }
 
             // Tạo đối tượng Bin
-            Bin newBin = new Bin(binId, sectionId, binName, capacity, description, new Timestamp(System.currentTimeMillis()), false);
+            Bin newBin = new Bin(binId, sectionId, binName, capacity, description, new Timestamp(System.currentTimeMillis()), false, false);
 
             // Lưu vào database
             boolean success = binDAO.addBin(newBin);

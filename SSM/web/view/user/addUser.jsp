@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Thêm Người Dùng</title>
+    <title>Add User</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
@@ -12,7 +12,7 @@
     <div class="container mt-5">
         <div class="card shadow-lg">
             <div class="card-header bg-primary text-white">
-                <h4 class="mb-0"><i class="bi bi-person-plus-fill"></i> Thêm Người Dùng</h4>
+                <h4 class="mb-0"><i class="bi bi-person-plus-fill"></i> Add User</h4>
             </div>
             <div class="card-body">
                 <% if (request.getAttribute("error") != null) { %>
@@ -26,17 +26,17 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="username" class="form-label">Tên đăng nhập:</label>
+                        <label for="username" class="form-label">Username:</label>
                         <input type="text" class="form-control" name="username" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="password" class="form-label">Mật khẩu:</label>
+                        <label for="password" class="form-label">Password:</label>
                         <input type="password" class="form-control" name="password" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="role" class="form-label">Vai trò:</label>
+                        <label for="role" class="form-label">Role:</label>
                         <select class="form-select" name="role">
                             <option value="Admin">Admin</option>
                             <option value="Supervisor">Supervisor</option>
@@ -47,8 +47,8 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <a href="listusers" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Quay lại</a>
-                        <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Thêm</button>
+                        <a href="listusers" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+                        <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Add</button>
                     </div>
                 </form>
             </div>

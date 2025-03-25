@@ -10,8 +10,9 @@ public class Bin {
     private String description;
     private Timestamp createdAt;
     private boolean isDeleted;
+    private boolean isLocked; // Thêm thuộc tính isLocked
 
-    public Bin(int binID, int sectionID, String binName, int capacity, String description, Timestamp createdAt, boolean isDeleted) {
+    public Bin(int binID, int sectionID, String binName, int capacity, String description, Timestamp createdAt, boolean isDeleted, boolean isLocked) {
         this.binID = binID;
         this.sectionID = sectionID;
         this.binName = binName;
@@ -19,6 +20,7 @@ public class Bin {
         this.description = description;
         this.createdAt = createdAt;
         this.isDeleted = isDeleted;
+        this.isLocked = isLocked;
     }
 
     // Getters and setters
@@ -76,5 +78,13 @@ public class Bin {
 
     public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean isLocked) {
+        this.isLocked = isLocked;
     }
 }

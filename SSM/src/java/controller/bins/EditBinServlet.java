@@ -24,6 +24,11 @@ public class EditBinServlet extends HttpServlet {
         Bin bin = binDAO.getBinById(binID);
         
         if (bin != null) {
+            if (bin.isLocked()) {
+                request.setAttribute("error", "Bin này đang kiểm kho và không thể chỉnh sửa.");
+                request.getRequestDispatcher("/listbins").forward(request, response);
+                return;
+            }
             request.setAttribute("bin", bin);
             request.getRequestDispatcher("/view/bins/editBin.jsp").forward(request, response);
         } else {
@@ -48,9 +53,16 @@ public class EditBinServlet extends HttpServlet {
         }
 
         BinDAO binDAO = new BinDAO();
+        Bin existingBin = binDAO.getBinById(binID);
+
+        if (existingBin.isLocked()) {
+            request.setAttribute("error", "Bin này đang kiểm kho và không thể chỉnh sửa.");
+            request.getRequestDispatcher("/listbins").forward(request, response);
+            return;
+        }
 
         // Kiểm tra trùng tên bin
-        if (binDAO.isBinNameExist(binName) && !binDAO.getBinById(binID).getBinName().equals(binName)) {
+        if (binDAO.isBinNameExist(binName) && !existingBin.getBinName().equals(binName)) {
             request.setAttribute("error", "Tên bin đã tồn tại!");
             request.getRequestDispatcher("/view/bins/editBin.jsp").forward(request, response);
             return;
@@ -66,7 +78,7 @@ public class EditBinServlet extends HttpServlet {
         }
 
         // Tạo Bin mới với thông tin đã cập nhật
-        Bin updatedBin = new Bin(binID, sectionID, binName, capacity, description, new Timestamp(System.currentTimeMillis()), false);
+        Bin updatedBin = new Bin(binID, sectionID, binName, capacity, description, new Timestamp(System.currentTimeMillis()), false, existingBin.isLocked());
 
         binDAO.updateBin(updatedBin);
 
