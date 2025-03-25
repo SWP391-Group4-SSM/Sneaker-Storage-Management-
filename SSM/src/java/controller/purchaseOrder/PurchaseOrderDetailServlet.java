@@ -14,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
 import model.Product;
@@ -59,7 +60,7 @@ public class PurchaseOrderDetailServlet extends HttpServlet {
             List<ProductDetail> prdList = proDAO.getAllProductDetailsInData();
             List<Product> proList = prDAO.getAllProductsInData();
             PurchaseOrder po = poDAO.getPurchaseOrderById(purchaseOrderId);
-            
+
             request.setAttribute("purchaseOrderId", purchaseOrderId);
             request.setAttribute("prdList", prdList);
             request.setAttribute("proList", proList);
@@ -80,7 +81,7 @@ public class PurchaseOrderDetailServlet extends HttpServlet {
             int productDetailId = Integer.parseInt(request.getParameter("productDetailId"));
             int quantityOrdered = Integer.parseInt(request.getParameter("quantityOrdered"));
             BigDecimal unitPrice = new BigDecimal(request.getParameter("unitPrice"));
-
+            HttpSession session = request.getSession();
             PurchaseOrderDetail pod = new PurchaseOrderDetail();
             pod.setPurchaseOrderDetailId(purchaseOrderDetailID);
             pod.setPurchaseOrderId(purchaseOrderID);
@@ -88,12 +89,19 @@ public class PurchaseOrderDetailServlet extends HttpServlet {
             pod.setQuantityOrdered(quantityOrdered);
             pod.setUnitPrice(unitPrice);
             PurchaseOrderDetailDAO dao = new PurchaseOrderDetailDAO();
+            
+            if (!dao.isPurchaseOrderDetailIdExists(purchaseOrderDetailID)) {
+                session.setAttribute("errorMessage", "ID này đã tồn tại! Vui lòng chọn ID khác.");
+                response.sendRedirect("purchaseOrderDetail?action=add&poId=" + purchaseOrderID);
+                return;
+            }
+
             boolean success = dao.addPurchaseOrderDetail(pod);
             if (success) {
                 response.sendRedirect("purchaseOrderDetail?poId=" + purchaseOrderID);
             } else {
-                request.setAttribute("errorMessage", "Thêm đơn hàng thất bại!");
-                request.getRequestDispatcher("view/PurchaseOrder/addPurchaseOrderDetail.jsp").forward(request, response);
+                session.setAttribute("errorMessage", "Thêm đơn hàng thất bại!");
+                response.sendRedirect("purchaseOrderDetail?action=add&poId=" + purchaseOrderID);
             }
         } else if ("edit".equals(action)) {
             int id = Integer.parseInt(request.getParameter("purchaseOrderDetailId")); // Lấy ID cần cập nhật

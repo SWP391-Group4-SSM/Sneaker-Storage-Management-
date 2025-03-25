@@ -7,7 +7,7 @@
 <html>
     <head>
         <title>Thêm đơn hàng</title>
-        
+
 
     </head>
     <body>
@@ -55,10 +55,16 @@
             <a href="purchaseOrder">Quay lại danh sách</a>
 
             <%-- Hiển thị thông báo lỗi nếu có --%>
-            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-            <% if (errorMessage != null) { %>
+            <%
+    String errorMessage = (String) session.getAttribute("errorMessage");
+    if (errorMessage != null) {
+            %>
             <p class="error-message"><%= errorMessage %></p>
-            <% } %>
+            <%
+                    session.removeAttribute("errorMessage"); // Xóa sau khi hiển thị
+                }
+            %>
+           
         </form>
     </body>
 </html>

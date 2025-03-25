@@ -6,6 +6,12 @@
     </head>
     <body>
         <h2>Thêm sản phẩm</h2>
+        <!-- Hiển thị lỗi nếu có -->
+            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+            <% if (errorMessage != null) { %>
+            <p class="error"><%= errorMessage %></p>
+            <% } %>
+        
         <form action="productList" method="post">
             <input type="hidden" name="action" value="add">
             <label for="productId">Mã sản phẩm:</label>
@@ -26,11 +32,8 @@
             <button type="submit">Thêm đơn hàng</button>
             <a href="productList">Quay lại danh sách</a>
 
-            <%-- Hiển thị thông báo lỗi nếu có --%>
-            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-            <% if (errorMessage != null) { %>
-                <p class="error-message"><%= errorMessage %></p>
-            <% } %>
+          
         </form>
+        
     </body>
 </html>

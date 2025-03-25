@@ -126,5 +126,20 @@ public class ProductDetailDAO {
         }
         return false;
     }
+    
+    public boolean isProductDetailIdExists(int productDetailId) {
+    String query = "SELECT COUNT(*) FROM ProductDetails WHERE ProductDetailID = ?";
+    try (PreparedStatement ps = conn.prepareStatement(query)) {
+        ps.setInt(1, productDetailId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 
 }

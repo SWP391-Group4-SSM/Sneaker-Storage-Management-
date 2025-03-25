@@ -101,10 +101,10 @@ public class PurchaseOrderServlet extends HttpServlet {
             po.setCreatedByUserId(userID);
             po.setOrderDate(orderDate);
             PurchaseOrderDAO dao = new PurchaseOrderDAO();
-
             if (dao.isPurchaseOrderIdExists(purchaseOrderId)) {
-                request.setAttribute("errorMessage", "ID này đã tồn tại! Vui lòng chọn ID khác.");
-                request.getRequestDispatcher("view/PurchaseOrder/addPurchaseOrder.jsp").forward(request, response);
+
+                session.setAttribute("errorMessage", "ID này đã tồn tại! Vui lòng chọn ID khác.");
+                response.sendRedirect("purchaseOrder?action=add");
                 return;
             }
 
@@ -112,8 +112,8 @@ public class PurchaseOrderServlet extends HttpServlet {
             if (success) {
                 response.sendRedirect("purchaseOrder");
             } else {
-                request.setAttribute("errorMessage", "Thêm đơn hàng thất bại!");
-                request.getRequestDispatcher("view/PurchaseOrder/addPurchaseOrder.jsp").forward(request, response);
+                session.setAttribute("errorMessage", "Thêm đơn hàng thất bại!");
+                response.sendRedirect("purchaseOrder?action=add");
             }
         } else if ("edit".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));

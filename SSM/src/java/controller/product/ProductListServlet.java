@@ -67,6 +67,13 @@ public class ProductListServlet extends HttpServlet {
             String sku = request.getParameter("sku");
             BigDecimal price = new BigDecimal(request.getParameter("price"));
 
+            if (dao.isProductIdExists(productId)) {
+                request.setAttribute("errorMessage", "ID sản phẩm đã tồn tại! Vui lòng nhập ID khác.");
+                
+                request.getRequestDispatcher("view/Product/addProduct.jsp").forward(request, response);
+                return;
+            }
+
             Product pr = new Product();
             pr.setProductId(productId);
             pr.setName(name);

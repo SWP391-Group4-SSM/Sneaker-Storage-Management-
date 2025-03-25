@@ -16,10 +16,15 @@
             <h2>Thêm Chi Tiết Đơn Hàng Mua</h2>
 
             <!-- Hiển thị lỗi nếu có -->
-            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-            <% if (errorMessage != null) { %>
-            <p class="error"><%= errorMessage %></p>
-            <% } %>
+            <%
+    String errorMessage = (String) session.getAttribute("errorMessage");
+    if (errorMessage != null) {
+            %>
+            <p class="error-message"><%= errorMessage %></p>
+            <%
+                    session.removeAttribute("errorMessage"); // Xóa sau khi hiển thị
+                }
+            %>
 
             <form action="purchaseOrderDetail" method="post">
                 <input type="hidden" name="action" value="add">

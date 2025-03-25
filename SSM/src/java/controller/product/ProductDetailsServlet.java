@@ -63,7 +63,14 @@ public class ProductDetailsServlet extends HttpServlet {
             String Color = request.getParameter("Color");
             String ImageURL = request.getParameter("ImageURL");
             String Material = request.getParameter("Material");
-            
+            ProductDetailDAO dao = new ProductDetailDAO();
+
+            if (dao.isProductDetailIdExists(ProductDetailID)) {
+                request.setAttribute("errorMessage", "ID chi tiết sản phẩm đã tồn tại! Vui lòng nhập ID khác.");
+              
+                request.getRequestDispatcher("view/Product/addProductDetail.jsp").forward(request, response);
+                return;
+            }
 
             ProductDetail prod = new ProductDetail();
             prod.setProductDetailId(ProductDetailID);
@@ -72,7 +79,7 @@ public class ProductDetailsServlet extends HttpServlet {
             prod.setColor(Color);
             prod.setImageUrl(ImageURL);
             prod.setMaterial(Material);
-            ProductDetailDAO dao = new ProductDetailDAO();
+            
             boolean success = dao.addProductDetail(prod);
             if (success) {
                 response.sendRedirect("productDetails?proId=" + proId);
