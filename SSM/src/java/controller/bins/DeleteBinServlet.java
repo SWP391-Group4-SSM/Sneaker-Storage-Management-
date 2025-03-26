@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "DeleteBinServlet", urlPatterns = {"/deletebin"})
+
 public class DeleteBinServlet extends HttpServlet {
     private final BinDAO binDAO = new BinDAO();
 

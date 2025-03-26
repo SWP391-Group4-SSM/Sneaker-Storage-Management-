@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "EditSupplierServlet", urlPatterns = {"/editsupplier"})
+
 public class EditSupplierServlet extends HttpServlet {
 
     @Override

@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "ListBinsServlet", urlPatterns = {"/listbins"})
+
 public class ListBinsServlet extends HttpServlet {
 
     @Override

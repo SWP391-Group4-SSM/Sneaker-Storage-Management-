@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "DeleteUserServlet", urlPatterns = {"/deleteuser"})
+
 public class DeleteUserServlet extends HttpServlet {
     private final UserDAO userDAO = new UserDAO();
 
