@@ -15,6 +15,12 @@ public class ListUsersServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if ("logout".equals(request.getParameter("action"))) {
+            request.getSession().invalidate();
+            response.sendRedirect("http://localhost:9999/SSM/login");
+            return;
+        }
+
         UserDAO userDAO = new UserDAO();
         
         String searchUsername = request.getParameter("searchUsername");

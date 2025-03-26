@@ -21,7 +21,10 @@
 </head>
 <body class="bg-light">
     <div class="container mt-4">
-        <h2 class="text-center mb-4">Bin List</h2>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Bin List</h2>
+            <a href="${pageContext.request.contextPath}/listbins?action=logout" class="btn btn-danger"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        </div>
 
         <% if (request.getAttribute("message") != null) { %>
             <div class="alert alert-success"><%= request.getAttribute("message") %></div>

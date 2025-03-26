@@ -16,6 +16,12 @@ public class ListSuppliersServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if ("logout".equals(request.getParameter("action"))) {
+            request.getSession().invalidate();
+            response.sendRedirect("http://localhost:9999/SSM/login");
+            return;
+        }
+
         String searchSupplierName = request.getParameter("searchSupplierName");
         String searchContactEmail = request.getParameter("searchContactEmail");
         String searchContactPhone = request.getParameter("searchContactPhone");
@@ -43,5 +49,11 @@ public class ListSuppliersServlet extends HttpServlet {
         request.setAttribute("searchContactEmail", searchContactEmail);
         request.setAttribute("searchContactPhone", searchContactPhone);
         request.getRequestDispatcher("/view/supplier/listSuppliers.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 }

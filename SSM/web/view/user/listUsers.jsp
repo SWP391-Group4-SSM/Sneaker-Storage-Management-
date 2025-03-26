@@ -20,7 +20,10 @@
 </head>
 <body class="bg-light">
     <div class="container mt-4">
-        <h2 class="text-center mb-4">User List</h2>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">User List</h2>
+            <a href="${pageContext.request.contextPath}/listusers?action=logout" class="btn btn-danger"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        </div>
         
         <form action="${pageContext.request.contextPath}/listusers" method="get" class="mb-3 d-flex">
             <input type="text" name="searchUsername" class="form-control me-2" 

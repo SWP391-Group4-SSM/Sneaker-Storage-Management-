@@ -18,6 +18,12 @@ public class ListBinsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if ("logout".equals(request.getParameter("action"))) {
+            request.getSession().invalidate();
+            response.sendRedirect("http://localhost:9999/SSM/login");
+            return;
+        }
+
         String searchBinName = request.getParameter("searchBinName");
         int page = 1;
         int pageSize = 10;
@@ -42,5 +48,11 @@ public class ListBinsServlet extends HttpServlet {
         request.setAttribute("currentPage", page);
         request.setAttribute("searchBinName", searchBinName);
         request.getRequestDispatcher("/view/bins/listBins.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 }
