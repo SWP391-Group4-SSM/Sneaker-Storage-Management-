@@ -1,10 +1,13 @@
 package controller.bins;
 
 import dal.BinDAO;
+import dal.WarehouseSectionDAO;
 import dal.StockDAO;
 import model.Bin;
+import model.WarehouseSection;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,6 +25,11 @@ public class EditBinServlet extends HttpServlet {
         
         // Lấy thông tin bin theo binID
         Bin bin = binDAO.getBinById(binID);
+
+        // Lấy danh sách các khu vực kho
+        WarehouseSectionDAO sectionDAO = new WarehouseSectionDAO();
+        List<WarehouseSection> sections = sectionDAO.getAllSections();
+        request.setAttribute("sections", sections);
         
         if (bin != null) {
             if (bin.isLocked()) {

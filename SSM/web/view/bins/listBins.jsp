@@ -1,5 +1,6 @@
 <%@page import="java.util.List"%>
 <%@page import="model.Bin"%>
+<%@page import="model.WarehouseSection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -38,7 +39,7 @@
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
-                    <th>SectionID</th>
+                    <th>Section Name</th>
                     <th>Bin Name</th>
                     <th>Capacity</th>
                     <th>Description</th>
@@ -51,7 +52,13 @@
                     <c:forEach var="bin" items="${data}">
                         <tr>
                             <td>${bin.binID}</td>
-                            <td>${bin.sectionID}</td>
+                            <td>
+                                <c:forEach var="section" items="${sections}">
+                                    <c:if test="${section.sectionID == bin.sectionID}">
+                                        ${section.sectionName}
+                                    </c:if>
+                                </c:forEach>
+                            </td>
                             <td>${bin.binName}</td>
                             <td>${bin.capacity}</td>
                             <td>${bin.description}</td>

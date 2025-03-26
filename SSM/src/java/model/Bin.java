@@ -10,7 +10,7 @@ public class Bin {
     private String description;
     private Timestamp createdAt;
     private boolean isDeleted;
-    private boolean isLocked; // Thêm thuộc tính isLocked
+    private boolean isLocked;
 
     public Bin(int binID, int sectionID, String binName, int capacity, String description, Timestamp createdAt, boolean isDeleted, boolean isLocked) {
         this.binID = binID;

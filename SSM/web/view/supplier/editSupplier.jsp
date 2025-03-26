@@ -22,7 +22,7 @@
                     <div class="alert alert-danger">${errors.general}</div>
                 </c:if>
 
-                <form action="editSupplier" method="post">
+                <form action="editsupplier" method="post">
                     <input type="hidden" name="supplierID" value="${supplier.supplierID}">
 
                     <div class="mb-3">

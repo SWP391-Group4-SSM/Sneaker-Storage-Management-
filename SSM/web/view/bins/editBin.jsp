@@ -25,22 +25,26 @@
                 <input type="hidden" name="binID" value="${bin.binID}" />
 
                 <div class="mb-3">
-                    <label class="form-label">Enter SectionID</label>
-                    <input type="number" name="sectionID" class="form-control" value="${bin.sectionID}" required/>
+                    <label class="form-label">Section Name</label>
+                    <select class="form-select" name="sectionID" required>
+                        <c:forEach var="section" items="${sections}">
+                            <option value="${section.sectionID}" <c:if test="${section.sectionID == bin.sectionID}">selected</c:if>>${section.sectionName}</option>
+                        </c:forEach>
+                    </select>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Enter Bin Name</label>
+                    <label class="form-label">Bin Name</label>
                     <input type="text" name="binName" class="form-control" value="${bin.binName}" required/>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Enter Capacity</label>
+                    <label class="form-label">Capacity</label>
                     <input type="number" name="capacity" class="form-control" value="${bin.capacity}" required/>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Enter Description</label>
+                    <label class="form-label">Description</label>
                     <textarea name="description" class="form-control">${bin.description}</textarea>
                 </div>
 

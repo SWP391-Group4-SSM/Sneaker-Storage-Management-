@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,8 +35,12 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="sectionid" class="form-label">Section ID:</label>
-                        <input type="number" class="form-control" name="sectionid" required value="${param.sectionid}">
+                        <label for="sectionid" class="form-label">Section Name:</label>
+                        <select class="form-select" name="sectionid" required>
+                            <c:forEach var="section" items="${sections}">
+                                <option value="${section.sectionID}">${section.sectionName}</option>
+                            </c:forEach>
+                        </select>
                         <c:if test="${not empty errors.sectionid}">
                             <div class="error">${errors.sectionid}</div>
                         </c:if>

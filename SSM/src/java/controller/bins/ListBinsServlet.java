@@ -1,7 +1,9 @@
 package controller.bins;
 
 import dal.BinDAO;
+import dal.WarehouseSectionDAO;
 import model.Bin;
+import model.WarehouseSection;
 import java.io.IOException;
 import java.util.List;
 import jakarta.servlet.ServletException;
@@ -26,6 +28,8 @@ public class ListBinsServlet extends HttpServlet {
 
         BinDAO binDAO = new BinDAO();
         List<Bin> bins;
+        WarehouseSectionDAO sectionDAO = new WarehouseSectionDAO();
+        List<WarehouseSection> sections = sectionDAO.getAllSections();
 
         if (searchBinName != null && !searchBinName.isEmpty()) {
             bins = binDAO.searchBinsByName(searchBinName, page, pageSize);
@@ -34,6 +38,7 @@ public class ListBinsServlet extends HttpServlet {
         }
 
         request.setAttribute("data", bins);
+        request.setAttribute("sections", sections);
         request.setAttribute("currentPage", page);
         request.setAttribute("searchBinName", searchBinName);
         request.getRequestDispatcher("/view/bins/listBins.jsp").forward(request, response);

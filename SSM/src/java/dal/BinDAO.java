@@ -24,7 +24,7 @@ public class BinDAO {
             stmt.setString(5, bin.getDescription());
             stmt.setTimestamp(6, bin.getCreatedAt());
             stmt.setBoolean(7, bin.isDeleted());
-            stmt.setBoolean(8, bin.isLocked()); // Thêm giá trị isLocked
+            stmt.setBoolean(8, bin.isLocked());
 
             int rowsInserted = stmt.executeUpdate();
             return rowsInserted > 0;
@@ -84,7 +84,7 @@ public class BinDAO {
                         rs.getString("Description"),
                         rs.getTimestamp("CreatedAt"),
                         rs.getBoolean("isDeleted"),
-                        rs.getBoolean("isLocked") // Lấy giá trị isLocked
+                        rs.getBoolean("isLocked")
                     );
                     bins.add(bin);
                 }
@@ -112,7 +112,7 @@ public class BinDAO {
                         rs.getString("Description"),
                         rs.getTimestamp("CreatedAt"),
                         rs.getBoolean("isDeleted"),
-                        rs.getBoolean("isLocked") // Lấy giá trị isLocked
+                        rs.getBoolean("isLocked")
                     );
                 }
             }
@@ -125,7 +125,7 @@ public class BinDAO {
 
     // Method to update a bin
     public void updateBin(Bin bin) {
-        String sql = "UPDATE Bins SET SectionID = ?, BinName = ?, Capacity = ?, Description = ?, CreatedAt = ?, isLocked = ? WHERE BinID = ?"; // Thêm isLocked
+        String sql = "UPDATE Bins SET SectionID = ?, BinName = ?, Capacity = ?, Description = ?, CreatedAt = ?, isLocked = ? WHERE BinID = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, bin.getSectionID());
@@ -133,7 +133,7 @@ public class BinDAO {
             stmt.setInt(3, bin.getCapacity());
             stmt.setString(4, bin.getDescription());
             stmt.setTimestamp(5, bin.getCreatedAt());
-            stmt.setBoolean(6, bin.isLocked()); // Thêm giá trị isLocked
+            stmt.setBoolean(6, bin.isLocked());
             stmt.setInt(7, bin.getBinID());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -171,7 +171,7 @@ public class BinDAO {
                         rs.getString("Description"),
                         rs.getTimestamp("CreatedAt"),
                         rs.getBoolean("isDeleted"),
-                        rs.getBoolean("isLocked") // Lấy giá trị isLocked
+                        rs.getBoolean("isLocked")
                     );
                     bins.add(bin);
                 }

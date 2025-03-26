@@ -25,7 +25,7 @@
                     <div class="alert alert-success">${message}</div>
                 </c:if>
 
-                <form action="addSupplier" method="post">
+                <form action="addsupplier" method="post">
                     <div class="mb-3">
                         <label for="supplierID" class="form-label">Supplier ID:</label>
                         <input type="number" class="form-control" name="supplierID" required value="${param.supplierID}">

@@ -1,10 +1,13 @@
 package controller.bins;
 
 import dal.BinDAO;
+import dal.WarehouseSectionDAO;
 import model.Bin;
+import model.WarehouseSection;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,6 +21,9 @@ public class AddBinServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        WarehouseSectionDAO sectionDAO = new WarehouseSectionDAO();
+        List<WarehouseSection> sections = sectionDAO.getAllSections();
+        request.setAttribute("sections", sections);
         request.getRequestDispatcher("/view/bins/addBin.jsp").forward(request, response);
     }
 
@@ -53,6 +59,9 @@ public class AddBinServlet extends HttpServlet {
             }
 
             if (!errors.isEmpty()) {
+                WarehouseSectionDAO sectionDAO = new WarehouseSectionDAO();
+                List<WarehouseSection> sections = sectionDAO.getAllSections();
+                request.setAttribute("sections", sections);
                 request.setAttribute("errors", errors);
                 request.getRequestDispatcher("/view/bins/addBin.jsp").forward(request, response);
                 return;
@@ -68,12 +77,18 @@ public class AddBinServlet extends HttpServlet {
                 // Chuyển hướng về danh sách bins với thông báo thành công
                 response.sendRedirect(request.getContextPath() + "/listbins");
             } else {
+                WarehouseSectionDAO sectionDAO = new WarehouseSectionDAO();
+                List<WarehouseSection> sections = sectionDAO.getAllSections();
+                request.setAttribute("sections", sections);
                 errors.put("general", "Không thể thêm bin. Vui lòng thử lại!");
                 request.setAttribute("errors", errors);
                 request.getRequestDispatcher("/view/bins/addBin.jsp").forward(request, response);
             }
 
         } catch (NumberFormatException e) {
+            WarehouseSectionDAO sectionDAO = new WarehouseSectionDAO();
+            List<WarehouseSection> sections = sectionDAO.getAllSections();
+            request.setAttribute("sections", sections);
             errors.put("general", "BinID và SectionID phải là số nguyên hợp lệ!");
             request.setAttribute("errors", errors);
             request.getRequestDispatcher("/view/bins/addBin.jsp").forward(request, response);
