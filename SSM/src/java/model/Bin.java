@@ -1,37 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
-/**
- *
- * @author Admin
- */
 public class Bin {
     private int binID;
     private int sectionID;
     private String binName;
     private int capacity;
     private String description;
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
+    private boolean isDeleted;
+    private boolean isLocked;
 
-    public Bin() {
-    }
-
-    public Bin(int binID, int sectionID, String binName, int capacity, String description, LocalDateTime createdAt) {
+    public Bin(int binID, int sectionID, String binName, int capacity, String description, Timestamp createdAt, boolean isDeleted, boolean isLocked) {
         this.binID = binID;
         this.sectionID = sectionID;
         this.binName = binName;
         this.capacity = capacity;
         this.description = description;
         this.createdAt = createdAt;
+        this.isDeleted = isDeleted;
+        this.isLocked = isLocked;
     }
 
-    
-
+    // Getters and setters
     public int getBinID() {
         return binID;
     }
@@ -72,15 +64,27 @@ public class Bin {
         this.description = description;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    
-    
-    
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean isLocked) {
+        this.isLocked = isLocked;
+    }
 }

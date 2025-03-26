@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WarehouseDAO {
+
     private final Connection connection;
 
     public WarehouseDAO() {
@@ -17,7 +18,7 @@ public class WarehouseDAO {
         connection = db.connection;
     }
 
- public Warehouse getWarehouseById(int warehouseId) throws SQLException {
+    public Warehouse getWarehouseById(int warehouseId) throws SQLException {
         String sql = "SELECT WarehouseID, WarehouseCode, Name, Location, CreatedAt FROM Warehouses WHERE WarehouseID = ?";
         Warehouse warehouse = null;
         PreparedStatement pstmt = null;
@@ -39,9 +40,8 @@ public class WarehouseDAO {
     public List<Warehouse> getAllWarehouses() {
         List<Warehouse> warehouses = new ArrayList<>();
         String sql = "SELECT * FROM Warehouses";
-        
-        try (PreparedStatement pstmt = connection.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 Warehouse warehouse = new Warehouse();
                 warehouse.setWarehouseID(rs.getInt("WarehouseID"));
@@ -66,32 +66,48 @@ public class WarehouseDAO {
         warehouse.setCreatedAt(rs.getDate("CreatedAt"));
         return warehouse;
     }
-    
-    public List<Warehouse> getWarehousesForManager(int managerId) throws SQLException {
-        String sql = "SELECT w.WarehouseID, w.WarehouseCode, w.Name, w.Location, w.CreatedAt " +
-                     "FROM Warehouses w " +
-                     "JOIN WarehouseManagers wm ON w.WarehouseID = wm.WarehouseID " +
-                     "WHERE wm.ManagerID = ?";
-        List<Warehouse> warehouses = new ArrayList<>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, managerId); 
-            rs = pstmt.executeQuery();
 
-            while (rs.next()) {
-                warehouses.add(mapWarehouse(rs));
+    public List<Warehouse> getWarehousesForManager(int managerId) {
+        String sql = "SELECT w.WarehouseID, w.WarehouseCode, w.Name, w.Location, w.CreatedAt "
+                + "FROM Warehouses w "
+                + "JOIN WarehouseManagers wm ON w.WarehouseID = wm.WarehouseID "
+                + "WHERE wm.ManagerID = ?";
+        List<Warehouse> warehouses = new ArrayList<>();
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, managerId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Warehouse warehouse = new Warehouse();
+                    warehouse.setWarehouseID(rs.getInt("WarehouseID"));
+                    warehouse.setWarehouseCode(rs.getString("WarehouseCode"));
+                    warehouse.setName(rs.getString("Name"));
+                    warehouse.setLocation(rs.getString("Location"));
+                    warehouse.setCreatedAt(rs.getDate("CreatedAt"));
+                    warehouses.add(warehouse);
+                }
             }
-        } finally {
-            closeResources(pstmt, rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return warehouses;
     }
-
+    
     private void closeResources(PreparedStatement pstmt, ResultSet rs) {
-try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
-        try { if (pstmt != null) pstmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         // Connection is NOT closed here, relying on DBContext's management
     }
 }
