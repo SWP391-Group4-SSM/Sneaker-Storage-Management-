@@ -18,12 +18,11 @@ public class DashboardServlet extends HttpServlet {
 
     private WarehouseDAO warehouseDAO = new WarehouseDAO();
     private StockDAO stockDAO = new StockDAO();
-    private UserDAO userDAO = new UserDAO(); 
+    private UserDAO UserDAO = new UserDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
 
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
@@ -31,28 +30,31 @@ public class DashboardServlet extends HttpServlet {
             return;
         }
 
-
         User user = (User) session.getAttribute("user");
-
-
         String role = user.getRole();
 
-
-        if ("Supervisor".equals(role)) {
-            List<Warehouse> warehouses = warehouseDAO.getAllWarehouses();
-            request.setAttribute("warehouses", warehouses);
-            request.getRequestDispatcher("view/supervisorDashboard.jsp").forward(request, response);
-        } else if ("Manager".equals(role)) {
-            List<Warehouse> assignedWarehouses = warehouseDAO.getWarehousesForManager(user.getUserID());
-            request.setAttribute("warehouses", assignedWarehouses);
-            request.getRequestDispatcher("view/managerDashboard.jsp").forward(request, response);
-        } else if ("Staff".equals(role)) {
-            List<Stock> stockItems = stockDAO.getStockForStaff(user.getUserID());
-            request.setAttribute("stock", stockItems);
-            request.getRequestDispatcher("view/staffDashboard.jsp").forward(request, response);
-        } else {
-            // If role is invalid or not recognized, redirect to login
-            response.sendRedirect("login");
+       try { 
+            if ("Supervisor".equals(role)) {
+                List<Warehouse> warehouses = warehouseDAO.getAllWarehouses();
+                request.setAttribute("warehouses", warehouses);
+                request.getRequestDispatcher("view/supervisorDashboard.jsp").forward(request, response);
+            } else if ("Manager".equals(role)) {
+                List<Warehouse> assignedWarehouses = warehouseDAO.getWarehousesForManager(user.getUserID());
+                request.setAttribute("warehouses", assignedWarehouses);
+                request.getRequestDispatcher("view/managerDashboard.jsp").forward(request, response);
+            } else if ("Staff".equals(role)) {
+                List<Stock> stockItems = stockDAO.getStockForStaff(user.getUserID());
+                request.setAttribute("stock", stockItems);
+                request.getRequestDispatcher("view/staffDashboard.jsp").forward(request, response);
+            } else {
+                // If role is invalid or not recognized, redirect to login
+                response.sendRedirect("login");
+            }
+        } catch (Exception e) {
+            
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Database error occurred: " + e.getMessage());
+            request.getRequestDispatcher("view/error.jsp").forward(request, response);
         }
     }
 }

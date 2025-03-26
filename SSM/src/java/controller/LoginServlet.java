@@ -25,25 +25,24 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        User user = userDAO.getUserByUsername(username);
-        if (user != null && userDAO.checkPassword(user, password)) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
+        // Kiểm tra thông tin đăng nhập
+        User user = userDAO.getUserByUsernameAndPassword(username, password);
 
-            String role = user.getRole();
-            if (role.equals("Admin")) {
-                response.sendRedirect("listusers");
-            } else if (role.equals("Supervisor")) {
-                response.sendRedirect("dashboard");
-            } else if (role.equals("Manager")) {
-                response.sendRedirect("dashboard");
-            } else if (role.equals("Staff")) {
-                response.sendRedirect("dashboard");
+        if (user != null) {
+            // Lưu thông tin người dùng vào session
+            HttpSession session = request.getSession();
+            session.setAttribute("loggedUser", user);
+
+            // Nếu là Admin, chuyển hướng đến listusers
+            if ("Admin".equals(user.getRole())) {
+                response.sendRedirect("view/listusers.jsp");
             } else {
-                response.sendRedirect("login");
+                // Nếu không phải Admin, chuyển đến trang chính
+                response.sendRedirect("view/error.jsp");
             }
         } else {
-            request.setAttribute("error", "Invalid username or password.");
+            // Nếu đăng nhập thất bại, quay lại trang login với thông báo lỗi
+            request.setAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng!");
             request.getRequestDispatcher("view/login.jsp").forward(request, response);
         }
     }

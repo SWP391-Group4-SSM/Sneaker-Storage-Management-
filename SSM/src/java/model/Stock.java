@@ -1,61 +1,61 @@
 package model;
 
+import java.time.LocalDateTime;
+
 public class Stock {
 
-    private int stockID;
-    private int productID;
-    private int warehouseID;
-    private int zoneID;
-    private int binID;
+    private int stockId;
+    private int productDetailId;
+    private int warehouseId;
+    private int binId;
     private int quantity;
+    private LocalDateTime lastUpdated;
 
-    public Stock(int stockID, int productID, int warehouseID, int zoneID, int binID, int quantity) {
-        this.stockID = stockID;
-        this.productID = productID;
-        this.warehouseID = warehouseID;
-        this.zoneID = zoneID;
-        this.binID = binID;
+    public Stock() {
+    }
+    
+
+    public Stock(int stockId, int productDetailId, int warehouseId, int binId, int quantity,
+            LocalDateTime lastUpdated) {
+        this.stockId = stockId;
+        this.productDetailId = productDetailId;
+        this.warehouseId = warehouseId;
+        this.binId = binId;
         this.quantity = quantity;
+        this.lastUpdated = lastUpdated;
     }
 
-    public int getStockID() {
-        return stockID;
+    // Getters và Setters
+    public int getStockId() {
+        return stockId;
     }
 
-    public void setStockID(int stockID) {
-        this.stockID = stockID;
+    public void setStockId(int stockId) {
+        this.stockId = stockId;
     }
 
-    public int getProductID() {
-        return productID;
+    public int getProductDetailId() {
+        return productDetailId;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
+    public void setProductDetailId(int productDetailId) {
+        this.productDetailId = productDetailId;
     }
 
-    public int getWarehouseID() {
-        return warehouseID;
+    public int getWarehouseId() {
+        return warehouseId;
     }
 
-    public void setWarehouseID(int warehouseID) {
-        this.warehouseID = warehouseID;
+    public void setWarehouseId(int warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
-    public int getZoneID() {
-        return zoneID;
+    public int getBinId() {
+        return binId;
     }
 
-    public void setZoneID(int zoneID) {
-        this.zoneID = zoneID;
-    }
-
-    public int getBinID() {
-        return binID;
-    }
-
-    public void setBinID(int binID) {
-        this.binID = binID;
+    public void setBinId(int binId) {
+        this.binId = binId;
     }
 
     public int getQuantity() {
@@ -66,4 +66,11 @@ public class Stock {
         this.quantity = quantity;
     }
 
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
 }

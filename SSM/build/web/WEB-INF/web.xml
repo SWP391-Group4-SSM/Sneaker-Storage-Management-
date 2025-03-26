@@ -1,12 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-    
-     <display-name>SneakerStorageManagement</display-name>
-    
-      <welcome-file-list>
+    <display-name>SneakerStorageManagement</display-name>
+    <servlet-mapping>
+        <servlet-name>CreateDeliveryOrderServlet</servlet-name>
+        <url-pattern>/createDeliveryOrder</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DeliveryOrderServlet</servlet-name>
+        <url-pattern>/deliveryOrders</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
         <welcome-file>view/login.jsp</welcome-file>
     </welcome-file-list>
-    
+    <servlet>
+        <servlet-name>productServlet</servlet-name>
+        <servlet-class>controller.productServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PurchaseOrderServlet</servlet-name>
+        <servlet-class>controller.purchaseorder.PurchaseOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PurchaseOrderDetailServlet</servlet-name>
+        <servlet-class>controller.purchaseorder.PurchaseOrderDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateDeliveryOrderServlet</servlet-name>
+        <servlet-class>controller.delivery.CreateDeliveryOrderServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>DeliveryOrderServlet</servlet-name>
+        <servlet-class>controller.delivery.DeliveryOrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductListServlet</servlet-name>
+        <url-pattern>/productList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDetailsServlet</servlet-name>
+        <url-pattern>/productDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PurchaseOrderServlet</servlet-name>
+        <url-pattern>/purchaseOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PurchaseOrderDetailServlet</servlet-name>
+        <url-pattern>/purchaseOrderDetail</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>DashboardServlet</servlet-name>
         <servlet-class>controller.DashboardServlet</servlet-class>
@@ -14,6 +57,14 @@
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductListServlet</servlet-name>
+        <servlet-class>controller.product.ProductListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductDetailsServlet</servlet-name>
+        <servlet-class>controller.product.ProductDetailsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DashboardServlet</servlet-name>
