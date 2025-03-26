@@ -3,116 +3,140 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Update PurchaseOrderDetail</title>
+        <title>Update Purchase Order Detail</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap Icons -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
         <style>
-            /* Reset mặc định */
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: Arial, sans-serif;
+            .custom-card {
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+                border-radius: 0.5rem;
             }
-
-            /* Định dạng trang */
-            body {
-                background-color: #f8f9fa;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                height: 100vh;
-                padding: 20px;
+            .form-label {
+                font-weight: 500;
             }
-
-            h2 {
-                color: #333;
-                margin-bottom: 20px;
-            }
-
-            /* Form */
-            form {
-                background-color: white;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-                width: 100%;
-                max-width: 400px;
-            }
-
-            label {
-                font-weight: bold;
-                display: block;
-                margin-top: 10px;
-            }
-
-            input, select {
-                width: 100%;
-                padding: 8px;
-                margin-top: 5px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-
-            button {
-                width: 100%;
-                padding: 10px;
-                background-color: #28a745;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                margin-top: 15px;
-                cursor: pointer;
-                font-size: 16px;
-            }
-
-            button:hover {
-                background-color: #218838;
-            }
-
-            /* Nút quay lại */
-            a {
-                display: block;
-                text-align: center;
-                margin-top: 10px;
-                text-decoration: none;
-                font-weight: bold;
-                color: #007bff;
-            }
-
-            a:hover {
-                color: #0056b3;
-            }
-
-            /* Responsive */
-            @media (max-width: 480px) {
-                form {
-                    width: 90%;
-                }
+            .metadata {
+                font-size: 0.875rem;
+                color: #6c757d;
             }
         </style>
     </head>
-    <body>
-        <h2>Update PurchaseOrderDetail</h2>
-        <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-        <% if (errorMessage != null) { %>
-            <p class="error"><%= errorMessage %></p>
-        <% } %>
+    <body class="bg-light">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card custom-card">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <h2 class="card-title h4 mb-0">
+                                <i class="bi bi-pencil-square me-2"></i>Update Purchase Order Detail
+                            </h2>
+                            <span class="badge bg-light text-dark">
+                                PO ID: <%= request.getAttribute("purchaseOrderId") %>
+                            </span>
+                        </div>
+                        
+
+                            <!-- Error Message Display -->
+                            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+                            <% if (errorMessage != null) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <%= errorMessage %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            <% } %>
+
+                            <form action="purchaseOrderDetail" method="post" class="needs-validation" novalidate>
+                                <input type="hidden" name="action" value="edit">
+                                <input type="hidden" name="poId" value="<%= request.getAttribute("purchaseOrderId") %>">
+
+                                <div class="mb-3">
+                                    <label for="purchaseOrderDetailId" class="form-label">
+                                        <i class="bi bi-hash me-2"></i>Purchase Order Detail ID:
+                                    </label>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="purchaseOrderDetailId" 
+                                           name="purchaseOrderDetailId" 
+                                           value="${purchaseOrderDetail.purchaseOrderDetailId}"
+                                           readonly>
+                                    <div class="form-text text-muted">
+                                        This field cannot be modified
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="quantityOrdered" class="form-label">
+                                        <i class="bi bi-box me-2"></i>Quantity:
+                                    </label>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="quantityOrdered" 
+                                           name="quantityOrdered" 
+                                           value="${purchaseOrderDetail.quantityOrdered}"
+                                           min="1"
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Please enter a valid quantity (minimum 1)
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="unitPrice" class="form-label">
+                                        <i class="bi bi-tag me-2"></i>Unit Price:
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">₫</span>
+                                        <input type="number" 
+                                               class="form-control" 
+                                               id="unitPrice" 
+                                               name="unitPrice" 
+                                               step="0.01" 
+                                               value="${purchaseOrderDetail.unitPrice}"
+                                               min="0"
+                                               required>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid unit price
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary flex-grow-1">
+                                        <i class="bi bi-check-circle me-2"></i>Update
+                                    </button>
+                                    <a href="purchaseOrderDetail?poId=<%= request.getAttribute("purchaseOrderId") %>" 
+                                       class="btn btn-secondary flex-grow-1">
+                                        <i class="bi bi-x-circle me-2"></i>Cancel
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         
-        <form action="purchaseOrderDetail" method="post">
-            <input type="hidden" name="action" value="edit">
-            <input type="hidden" name="poId" value="<%= request.getAttribute("purchaseOrderId") %>">
-            <%= request.getAttribute("purchaseOrderId") %>
-            <label for="quantityOrdered">purchaseOrderDetailId</label>
-            <input type="number" id="purchaseOrderDetailId" name="purchaseOrderDetailId" value="${purchaseOrderDetail.purchaseOrderDetailId}" required>
-            <label for="quantityOrdered">Quantity:</label>
-            <input type="number" id="quantityOrdered" name="quantityOrdered" value="${purchaseOrderDetail.quantityOrdered}" required>
-
-            <label for="unitPrice">Unit Price:</label>
-            <input type="number" id="unitPrice" name="unitPrice" step="0.01" value="${purchaseOrderDetail.unitPrice}" required>
-
-
-            <button type="submit">Update</button>
-            <a href="purchaseOrder">Cancel</a>
-        </form>
+        <!-- Form Validation Script -->
+        <script>
+            (function () {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })()
+        </script>
     </body>
 </html>

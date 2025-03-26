@@ -179,9 +179,15 @@
                     <td>${pod.unitPrice}</td>
                     <td>${pod.totalPrice}</td>
                     <td>
-                        <a href="purchaseOrderDetail?action=edit&poId=${purchaseOrderId}&id=${pod.purchaseOrderDetailId}" class="btn-edit">Sửa</a>
-                        <a href="javascript:void(0);" onclick="confirmDelete(${purchaseOrderId}, ${pod.purchaseOrderDetailId})" class="btn-delete">Xóa</a>
+                        <c:if test="${po.purchaseOrderStatus ne 'Ordered'&& 
+              po.purchaseOrderStatus ne 'Goods Received'&& 
+              po.purchaseOrderStatus ne 'Partially Received'}">
+                            <a href="purchaseOrderDetail?action=edit&poId=${purchaseOrderId}&id=${pod.purchaseOrderDetailId}" class="btn-edit">Sửa</a>
+                            <a href="javascript:void(0);" onclick="confirmDelete(${purchaseOrderId}, ${pod.purchaseOrderDetailId})" class="btn-delete">Xóa</a>
+                        </c:if>
+
                     </td>
+
                 </tr>
             </c:forEach>
         </table>

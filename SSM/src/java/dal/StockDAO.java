@@ -70,5 +70,20 @@ public class StockDAO {
         }
         return total;
     }
+    
+    public int getTotalQuantityByProductDetailId(int productDetailId) {
+        String sql = "SELECT ISNULL(SUM(Quantity), 0) as TotalQuantity FROM Stock WHERE ProductDetailID = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, productDetailId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("TotalQuantity");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 
 }

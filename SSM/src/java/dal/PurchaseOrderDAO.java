@@ -74,14 +74,12 @@ public class PurchaseOrderDAO {
 }
 
     public boolean updatePurchaseOrder(PurchaseOrder po) {
-    String sql = "UPDATE PurchaseOrders SET SupplierID=?, WarehouseID=?, CreatedByUserID=?, PurchaseOrderStatus=?, TotalAmount=?, UpdatedAt=CURRENT_TIMESTAMP WHERE PurchaseOrderID=?";
+    String sql = "UPDATE PurchaseOrders SET SupplierID=?, WarehouseID=?, UpdatedAt=CURRENT_TIMESTAMP WHERE PurchaseOrderID=?";
     try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
         pstmt.setInt(1, po.getSupplierId());
         pstmt.setInt(2, po.getWarehouseId());
-        pstmt.setInt(3, po.getCreatedByUserId());
-        pstmt.setString(4, po.getPurchaseOrderStatus());
-        pstmt.setBigDecimal(5, po.getTotalAmount());
-        pstmt.setInt(6, po.getPurchaseOrderId()); // Lưu ý: Đổi chỉ số do bỏ UpdatedAt
+      
+        pstmt.setInt(4, po.getPurchaseOrderId()); // Lưu ý: Đổi chỉ số do bỏ UpdatedAt
         return pstmt.executeUpdate() > 0;
     } catch (SQLException e) {
         e.printStackTrace();

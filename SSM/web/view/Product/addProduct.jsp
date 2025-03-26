@@ -3,37 +3,144 @@
 <html>
     <head>
         <title>Thêm đơn hàng</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap Icons -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+        <style>
+            .form-label {
+                font-weight: 500;
+            }
+            .custom-card {
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+                border-radius: 0.5rem;
+            }
+        </style>
     </head>
-    <body>
-        <h2>Thêm sản phẩm</h2>
-        <!-- Hiển thị lỗi nếu có -->
-            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-            <% if (errorMessage != null) { %>
-            <p class="error"><%= errorMessage %></p>
-            <% } %>
+    <body class="bg-light">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card custom-card">
+                        <div class="card-header bg-primary text-white">
+                            <h2 class="card-title mb-0">
+                                <i class="bi bi-plus-circle me-2"></i>Thêm sản phẩm
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <!-- Error Message Display -->
+                            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+                            <% if (errorMessage != null) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <%= errorMessage %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            <% } %>
+
+                            <!-- Add Product Form -->
+                            <form action="productList" method="post" class="needs-validation" novalidate>
+                                <input type="hidden" name="action" value="add">
+                                
+                                <div class="mb-3">
+                                    <label for="productId" class="form-label">Mã sản phẩm:</label>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="productId" 
+                                           name="productId" 
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập mã sản phẩm
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Tên sản phẩm:</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="name" 
+                                           name="name" 
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tên sản phẩm
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Mô tả:</label>
+                                    <textarea class="form-control" 
+                                              id="description" 
+                                              name="description" 
+                                              rows="3" 
+                                              required></textarea>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập mô tả sản phẩm
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="sku" class="form-label">Mã SKU:</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="sku" 
+                                           name="sku" 
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập mã SKU
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="price" class="form-label">Giá:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">₫</span>
+                                        <input type="number" 
+                                               class="form-control" 
+                                               id="price" 
+                                               name="price" 
+                                               step="0.01" 
+                                               required>
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập giá sản phẩm
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-plus-circle me-2"></i>Thêm đơn hàng
+                                    </button>
+                                    <a href="productList" class="btn btn-secondary">
+                                        <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         
-        <form action="productList" method="post">
-            <input type="hidden" name="action" value="add">
-            <label for="productId">Mã sản phẩm:</label>
-            <input type="number" id="productId" name="productId" required>
-
-            <label for="name">Tên sản phẩm:</label>
-            <input type="text" id="name" name="name" required>
-
-            <label for="description">Mô tả:</label>
-            <input type="text" id="description" name="description" required>
-
-            <label for="sku">Mã SKU:</label>
-            <input type="text" id="sku" name="sku" required>
-            
-            <label for="price">Giá:</label>
-            <input type="number" id="price" name="price" step="0.01" required>
-
-            <button type="submit">Thêm đơn hàng</button>
-            <a href="productList">Quay lại danh sách</a>
-
-          
-        </form>
-        
+        <!-- Form Validation Script -->
+        <script>
+            // Enable Bootstrap form validation
+            (function () {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })()
+        </script>
     </body>
 </html>

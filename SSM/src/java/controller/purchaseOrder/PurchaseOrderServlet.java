@@ -119,17 +119,12 @@ public class PurchaseOrderServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             int supplierId = Integer.parseInt(request.getParameter("supplierId"));
             int warehouseId = Integer.parseInt(request.getParameter("warehouseId"));
-            int createdByUserId = Integer.parseInt(request.getParameter("createdByUserId"));
-            BigDecimal totalAmount = new BigDecimal(request.getParameter("totalAmount"));
-            String purchaseOrderStatus = request.getParameter("purchaseOrderStatus");
-
+            
             PurchaseOrder po = new PurchaseOrder();
             po.setPurchaseOrderId(id);
             po.setSupplierId(supplierId);
             po.setWarehouseId(warehouseId);
-            po.setCreatedByUserId(createdByUserId);
-            po.setTotalAmount(totalAmount);
-            po.setPurchaseOrderStatus(purchaseOrderStatus);
+          
 
             PurchaseOrderDAO dao = new PurchaseOrderDAO();
             dao.updatePurchaseOrder(po);

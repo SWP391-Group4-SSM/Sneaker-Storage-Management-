@@ -2,45 +2,49 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Stock List</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    </head>
-    <body>
-        <div class="container mt-4">
-            <h2 class="mb-3">Stock List</h2>
-            <form method="GET" action="stock">
-                <input type="hidden" name="page" value="${currentPage}" /> <!-- Giữ lại trang hiện tại -->
-                <input type="text" name="search" value="${searchKeyword}" placeholder="Tìm kiếm sản phẩm..." />
-                <select name="warehouse">
-                    <option value="">Chọn kho hàng</option>
+<head>
+    <title>Stock List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="mb-3 text-center">Stock List</h2>
+        
+        <!-- Search Form -->
+        <form method="GET" action="stock" class="row g-3 mb-4">
+            <input type="hidden" name="page" value="${currentPage}" />
+            <div class="col-md-6">
+                <input type="text" name="search" value="${searchKeyword}" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+            </div>
+            <div class="col-md-4">
+                <select name="warehouse" class="form-select">
+                    <option value="">Select warehouse</option>
                     <c:forEach var="w" items="${warehouses}">
-                        <option value="${w.warehouseID}" ${w.warehouseID == warehouseFilter ? 'selected' : ''}>
-                            ${w.name}
-                        </option>
+                        <option value="${w.warehouseID}" ${w.warehouseID == warehouseFilter ? 'selected' : ''}>${w.name}</option>
                     </c:forEach>
                 </select>
-                <button type="submit">Tìm kiếm</button>
-            </form>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </form>
 
-
-
-
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Stock ID</th>
-                        <th>Product</th>
-                        <th>Size</th>
-                        <th>Color</th>
-                        <th>Warehouse</th>
-                        <th>Bin </th>
-                        <th>Quantity</th>
-                        <th>Last Updated</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="stock" items="${stocks}">
+        <!-- Stock Table -->
+        <table class="table table-striped table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Stock ID</th>
+                    <th>Product</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>Warehouse</th>
+                    <th>Bin</th>
+                    <th>Quantity</th>
+                    <th>Last Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="stock" items="${stocks}">
                         <tr>
                             <td>${stock.stockID}</td>
                             <td>
@@ -96,27 +100,21 @@
                             <td>${stock.lastUpdated}</td>
                         </tr>
                     </c:forEach>
-                </tbody>
-            </table>
-            <div class="pagination">
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav>
+            <ul class="pagination justify-content-center">
                 <c:if test="${totalPages > 1}">
                     <c:forEach var="i" begin="1" end="${totalPages}">
-                        <a href="stock?page=${i}&search=${searchKeyword != null ? searchKeyword : ''}&warehouse=${warehouseFilter != null ? warehouseFilter : ''}" 
-                           class="${i == currentPage ? 'active' : ''}"
-                           style="padding: 8px 12px; margin: 0 5px;
-                           text-decoration: none; border: 1px solid #007bff;
-                           color: ${i == currentPage ? 'white' : '#007bff'};
-                           background-color: ${i == currentPage ? '#007bff' : 'white'};
-                           border-radius: 4px;">
-                            ${i}
-                        </a>
-
+                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                            <a class="page-link" href="stock?page=${i}&search=${searchKeyword}&warehouse=${warehouseFilter}">${i}</a>
+                        </li>
                     </c:forEach>
                 </c:if>
-            </div>
-
-
-
-        </div>
-    </body>
+            </ul>
+        </nav>
+    </div>
+</body>
 </html>

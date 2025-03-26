@@ -4,121 +4,124 @@
 <html>
     <head>
         <title>Cập nhật Đơn hàng</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap Icons -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
         <style>
-            /* Reset mặc định */
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: Arial, sans-serif;
+            .custom-card {
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+                border-radius: 0.5rem;
             }
-
-            /* Định dạng trang */
-            body {
-                background-color: #f8f9fa;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                height: 100vh;
-                padding: 20px;
+            .form-label {
+                font-weight: 500;
             }
-
-            h2 {
-                color: #333;
-                margin-bottom: 20px;
+            .status-badge {
+                font-size: 0.875rem;
+                padding: 0.5rem 0.75rem;
             }
-
-            /* Form */
-            form {
-                background-color: white;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-                width: 100%;
-                max-width: 400px;
-            }
-
-            label {
-                font-weight: bold;
-                display: block;
-                margin-top: 10px;
-            }
-
-            input, select {
-                width: 100%;
-                padding: 8px;
-                margin-top: 5px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-
-            button {
-                width: 100%;
-                padding: 10px;
-                background-color: #28a745;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                margin-top: 15px;
-                cursor: pointer;
-                font-size: 16px;
-            }
-
-            button:hover {
-                background-color: #218838;
-            }
-
-            /* Nút quay lại */
-            a {
-                display: block;
-                text-align: center;
-                margin-top: 10px;
-                text-decoration: none;
-                font-weight: bold;
-                color: #007bff;
-            }
-
-            a:hover {
-                color: #0056b3;
-            }
-
-            /* Responsive */
-            @media (max-width: 480px) {
-                form {
-                    width: 90%;
-                }
+            .metadata {
+                font-size: 0.875rem;
             }
         </style>
     </head>
-    <body>
-        <h2>Cập nhật Đơn hàng</h2>
-        <form action="purchaseOrder" method="post">
-            <input type="hidden" name="action" value="edit">
-            <input type="hidden" name="id" value="${purchaseOrder.purchaseOrderId}">
+    <body class="bg-light">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card custom-card">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <h2 class="card-title h4 mb-0">
+                                <i class="bi bi-pencil-square me-2"></i>Cập nhật Đơn hàng
+                            </h2>
+                            <span class="status-badge badge bg-light text-dark">
+                                ID: ${purchaseOrder.purchaseOrderId}
+                            </span>
+                        </div>
+                        
+                        <div class="card-body">
+                            <!-- Metadata Information -->
+                            <div class="alert alert-info mb-4">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <i class="bi bi-person-circle me-2"></i>
+                                        Người cập nhật: ducws17
+                                    </div>
+                                    <div class="col-md-6 text-md-end">
+                                        <i class="bi bi-clock me-2"></i>
+                                        Thời gian: 2025-03-26 14:55:36
+                                    </div>
+                                </div>
+                            </div>
 
-            <label for="supplierId">Mã nhà cung cấp:</label>
-            <input type="number" id="supplierId" name="supplierId" value="${purchaseOrder.supplierId}" required>
+                            <form action="purchaseOrder" method="post" class="needs-validation" novalidate>
+                                <input type="hidden" name="action" value="edit">
+                                <input type="hidden" name="id" value="${purchaseOrder.purchaseOrderId}">
 
-            <label for="warehouseId">Mã kho:</label>
-            <input type="number" id="warehouseId" name="warehouseId" value="${purchaseOrder.warehouseId}" required>
+                                <div class="mb-3">
+                                    <label for="supplierId" class="form-label">
+                                        <i class="bi bi-building me-2"></i>Mã nhà cung cấp:
+                                    </label>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="supplierId" 
+                                           name="supplierId" 
+                                           value="${purchaseOrder.supplierId}" 
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập mã nhà cung cấp
+                                    </div>
+                                </div>
 
-            <label for="createdByUserId">Người tạo:</label>
-            <input type="number" id="createdByUserId" name="createdByUserId" value="${purchaseOrder.createdByUserId}" required>
+                                <div class="mb-3">
+                                    <label for="warehouseId" class="form-label">
+                                        <i class="bi bi-house-door me-2"></i>Mã kho:
+                                    </label>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="warehouseId" 
+                                           name="warehouseId" 
+                                           value="${purchaseOrder.warehouseId}" 
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập mã kho
+                                    </div>
+                                </div>
 
-            <label for="totalAmount">Tổng số tiền:</label>
-            <input type="number" id="totalAmount" name="totalAmount" step="0.01" value="${purchaseOrder.totalAmount}" required>
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-circle me-2"></i>Cập nhật đơn hàng
+                                    </button>
+                                    <a href="purchaseOrder" class="btn btn-secondary">
+                                        <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <label for="purchaseOrderStatus">Trạng thái:</label>
-            <select id="purchaseOrderStatus" name="purchaseOrderStatus">
-                <option value="Draft" ${purchaseOrder.purchaseOrderStatus == 'Draft' ? 'selected' : ''}>Draft</option>
-                <option value="Approved" ${purchaseOrder.purchaseOrderStatus == 'Approved' ? 'selected' : ''}>Approved</option>
-                <option value="Ordered" ${purchaseOrder.purchaseOrderStatus == 'Ordered' ? 'selected' : ''}>Ordered</option>
-                <option value="Goods Received" ${purchaseOrder.purchaseOrderStatus == 'Goods Received' ? 'selected' : ''}>Goods Received</option>
-            </select>
-
-            <button type="submit">Cập nhật đơn hàng</button>
-            <a href="purchaseOrder">Quay lại danh sách</a>
-        </form>
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        
+        <!-- Form Validation Script -->
+        <script>
+            (function () {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })()
+        </script>
     </body>
 </html>
