@@ -78,7 +78,7 @@ public class SupplierDAO {
     }
     public List<Supplier> getAllSuppliers() {
         List<Supplier> suppliers = new ArrayList<>();
-        String sql = "SELECT * FROM Suppliers WHERE isDeleted = 0 ORDER BY SupplierID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM Suppliers ";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) { 
             try (ResultSet rs = stmt.executeQuery()) {

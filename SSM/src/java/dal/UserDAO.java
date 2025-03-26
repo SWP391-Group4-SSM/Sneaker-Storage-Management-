@@ -62,7 +62,7 @@ public class UserDAO {
     
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM Users WHERE isDeleted = 0 ORDER BY userID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM Users ";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
     
