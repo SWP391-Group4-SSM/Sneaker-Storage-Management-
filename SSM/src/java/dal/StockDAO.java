@@ -7,13 +7,12 @@ import model.Stock;
 
 public class StockDAO {
 
-     private Connection connection;
+    private Connection connection;
 
     public StockDAO() {
         DBContext db = new DBContext();
         connection = db.connection;
     }
-
 
     public List<Stock> getStockForStaff(int staffID) {
         List<Stock> stockItems = new ArrayList<>();
@@ -42,5 +41,21 @@ public class StockDAO {
             // Consider logging the error and throwing a custom exception
         }
         return stockItems;
+    }
+    
+    public int getTotalQuantityForBin(int binID) {
+        String sql = "SELECT SUM(Quantity) as total FROM Stock WHERE BinID = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, binID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Consider logging the error and throwing a custom exception
+        }
+        return 0;
     }
 }
