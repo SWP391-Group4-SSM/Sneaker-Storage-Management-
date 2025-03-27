@@ -9,6 +9,11 @@
     <title>Edit User</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> <!-- Bootstrap Icons -->
+    <style>
+        .bold-input {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body class="bg-light">
 
@@ -25,8 +30,8 @@
                 <input type="hidden" name="userID" value="${user.userID}" />
 
                 <div class="mb-3">
-                    <label class="form-label">Enter Username</label>
-                    <input type="text" name="username" class="form-control" value="${user.username}" required/>
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control bold-input" value="${user.username}" readonly/>
                 </div>
 
                 <div class="mb-3">
@@ -43,6 +48,26 @@
                         <option value="Staff" ${user.role == 'Staff' ? 'selected' : ''}>Staff</option>
                         <option value="Salesrep" ${user.role == 'Salesrep' ? 'selected' : ''}>Salesrep</option>
                     </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="name" class="form-control" value="${user.name}"/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="${user.email}"/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Number Phone</label>
+                    <input type="text" name="numberPhone" class="form-control" value="${user.numberPhone}"/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Address</label>
+                    <input type="text" name="address" class="form-control" value="${user.address}"/>
                 </div>
 
                 <div class="d-grid gap-2">

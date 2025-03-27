@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
+@WebServlet(name = "EditUserServlet", urlPatterns = {"/edituser"})
 public class EditUserServlet extends HttpServlet {
 
     @Override
@@ -34,31 +34,45 @@ public class EditUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int userID = Integer.parseInt(request.getParameter("userID"));
-        String username = request.getParameter("username");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String numberPhone = request.getParameter("numberPhone");
+        String address = request.getParameter("address");
 
         // Kiểm tra dữ liệu đầu vào
-        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            request.setAttribute("error", "Tên đăng nhập và mật khẩu không được để trống!");
+        if (password == null || password.trim().isEmpty()) {
+            request.setAttribute("error", "Mật khẩu không được để trống!");
             request.getRequestDispatcher("/view/user/editUser.jsp").forward(request, response);
             return;
         }
 
         UserDAO userDAO = new UserDAO();
 
-        // Kiểm tra trùng lặp username
-        User existingUser = userDAO.getUserByUsername(username);
-        if (existingUser != null && existingUser.getUserID() != userID) {
-            request.setAttribute("error", "Tên đăng nhập đã tồn tại!");
+        // Lấy thông tin người dùng hiện tại
+        User existingUser = userDAO.getUserById(userID);
+        if (existingUser == null) {
+            request.setAttribute("error", "Người dùng không tồn tại!");
             request.getRequestDispatcher("/view/user/editUser.jsp").forward(request, response);
             return;
         }
 
-        // Tạo User mới với thông tin đã cập nhật
-        User updatedUser = new User(userID, username, password, role, new Timestamp(System.currentTimeMillis()), false);
+        // Cập nhật thông tin người dùng (không thay đổi username)
+        existingUser.setPasswordHash(password); // Cập nhật mật khẩu
+        existingUser.setRole(role); // Cập nhật vai trò
+        existingUser.setName(name);
+        existingUser.setEmail(email);
+        existingUser.setNumberPhone(numberPhone);
+        existingUser.setAddress(address);
+        
+        boolean success = userDAO.updateUser(existingUser);
 
-        userDAO.updateUser(updatedUser);
+        if (success) {
+            request.getSession().setAttribute("message", "Cập nhật người dùng thành công!");
+        } else {
+            request.getSession().setAttribute("error", "Không thể cập nhật người dùng. Vui lòng thử lại!");
+        }
 
         // Chuyển hướng đến danh sách người dùng
         response.sendRedirect("listusers");

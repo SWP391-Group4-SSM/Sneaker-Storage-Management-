@@ -24,6 +24,13 @@
             <h2 class="mb-0">User List</h2>
             <a href="${pageContext.request.contextPath}/listusers?action=logout" class="btn btn-danger"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
+
+        <c:if test="${not empty message}">
+            <div class="alert alert-success">${message}</div>
+        </c:if>
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger">${error}</div>
+        </c:if>
         
         <form action="${pageContext.request.contextPath}/listusers" method="get" class="mb-3 d-flex">
             <input type="text" name="searchUsername" class="form-control me-2" 
@@ -34,6 +41,7 @@
                 <option value="Supervisor" ${searchRole == 'Supervisor' ? 'selected' : ''}>Supervisor</option>
                 <option value="Manager" ${searchRole == 'Manager' ? 'selected' : ''}>Manager</option>
                 <option value="Staff" ${searchRole == 'Staff' ? 'selected' : ''}>Staff</option>
+                <option value="Salesrep" ${searchRole == 'Salesrep' ? 'selected' : ''}>Salesrep</option>
             </select>
             <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Search</button>
         </form>
@@ -47,6 +55,10 @@
                     <th>Username</th>
                     <th>Role</th>
                     <th>Created At</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Number Phone</th>
+                    <th>Address</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -58,6 +70,10 @@
                             <td>${user.username}</td>
                             <td>${user.role}</td>
                             <td>${user.createdAt}</td>
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.numberPhone}</td>
+                            <td>${user.address}</td>
                             <td class="text-center">
                                 <a href="${pageContext.request.contextPath}/edituser?userID=${user.userID}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Edit</a>
                                 <button onclick="confirmDelete(${user.userID})" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Delete</button>
@@ -67,7 +83,7 @@
                 </c:if>
                 <c:if test="${empty data}">
                     <tr>
-                        <td colspan="5" class="text-center">No users available</td>
+                        <td colspan="9" class="text-center">No users available</td>
                     </tr>
                 </c:if>
             </tbody>

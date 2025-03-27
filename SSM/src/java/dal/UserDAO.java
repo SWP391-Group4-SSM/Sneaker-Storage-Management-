@@ -48,7 +48,11 @@ public class UserDAO {
                         rs.getString("passwordHash"),
                         rs.getString("role"),
                         rs.getTimestamp("createdAt"),
-                        rs.getBoolean("isDeleted")
+                        rs.getBoolean("isDeleted"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("numberPhone"),
+                        rs.getString("address")
                     );
                     users.add(user);
                     System.out.println(">>> User: " + user.getUsername());
@@ -92,7 +96,11 @@ public class UserDAO {
                         rs.getString("passwordHash"),
                         rs.getString("role"),
                         rs.getTimestamp("createdAt"),
-                        rs.getBoolean("isDeleted")
+                        rs.getBoolean("isDeleted"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("numberPhone"),
+                        rs.getString("address")
                     );
                     users.add(user);
                     System.out.println(">>> User: " + user.getUsername());
@@ -117,7 +125,7 @@ public class UserDAO {
 
     // Thêm người dùng mới
     public boolean addUser(User user) {
-        String sql = "INSERT INTO Users (UserID, Username, PasswordHash, Role, CreatedAt, isDeleted) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (UserID, Username, PasswordHash, Role, CreatedAt, isDeleted, Name, Email, NumberPhone, Address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, user.getUserID());
             stmt.setString(2, user.getUsername());
@@ -125,6 +133,10 @@ public class UserDAO {
             stmt.setString(4, user.getRole());
             stmt.setTimestamp(5, user.getCreatedAt());
             stmt.setBoolean(6, false);
+            stmt.setString(7, user.getName());
+            stmt.setString(8, user.getEmail());
+            stmt.setString(9, user.getNumberPhone());
+            stmt.setString(10, user.getAddress());
 
             System.out.println(">>> SQL: " + stmt.toString());
             int rowsInserted = stmt.executeUpdate();
@@ -154,7 +166,11 @@ public class UserDAO {
                         rs.getString("passwordHash"),
                         rs.getString("role"),
                         rs.getTimestamp("createdAt"),
-                        rs.getBoolean("isDeleted")
+                        rs.getBoolean("isDeleted"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("numberPhone"),
+                        rs.getString("address")
                     );
                     System.out.println(">>> User: " + user.getUsername());
                 }
@@ -167,18 +183,23 @@ public class UserDAO {
     }
 
     // Cập nhật thông tin người dùng
-    public void updateUser(User user) {
-        String sql = "UPDATE Users SET username = ?, passwordHash = ?, role = ?, createdAt = ? WHERE userID = ?";
-
+    public boolean updateUser(User user) {
+        String sql = "UPDATE Users SET passwordHash = ?, role = ?, createdAt = ?, name = ?, email = ?, numberPhone = ?, address = ? WHERE userID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, user.getUsername());
-            stmt.setString(2, hashPassword(user.getPasswordHash())); // Băm mật khẩu trước khi lưu
-            stmt.setString(3, user.getRole());
-            stmt.setTimestamp(4, user.getCreatedAt());
-            stmt.setInt(5, user.getUserID());
-            stmt.executeUpdate();
+            stmt.setString(1, hashPassword(user.getPasswordHash())); // Băm mật khẩu trước khi lưu
+            stmt.setString(2, user.getRole());
+            stmt.setTimestamp(3, user.getCreatedAt());
+            stmt.setString(4, user.getName());
+            stmt.setString(5, user.getEmail());
+            stmt.setString(6, user.getNumberPhone());
+            stmt.setString(7, user.getAddress());
+            stmt.setInt(8, user.getUserID());
+
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -200,7 +221,11 @@ public class UserDAO {
                     rs.getString("PasswordHash"),
                     rs.getString("Role"),
                     rs.getTimestamp("CreatedAt"),
-                    rs.getBoolean("isDeleted")
+                    rs.getBoolean("isDeleted"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("numberPhone"),
+                    rs.getString("address")
                 );
                 System.out.println(">>> User: " + user.getUsername());
             }
@@ -242,7 +267,11 @@ public class UserDAO {
                         rs.getString("passwordHash"),
                         rs.getString("role"),
                         rs.getTimestamp("createdAt"),
-                        rs.getBoolean("isDeleted")
+                        rs.getBoolean("isDeleted"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("numberPhone"),
+                        rs.getString("address")
                     );
                     System.out.println(">>> User: " + user.getUsername());
                 }

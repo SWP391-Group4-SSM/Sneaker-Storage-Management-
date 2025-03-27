@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,6 +44,26 @@
                             <option value="Staff">Staff</option>
                             <option value="Salesrep">Salesrep</option>
                         </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name:</label>
+                        <input type="text" class="form-control" name="name">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" name="email">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="numberPhone" class="form-label">Number Phone:</label>
+                        <input type="text" class="form-control" name="numberPhone">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address:</label>
+                        <input type="text" class="form-control" name="address">
                     </div>
 
                     <div class="d-flex justify-content-between">

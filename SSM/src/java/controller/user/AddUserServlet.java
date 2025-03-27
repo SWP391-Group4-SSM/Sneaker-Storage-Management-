@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
+@WebServlet(name = "AddUserServlet", urlPatterns = {"/adduser"})
 public class AddUserServlet extends HttpServlet {
 
     @Override
@@ -28,6 +28,10 @@ public class AddUserServlet extends HttpServlet {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             String role = request.getParameter("role");
+            String name = request.getParameter("name");
+            String email = request.getParameter("email");
+            String numberPhone = request.getParameter("numberPhone");
+            String address = request.getParameter("address");
 
             // Kiểm tra dữ liệu đầu vào
             if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
@@ -46,10 +50,16 @@ public class AddUserServlet extends HttpServlet {
             }
 
             // Tạo đối tượng User
-            User newUser = new User(userId, username, password, role, new Timestamp(System.currentTimeMillis()), false);
+            User newUser = new User(userId, username, password, role, new Timestamp(System.currentTimeMillis()), false, name, email, numberPhone, address);
 
             // Lưu vào database
-            userDAO.addUser(newUser);
+            boolean success = userDAO.addUser(newUser);
+
+            if (success) {
+                request.getSession().setAttribute("message", "Thêm người dùng thành công!");
+            } else {
+                request.getSession().setAttribute("error", "Không thể thêm người dùng. Vui lòng thử lại!");
+            }
 
             // Chuyển hướng về danh sách người dùng
             response.sendRedirect("listusers");
