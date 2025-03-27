@@ -35,7 +35,9 @@ public class PurchaseOrderDetailServlet extends HttpServlet {
         if ("add".equals(action)) {
             int purchaseOrderId = Integer.parseInt(request.getParameter("poId"));
             List<ProductDetail> productList = proDAO.getAllProductDetails();
+            List<Product> proList = prDAO.getAllProductsInData();
             request.setAttribute("productList", productList);
+            request.setAttribute("proList", proList);
             request.setAttribute("purchaseOrderId", purchaseOrderId);
             request.getRequestDispatcher("view/PurchaseOrder/addPurchaseOrderDetail.jsp").forward(request, response);
         } else if ("delete".equals(action)) {

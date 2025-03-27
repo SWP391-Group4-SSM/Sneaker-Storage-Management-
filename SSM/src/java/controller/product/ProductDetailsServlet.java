@@ -41,11 +41,14 @@ public class ProductDetailsServlet extends HttpServlet {
                 request.getRequestDispatcher("view/Product/productList.jsp").forward(request, response);
             }
         } else {
+            ProductDAO proDAO = new ProductDAO();
+            List<Product> proList = proDAO.getAllProductsInData();
             ProductDetailDAO prd = new ProductDetailDAO();
             int proId = Integer.parseInt(request.getParameter("proId"));
             List<ProductDetail> prdList = prd.getProductDetailByProId(proId);
             request.setAttribute("productId", proId);
             request.setAttribute("prdList", prdList);
+            request.setAttribute("proList", proList);
             request.getRequestDispatcher("view/Product/productDetail.jsp").forward(request, response);
         }
 

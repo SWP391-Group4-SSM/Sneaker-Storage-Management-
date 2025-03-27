@@ -14,7 +14,7 @@
                     <h2>Product List</h2>
                 </div>
                 <div class="col text-end">
-                    <a href="productList?action=add" class="btn btn-primary">Thêm mới</a>
+                    <a href="productList?action=add" class="btn btn-primary">Add</a>
                 </div>
             </div>
 
@@ -45,7 +45,7 @@
                                     <a href="productDetails?proId=${product.productId}" class="btn btn-info btn-sm">View Details</a>
                                 </td>
                                 <td>
-                                    <button onclick="confirmDelete(${product.productId})" class="btn btn-danger btn-sm">Xóa</button>
+                                    <button onclick="confirmDelete(${product.productId})" class="btn btn-danger btn-sm">Delete</button>
                                 </td>
                             </tr>
                         </c:forEach>

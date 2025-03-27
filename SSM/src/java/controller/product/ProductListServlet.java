@@ -27,7 +27,7 @@ public class ProductListServlet extends HttpServlet {
         String action = request.getParameter("action");
         ProductDAO dao = new ProductDAO();
         int page = 1;
-        int pageSize = 5; // Số sản phẩm trên mỗi trang
+        int pageSize = 7; // Số sản phẩm trên mỗi trang
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));

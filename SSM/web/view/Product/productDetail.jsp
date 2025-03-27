@@ -44,7 +44,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>ID</th>
-                                    <th>ProductId</th>
+                                    <th></th>
                                     <th>Size</th>
                                     <th>Color</th>
                                     <th>Image</th>
@@ -56,7 +56,15 @@
                                 <c:forEach var="prd" items="${prdList}">
                                     <tr>
                                         <td>${prd.productDetailId}</td>
-                                        <td>${prd.productId}</td>
+                                        <td>
+                                            <c:set var="productName" value="Không xác định" />
+                                            <c:forEach var="p" items="${proList}">
+                                                <c:if test="${p.productId == prd.productId}">
+                                                    <c:set var="productName" value="${p.name}" />
+                                                </c:if>
+                                            </c:forEach>
+                                            ${productName}
+                                        </td>
                                         <td>${prd.size}</td>
                                         <td>
                                             <span class="badge bg-primary">${prd.color}</span>

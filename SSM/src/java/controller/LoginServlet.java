@@ -32,7 +32,8 @@ public class LoginServlet extends HttpServlet {
             // Lưu thông tin người dùng vào session
             HttpSession session = request.getSession();
             session.setAttribute("loggedUser", user);
-
+            session.setAttribute("userID", user.getUserID());
+           
             // Nếu là Admin, chuyển hướng đến listusers
             if ("Admin".equals(user.getRole())) {
                 response.sendRedirect(request.getContextPath() + "/listusers");
