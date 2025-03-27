@@ -22,34 +22,107 @@ public class PurchaseOrderDAO {
         conn = db.connection;
     }
 
-    public List<PurchaseOrder> getAllPurchaseOrders(int page, int pageSize) {
-    List<PurchaseOrder> purchaseOrders = new ArrayList<>();
-    String sql = "SELECT * FROM PurchaseOrders WHERE isDeleted = 0 ORDER BY PurchaseOrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-    
-    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-        pstmt.setInt(1, (page - 1) * pageSize); // OFFSET
-        pstmt.setInt(2, pageSize); // FETCH NEXT
-        
-        try (ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                PurchaseOrder po = new PurchaseOrder();
-                po.setPurchaseOrderId(rs.getInt("PurchaseOrderID"));
-                po.setSupplierId(rs.getInt("SupplierID"));
-                po.setWarehouseId(rs.getInt("WarehouseID"));
-                po.setCreatedByUserId(rs.getInt("CreatedByUserID"));
-                po.setOrderDate(rs.getTimestamp("OrderDate").toLocalDateTime());
-                po.setPurchaseOrderStatus(rs.getString("PurchaseOrderStatus"));
-                po.setTotalAmount(rs.getBigDecimal("TotalAmount"));
-                po.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
-                po.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
-                purchaseOrders.add(po);
+    public List<PurchaseOrder> getAll(int page, int pageSize) {
+        List<PurchaseOrder> orders = new ArrayList<>();
+        String sql = "SELECT po.*, s.SupplierName, w.Name as WarehouseName, "
+                + "u.Username as CreatedByName "
+                + "FROM PurchaseOrders po "
+                + "JOIN Suppliers s ON po.SupplierID = s.SupplierID "
+                + "JOIN Warehouses w ON po.WarehouseID = w.WarehouseID "
+                + "JOIN Users u ON po.CreatedByUserID = u.UserID "
+                + "WHERE po.isDeleted = 0 "
+                + "ORDER BY po.PurchaseOrderID "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, (page - 1) * pageSize);
+            stmt.setInt(2, pageSize);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    PurchaseOrder order = new PurchaseOrder(
+                        rs.getInt("PurchaseOrderID"),
+                        rs.getInt("SupplierID"),
+                        rs.getInt("WarehouseID"),
+                        rs.getInt("CreatedByUserID"),
+                        rs.getTimestamp("OrderDate").toLocalDateTime(),
+                        rs.getString("PurchaseOrderStatus"),
+                        rs.getBigDecimal("TotalAmount"),
+                        rs.getTimestamp("CreatedAt").toLocalDateTime(),
+                        rs.getTimestamp("UpdatedAt") != null ? rs.getTimestamp("UpdatedAt").toLocalDateTime() : null
+                        
+                    );
+                    // Thêm thông tin bổ sung
+                    order.setSupplierName(rs.getString("SupplierName"));
+                    order.setWarehouseName(rs.getString("WarehouseName"));
+                    order.setCreatedByName(rs.getString("CreatedByName"));
+                    orders.add(order);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return orders;
     }
-    return purchaseOrders;
-}
+    
+    public List<PurchaseOrder> searchOrders(String supplierName, String warehouseName, int page, int pageSize) {
+        List<PurchaseOrder> orders = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+            "SELECT po.*, s.SupplierName, w.Name as WarehouseName, "
+            + "u.Username as CreatedByName "
+            + "FROM PurchaseOrders po "
+            + "JOIN Suppliers s ON po.SupplierID = s.SupplierID "
+            + "JOIN Warehouses w ON po.WarehouseID = w.WarehouseID "
+            + "JOIN Users u ON po.CreatedByUserID = u.UserID "
+            + "WHERE po.isDeleted = 0 "
+        );
+
+        List<Object> params = new ArrayList<>();
+
+        if (supplierName != null && !supplierName.trim().isEmpty()) {
+            sql.append(" AND s.SupplierName LIKE ?");
+            params.add("%" + supplierName.trim() + "%");
+        }
+        if (warehouseName != null && !warehouseName.trim().isEmpty()) {
+            sql.append(" AND w.Name LIKE ?");
+            params.add("%" + warehouseName.trim() + "%");
+        }
+
+        sql.append(" ORDER BY po.PurchaseOrderID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+            int parameterIndex = 1;
+            for (Object param : params) {
+                stmt.setObject(parameterIndex++, param);
+            }
+            stmt.setInt(parameterIndex++, (page - 1) * pageSize);
+            stmt.setInt(parameterIndex, pageSize);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    PurchaseOrder order = new PurchaseOrder(
+                        rs.getInt("PurchaseOrderID"),
+                        rs.getInt("SupplierID"),
+                        rs.getInt("WarehouseID"),
+                        rs.getInt("CreatedByUserID"),
+                        rs.getTimestamp("OrderDate").toLocalDateTime(),
+                        rs.getString("PurchaseOrderStatus"),
+                        rs.getBigDecimal("TotalAmount"),
+                        rs.getTimestamp("CreatedAt").toLocalDateTime(),
+                        rs.getTimestamp("UpdatedAt") != null ? rs.getTimestamp("UpdatedAt").toLocalDateTime() : null
+                    );
+                    // Thêm thông tin bổ sung
+                    order.setSupplierName(rs.getString("SupplierName"));
+                    order.setWarehouseName(rs.getString("WarehouseName"));
+                    order.setCreatedByName(rs.getString("CreatedByName"));
+                    orders.add(order);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
 
     public boolean addPurchaseOrder(PurchaseOrder po) {
     // Kiểm tra xem PurchaseOrderID đã tồn tại chưa

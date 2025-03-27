@@ -10,6 +10,12 @@ public class Stock {
     private int binID;
     private int quantity;
     private LocalDateTime LastUpdated;
+    
+    private String productName;
+    private int productSize;
+    private String productColor;
+    private String warehouseName;
+    private String binName;
 
     public Stock() {
     }
@@ -69,6 +75,46 @@ public class Stock {
 
     public void setLastUpdated(LocalDateTime LastUpdated) {
         this.LastUpdated = LastUpdated;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public int getProductSize() {
+        return productSize;
+    }
+
+    public void setProductSize(int productSize) {
+        this.productSize = productSize;
+    }
+
+    public String getProductColor() {
+        return productColor;
+    }
+
+    public void setProductColor(String productColor) {
+        this.productColor = productColor;
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
+
+    public String getBinName() {
+        return binName;
+    }
+
+    public void setBinName(String binName) {
+        this.binName = binName;
     }
     
     

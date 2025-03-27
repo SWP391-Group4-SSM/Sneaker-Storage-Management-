@@ -38,11 +38,14 @@ public class PurchaseOrderServlet extends HttpServlet {
         WarehouseDAO wuDAO = new WarehouseDAO();
         int page = 1;
         int pageSize = 05;
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
+        String pageStr = request.getParameter("page");
+        if (pageStr != null && !pageStr.trim().isEmpty()) {
+            try {
+                page = Integer.parseInt(pageStr.trim());
+            } catch (NumberFormatException e) {
+                // Giữ mặc định page = 1
+            }
         }
-        int totalOrders = poDAO.getTotalNumberPurchaseOrders();
-        int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
 
         if ("add".equals(action)) {
             List<Supplier> suppliers = suDAO.getAllSuppliers();
@@ -64,16 +67,30 @@ public class PurchaseOrderServlet extends HttpServlet {
                 request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
             }
         } else {
-            List<PurchaseOrder> poList = poDAO.getAllPurchaseOrders(page, pageSize);
+            String supplierName = request.getParameter("searchSupplierName");
+            String warehouseName = request.getParameter("searchWarehouseName");
+            List<PurchaseOrder> poList = poDAO.getAll(page, pageSize);
             List<Supplier> suppliers = new SupplierDAO().getAllSuppliers();
             List<Warehouse> warList = new WarehouseDAO().getAllWarehouses();
             List<User> userList = new UserDAO().getAllUsers();
+            int totalRecords = poDAO.getTotalNumberPurchaseOrders();
+            int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+            if ((supplierName != null && !supplierName.trim().isEmpty())
+                    || (warehouseName != null && !warehouseName.trim().isEmpty())) {
+                poList = poDAO.searchOrders(supplierName, warehouseName, page, pageSize);
+            } else {
+                poList = poDAO.getAll(page, pageSize);
+            }
 
             request.setAttribute("purchaseOrders", poList);
             request.setAttribute("suppliers", suppliers);
             request.setAttribute("warList", warList);
+            request.setAttribute("searchSupplierName", supplierName);
+            request.setAttribute("searchWarehouseName", warehouseName);
             request.setAttribute("userList", userList);
             request.setAttribute("currentPage", page);
+            request.setAttribute("totalRecords", totalRecords);
             request.setAttribute("totalPages", totalPages);
             request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
         }
@@ -119,12 +136,11 @@ public class PurchaseOrderServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             int supplierId = Integer.parseInt(request.getParameter("supplierId"));
             int warehouseId = Integer.parseInt(request.getParameter("warehouseId"));
-            
+
             PurchaseOrder po = new PurchaseOrder();
             po.setPurchaseOrderId(id);
             po.setSupplierId(supplierId);
             po.setWarehouseId(warehouseId);
-          
 
             PurchaseOrderDAO dao = new PurchaseOrderDAO();
             dao.updatePurchaseOrder(po);
