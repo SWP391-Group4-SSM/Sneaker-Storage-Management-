@@ -41,14 +41,53 @@ public class ProductDetailsServlet extends HttpServlet {
                 request.getRequestDispatcher("view/Product/productList.jsp").forward(request, response);
             }
         } else {
+            int page = 1;
+            int pageSize = 4;
             ProductDAO proDAO = new ProductDAO();
-            List<Product> proList = proDAO.getAllProductsInData();
             ProductDetailDAO prd = new ProductDetailDAO();
             int proId = Integer.parseInt(request.getParameter("proId"));
-            List<ProductDetail> prdList = prd.getProductDetailByProId(proId);
+            String pageStr = request.getParameter("page");
+            if (pageStr != null && !pageStr.trim().isEmpty()) {
+                try {
+                    page = Integer.parseInt(pageStr.trim());
+                } catch (NumberFormatException e) {
+                    // Giữ mặc định page = 1
+                }
+            }
+
+            // Tham số tìm kiếm
+            String sizeStr = request.getParameter("searchSize");
+            Integer searchSize = null;
+            if (sizeStr != null && !sizeStr.trim().isEmpty()) {
+                try {
+                    searchSize = Integer.parseInt(sizeStr.trim());
+                } catch (NumberFormatException e) {
+                    // Không làm gì nếu size không hợp lệ
+                }
+            }
+            String searchColor = request.getParameter("searchColor");
+            String searchMaterial = request.getParameter("searchMaterial");
+
+            List<ProductDetail> productDetails;
+            if (searchSize != null
+                    || (searchColor != null && !searchColor.trim().isEmpty())
+                    || (searchMaterial != null && !searchMaterial.trim().isEmpty())) {
+                productDetails = prd.searchProductDetails(proId, searchSize,
+                        searchColor, searchMaterial, page, pageSize);
+            } else {
+                productDetails = prd.getProductDetailByProId(proId, page, pageSize);
+            }
+            int totalRecords = prd.getTotalRecords(proId, searchSize,
+                    searchColor, searchMaterial);
+            int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
             request.setAttribute("productId", proId);
-            request.setAttribute("prdList", prdList);
-            request.setAttribute("proList", proList);
+            request.setAttribute("prdList", productDetails);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("totalRecords", totalRecords);
+            request.setAttribute("searchSize", sizeStr);
+            request.setAttribute("searchColor", searchColor);
+            request.setAttribute("searchMaterial", searchMaterial);
             request.getRequestDispatcher("view/Product/productDetail.jsp").forward(request, response);
         }
 
@@ -70,7 +109,7 @@ public class ProductDetailsServlet extends HttpServlet {
 
             if (dao.isProductDetailIdExists(ProductDetailID)) {
                 request.setAttribute("errorMessage", "ID chi tiết sản phẩm đã tồn tại! Vui lòng nhập ID khác.");
-              
+
                 request.getRequestDispatcher("view/Product/addProductDetail.jsp").forward(request, response);
                 return;
             }
@@ -82,7 +121,7 @@ public class ProductDetailsServlet extends HttpServlet {
             prod.setColor(Color);
             prod.setImageUrl(ImageURL);
             prod.setMaterial(Material);
-            
+
             boolean success = dao.addProductDetail(prod);
             if (success) {
                 response.sendRedirect("productDetails?proId=" + proId);

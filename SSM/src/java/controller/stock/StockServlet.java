@@ -45,9 +45,9 @@ public class StockServlet extends HttpServlet {
         }
 
         List<Stock> listStocks;
-        if ((productName != null && !productName.trim().isEmpty()) ||
-            (warehouseName != null && !warehouseName.trim().isEmpty()) ||
-            (binName != null && !binName.trim().isEmpty())) {
+        if ((productName != null && !productName.trim().isEmpty())
+                || (warehouseName != null && !warehouseName.trim().isEmpty())
+                || (binName != null && !binName.trim().isEmpty())) {
             listStocks = stockDAO.searchStocks(productName, warehouseName, binName, page, pageSize);
         } else {
             listStocks = stockDAO.getAll(page, pageSize);
@@ -60,8 +60,6 @@ public class StockServlet extends HttpServlet {
         request.setAttribute("currentPage", page);
         request.getRequestDispatcher("view/Stock/stock.jsp").forward(request, response);
     }
-
-    
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

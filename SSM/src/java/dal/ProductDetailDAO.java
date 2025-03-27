@@ -72,31 +72,161 @@ public class ProductDetailDAO {
         return productDetails;
     }
 
-    public List<ProductDetail> getProductDetailByProId(int proId) {
+    public List<ProductDetail> getProductDetailByProId(int proId, int page, int pageSize) {
         List<ProductDetail> productDetails = new ArrayList<>();
-        String sql = "SELECT * FROM ProductDetails WHERE isDeleted = 0 and ProductID = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, proId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                ProductDetail pd = new ProductDetail();
-                pd.setProductDetailId(rs.getInt("ProductDetailID"));
-                pd.setProductId(rs.getInt("ProductID"));
-                pd.setSize(rs.getInt("Size"));
-                pd.setColor(rs.getString("Color"));
-                pd.setImageUrl(rs.getString("ImageURL"));
-                pd.setStatus(rs.getString("Status"));
-                pd.setMaterial(rs.getString("Material"));
-                pd.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
-                pd.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
-                pd.setIsDeleted(rs.getBoolean("isDeleted"));
-                productDetails.add(pd);
+        String sql = "SELECT * FROM ProductDetails "
+                + "WHERE isDeleted = 0 AND ProductID = ? "
+                + "ORDER BY ProductDetailID "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, proId);
+            stmt.setInt(2, (page - 1) * pageSize);
+            stmt.setInt(3, pageSize);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ProductDetail pd = new ProductDetail();
+                    pd.setProductDetailId(rs.getInt("ProductDetailID"));
+                    pd.setProductId(rs.getInt("ProductID"));
+                    pd.setSize(rs.getInt("Size"));
+                    pd.setColor(rs.getString("Color"));
+                    pd.setImageUrl(rs.getString("ImageURL"));
+                    pd.setStatus(rs.getString("Status"));
+                    pd.setMaterial(rs.getString("Material"));
+                    pd.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
+                    
+                    Timestamp updatedAt = rs.getTimestamp("UpdatedAt");
+                    if (updatedAt != null) {
+                        pd.setUpdatedAt(updatedAt.toLocalDateTime());
+                    }
+                    
+                    pd.setIsDeleted(rs.getBoolean("isDeleted"));
+                    productDetails.add(pd);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return productDetails;
     }
+    public List<ProductDetail> searchProductDetails(int proId, Integer size, 
+            String color, String material, int page, int pageSize) {
+        List<ProductDetail> productDetails = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+            "SELECT * FROM ProductDetails "
+            + "WHERE isDeleted = 0 AND ProductID = ? "
+        );
+
+        List<Object> params = new ArrayList<>();
+        params.add(proId);
+
+        if (size != null) {
+            sql.append(" AND Size = ?");
+            params.add(size);
+        }
+        if (color != null && !color.trim().isEmpty()) {
+            sql.append(" AND Color LIKE ?");
+            params.add("%" + color.trim() + "%");
+        }
+        if (material != null && !material.trim().isEmpty()) {
+            sql.append(" AND Material LIKE ?");
+            params.add("%" + material.trim() + "%");
+        }
+
+        sql.append(" ORDER BY ProductDetailID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+            int parameterIndex = 1;
+            for (Object param : params) {
+                stmt.setObject(parameterIndex++, param);
+            }
+            stmt.setInt(parameterIndex++, (page - 1) * pageSize);
+            stmt.setInt(parameterIndex, pageSize);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ProductDetail pd = new ProductDetail();
+                    pd.setProductDetailId(rs.getInt("ProductDetailID"));
+                    pd.setProductId(rs.getInt("ProductID"));
+                    pd.setSize(rs.getInt("Size"));
+                    pd.setColor(rs.getString("Color"));
+                    pd.setImageUrl(rs.getString("ImageURL"));
+                    pd.setStatus(rs.getString("Status"));
+                    pd.setMaterial(rs.getString("Material"));
+                    pd.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
+                    
+                    Timestamp updatedAt = rs.getTimestamp("UpdatedAt");
+                    if (updatedAt != null) {
+                        pd.setUpdatedAt(updatedAt.toLocalDateTime());
+                    }
+                    
+                    pd.setIsDeleted(rs.getBoolean("isDeleted"));
+                    productDetails.add(pd);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productDetails;
+    }
+    
+    public int getTotalRecords(int proId, Integer size, String color, String material) {
+        int totalRecords = 0;
+        StringBuilder sql = new StringBuilder(
+            "SELECT COUNT(*) FROM ProductDetails "
+            + "WHERE isDeleted = 0 AND ProductID = ? "
+        );
+
+        List<Object> params = new ArrayList<>();
+        params.add(proId);
+
+        if (size != null) {
+            sql.append(" AND Size = ?");
+            params.add(size);
+        }
+        if (color != null && !color.trim().isEmpty()) {
+            sql.append(" AND Color LIKE ?");
+            params.add("%" + color.trim() + "%");
+        }
+        if (material != null && !material.trim().isEmpty()) {
+            sql.append(" AND Material LIKE ?");
+            params.add("%" + material.trim() + "%");
+        }
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+            int parameterIndex = 1;
+            for (Object param : params) {
+                stmt.setObject(parameterIndex++, param);
+            }
+            
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                totalRecords = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalRecords;
+    }
+
+    public int getTotalRecordsByProductId(int proId) {
+        int totalRecords = 0;
+        String sql = "SELECT COUNT(*) FROM ProductDetails "
+                + "WHERE isDeleted = 0 AND ProductID = ?";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, proId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                totalRecords = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalRecords;
+    }
+
 
     public boolean addProductDetail(ProductDetail pd) {
         String sql = " INSERT INTO ProductDetails \n"

@@ -12,6 +12,7 @@ public class PurchaseOrderDetail {
     private BigDecimal totalPrice;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    
 
     public PurchaseOrderDetail() {
     }

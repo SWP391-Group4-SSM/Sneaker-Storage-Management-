@@ -29,12 +29,15 @@ public class ProductListServlet extends HttpServlet {
         int page = 1;
         int pageSize = 7; // Số sản phẩm trên mỗi trang
 
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
+        String pageStr = request.getParameter("page");
+        if (pageStr != null && !pageStr.trim().isEmpty()) {
+            try {
+                page = Integer.parseInt(pageStr.trim());
+            } catch (NumberFormatException e) {
+                // Giữ mặc định page = 1
+            }
         }
 
-        int totalRecords = dao.getTotalProducts();
-        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
         if ("add".equals(action)) {
             request.getRequestDispatcher("view/Product/addProduct.jsp").forward(request, response);
         } else if ("delete".equals(action)) {
@@ -46,10 +49,21 @@ public class ProductListServlet extends HttpServlet {
                 request.getRequestDispatcher("view/Product/productList.jsp").forward(request, response);
             }
         } else {
-            List<Product> productList = dao.getAllProducts(page, pageSize);
+            String searchName = request.getParameter("searchName");
+            List<Product> products;
+            int totalRecords = dao.getTotalRecords(searchName);
+            int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+            
+            if (searchName != null && !searchName.trim().isEmpty()) {
+                products = dao.searchByName(searchName.trim(), page, pageSize);
+            } else {
+                products = dao.getAllProducts(page, pageSize);
+            }
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
-            request.setAttribute("productList", productList);
+            request.setAttribute("totalRecords", totalRecords);
+            request.setAttribute("searchName", searchName);
+            request.setAttribute("products", products);
             request.getRequestDispatcher("view/Product/productList.jsp").forward(request, response);
         }
 
@@ -69,7 +83,7 @@ public class ProductListServlet extends HttpServlet {
 
             if (dao.isProductIdExists(productId)) {
                 request.setAttribute("errorMessage", "ID sản phẩm đã tồn tại! Vui lòng nhập ID khác.");
-                
+
                 request.getRequestDispatcher("view/Product/addProduct.jsp").forward(request, response);
                 return;
             }

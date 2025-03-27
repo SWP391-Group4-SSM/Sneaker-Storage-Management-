@@ -17,6 +17,18 @@
                     <a href="productList?action=add" class="btn btn-primary">Add</a>
                 </div>
             </div>
+            <form action="${pageContext.request.contextPath}/productList" method="get" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="searchName" class="form-control" 
+                           placeholder="Search by product name..." value="${searchName}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                    <a href="${pageContext.request.contextPath}/productList" class="btn btn-secondary">
+                        <i class="bi bi-arrow-clockwise"></i> Reset
+                    </a>
+                </div>
+            </form>
 
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
@@ -33,7 +45,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="product" items="${productList}">
+                        <c:forEach var="product" items="${products}">
                             <tr>
                                 <td>${product.productId}</td>
                                 <td>${product.name}</td>
@@ -54,31 +66,43 @@
             </div>
 
             <!-- Pagination -->
-            <div class="d-flex justify-content-center mt-4">
-                <c:if test="${totalPages > 1}">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            <c:forEach begin="1" end="${totalPages}" var="i">
-                                <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                    <a class="page-link" href="productList?page=${i}">
-                                        ${i}
-                                    </a>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                    </nav>
-                </c:if>
-            </div>
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <c:if test="${currentPage > 1}">
+                        <li class="page-item">
+                            <a class="page-link" href="${pageContext.request.contextPath}/productList?page=${currentPage - 1}${not empty searchName ? '&searchName='.concat(searchName) : ''}">
+                                Previous
+                            </a>
+                        </li>
+                    </c:if>
+
+                    <c:forEach begin="1" end="${totalPages}" var="i">
+                        <li class="page-item ${currentPage == i ? 'active' : ''}">
+                            <a class="page-link" href="${pageContext.request.contextPath}/productList?page=${i}${not empty searchName ? '&searchName='.concat(searchName) : ''}">
+                                ${i}
+                            </a>
+                        </li>
+                    </c:forEach>
+
+                    <c:if test="${currentPage < totalPages}">
+                        <li class="page-item">
+                            <a class="page-link" href="${pageContext.request.contextPath}/productList?page=${currentPage + 1}${not empty searchName ? '&searchName='.concat(searchName) : ''}">
+                                Next
+                            </a>
+                        </li>
+                    </c:if>
+                </ul>
+            </nav>
         </div>
 
         <!-- Bootstrap JS and Popper.js -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            function confirmDelete(id) {
-                if (confirm("Bạn có chắc muốn xóa đơn hàng này không?")) {
-                    window.location.href = "productList?action=delete&proId=" + id;
-                }
-            }
+                                        function confirmDelete(id) {
+                                            if (confirm("Bạn có chắc muốn xóa đơn hàng này không?")) {
+                                                window.location.href = "productList?action=delete&proId=" + id;
+                                            }
+                                        }
         </script>
     </body>
 </html>
