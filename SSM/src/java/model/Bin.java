@@ -1,21 +1,31 @@
 package model;
 
-public class Bin {
+import java.time.LocalDateTime;
 
+public class Bin {
     private int binId;
-    private int warehouseId;
-    private String binType; // "Temporary" hoặc "Permanent"
+    private int sectionId;
+    private String binName;
+    private int capacity;
+    private String description;
+    private LocalDateTime createdAt; 
+    private Boolean isDeleted;      
+    private boolean isLocked;       
 
     public Bin() {
     }
-    
 
-    public Bin(int binId, int warehouseId, String binType) {
+    public Bin(int binId, int sectionId, String binName, int capacity, String description, 
+               LocalDateTime createdAt, Boolean isDeleted, boolean isLocked) {
         this.binId = binId;
-        this.warehouseId = warehouseId;
-        this.binType = binType;
+        this.sectionId = sectionId;
+        this.binName = binName;
+        this.capacity = capacity;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.isDeleted = isDeleted;
+        this.isLocked = isLocked;
     }
-
 
     public int getBinId() {
         return binId;
@@ -25,19 +35,73 @@ public class Bin {
         this.binId = binId;
     }
 
-    public int getWarehouseId() {
-        return warehouseId;
+    public int getSectionId() {
+        return sectionId;
     }
 
-    public void setWarehouseId(int warehouseId) {
-        this.warehouseId = warehouseId;
+    public void setSectionId(int sectionId) {
+        this.sectionId = sectionId;
     }
 
-    public String getBinType() {
-        return binType;
+    public String getBinName() {
+        return binName;
     }
 
-    public void setBinType(String binType) {
-        this.binType = binType;
+    public void setBinName(String binName) {
+        this.binName = binName;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean isLocked) {
+        this.isLocked = isLocked;
+    }
+
+    @Override
+    public String toString() {
+        return "Bin{" +
+                "binId=" + binId +
+                ", sectionId=" + sectionId +
+                ", binName='" + binName + '\'' +
+                ", capacity=" + capacity +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", isDeleted=" + isDeleted +
+                ", isLocked=" + isLocked +
+                '}';
     }
 }

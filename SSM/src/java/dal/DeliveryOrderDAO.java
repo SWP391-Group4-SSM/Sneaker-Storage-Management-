@@ -34,16 +34,19 @@ public class DeliveryOrderDAO {
     }
 
     public boolean addDeliveryOrder(DeliveryOrder deliveryOrder) {
+        // Modify SQL statement to remove PurchaseOrderID
         String sql = "INSERT INTO DeliveryOrders (DeliveryOrderID, SupplierID, WarehouseID, CreatedByUserID, DocumentDate, DocumentStatus, UpdatedAt, isDeleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, deliveryOrder.getDeliveryOrderId());
+            // Remove this line: pstmt.setInt(2, deliveryOrder.getPurchaseOrderId());
+            // Adjust all parameter indices
             pstmt.setObject(2, deliveryOrder.getSupplierId()); // Handle null
             pstmt.setInt(3, deliveryOrder.getWarehouseId());
             pstmt.setInt(4, deliveryOrder.getCreatedByUserId());
             pstmt.setTimestamp(5, Timestamp.valueOf(deliveryOrder.getDocumentDate()));
             pstmt.setString(6, deliveryOrder.getDocumentStatus());
             pstmt.setTimestamp(7, Timestamp.valueOf(deliveryOrder.getUpdatedAt()));
-            pstmt.setBoolean(8, deliveryOrder.getIsDeleted() != null ? deliveryOrder.getIsDeleted() : false); // Default to false
+            pstmt.setBoolean(8, deliveryOrder.getIsDeleted() != null ? deliveryOrder.getIsDeleted() : false);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -211,4 +214,18 @@ public class DeliveryOrderDAO {
             return false;
         }
     }
+
+    public boolean updateDeliveryOrder(DeliveryOrder deliveryOrder) {
+        String sql = "UPDATE DeliveryOrders SET DocumentStatus = ?, UpdatedAt = ? WHERE DeliveryOrderID = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, deliveryOrder.getDocumentStatus());
+            pstmt.setTimestamp(2, Timestamp.valueOf(deliveryOrder.getUpdatedAt()));
+            pstmt.setInt(3, deliveryOrder.getDeliveryOrderId());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

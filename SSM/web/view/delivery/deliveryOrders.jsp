@@ -3,140 +3,61 @@
 <html>
     <head>
         <title>Delivery Orders</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }
-            h1 {
-                color: #333;
-            }
-            .info-section {
-                margin-bottom: 30px;
-            }
-            .info-section h2 {
-                color: #555;
-                border-bottom: 1px solid #ddd;
-                padding-bottom: 5px;
-            }
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin-top: 10px;
-            }
-            th, td {
-                text-align: left;
-                padding: 8px;
-                border: 1px solid #ddd;
-            }
-            th {
-                background-color: #f2f2f2;
-            }
-            tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-            .button {
-                display: inline-block;
-                padding: 8px 16px;
-                background-color: #4CAF50;
-                color: white;
-                text-decoration: none;
-                border-radius: 4px;
-                margin-top: 20px;
-            }
-            .button:hover {
-                background-color: #45a049;
-            }
-            select, input[type="submit"] {
-                padding: 8px;
-                margin: 5px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-            }
-            input[type="submit"] {
-                background-color: #4CAF50;
-                color: white;
-                cursor: pointer;
-            }
-            input[type="submit"]:hover {
-                background-color: #45a049;
-            }
-            .filter-form {
-                padding: 15px;
-                background-color: #f9f9f9;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                margin-bottom: 20px;
-            }
-            .pagination {
-                margin: 20px 0;
-            }
-            .pagination a {
-                display: inline-block;
-                padding: 5px 10px;
-                margin-right: 5px;
-                border: 1px solid #ddd;
-                text-decoration: none;
-                color: #333;
-                border-radius: 3px;
-            }
-            .pagination a:hover {
-                background-color: #f5f5f5;
-            }
-            .pagination a.active {
-                background-color: #4CAF50;
-                color: white;
-                border: 1px solid #4CAF50;
-            }
-            .action-links a {
-                text-decoration: none;
-                padding: 5px 10px;
-                margin-right: 5px;
-                background-color: #4CAF50;
-                color: white;
-                border-radius: 3px;
-            }
-            .action-links a.delete {
-                background-color: #f44336;
-            }
-            .action-links a:hover {
-                opacity: 0.8;
-            }
-            .success-message {
-                background-color: #dff0d8;
-                color: #3c763d;
-                padding: 10px;
-                margin: 10px 0;
-                border-radius: 4px;
-                border: 1px solid #d6e9c6;
-            }
-            .error-message {
-                background-color: #f2dede;
-                color: #a94442;
-                padding: 10px;
-                margin: 10px 0;
-                border-radius: 4px;
-                border: 1px solid #ebccd1;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/deliveryOrder.css">
         <script>
             function confirmDelete(deliveryOrderId) {
-                if (confirm("Are you sure you want to delete Delivery Order #" + deliveryOrderId)) {
-                    window.location.href = "${pageContext.request.contextPath}/deliveryOrders?action=delete&deliveryOrderId=" + deliveryOrderId;
+                if (confirm("Are you sure you want to delete Delivery Order #" + deliveryOrderId + "?")) {
+                     window.location.href = "${pageContext.request.contextPath}/deliveryOrders?action=delete&deliveryOrderId=" + deliveryOrderId;
                 }
             }
+
+            function updateDeliveryOrderDropdown() {
+                const warehouseSelect = document.getElementById('warehouseSelect');
+                const deliveryOrderSelect = document.getElementById('deliveryOrderSelect');
+                const selectedWarehouseId = parseInt(warehouseSelect.value);
+
+                console.log("Selected warehouse ID: " + selectedWarehouseId);
+
+                // Clear existing options
+                deliveryOrderSelect.innerHTML = '';
+
+                // Add "All Delivery Orders" option
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "-1";
+                defaultOption.textContent = 'All Delivery Orders';
+                deliveryOrderSelect.appendChild(defaultOption);
+
+                // Direct approach - enumerate orders and check warehouse directly
+            <c:forEach var="order" items="${allDeliveryOrders}">
+                if (${order.warehouseId} == selectedWarehouseId || selectedWarehouseId == -1) {
+                    const option = document.createElement('option');
+                    option.value = "${order.deliveryOrderId}";
+                    option.textContent = "${order.deliveryOrderId}";
+
+                    // Check if this was the previously selected option
+                    if (${order.deliveryOrderId} == ${deliveryOrderId != null ? deliveryOrderId : -1}) {
+                        option.selected = true;
+                    }
+
+                    deliveryOrderSelect.appendChild(option);
+                }
+            </c:forEach>
+            }
+
+            // Initialize dropdown when page loads
+            window.onload = function () {
+                updateDeliveryOrderDropdown();
+            };
         </script>
     </head>
     <body>
         <h1>Delivery Orders</h1>  
 
-        <!-- Display status message if there is one -->
         <c:if test="${not empty sessionScope.deleteMessage}">
             <div class="${sessionScope.deleteStatus == 'success' ? 'success-message' : 'error-message'}">
                 ${sessionScope.deleteMessage}
             </div>
 
-            <!-- Clear the message after displaying it -->
             <c:remove var="deleteMessage" scope="session" />
             <c:remove var="deleteStatus" scope="session" />
         </c:if>
@@ -146,7 +67,7 @@
             <div class="filter-form">
                 <form action="${pageContext.request.contextPath}/deliveryOrders" method="get">
                     <label for="warehouseSelect">Warehouse:</label>
-                    <select id="warehouseSelect" name="warehouseId">
+                    <select id="warehouseSelect" name="warehouseId" onchange="updateDeliveryOrderDropdown()">
                         <option value="-1">All Warehouses</option>
                         <c:forEach var="warehouse" items="${warehouses}">
                             <option value="${warehouse.warehouseID}" ${warehouse.warehouseID == warehouseId ? 'selected' : ''}>
@@ -158,11 +79,6 @@
                     <label for="deliveryOrderSelect">Delivery Order ID:</label>
                     <select id="deliveryOrderSelect" name="deliveryOrderId">
                         <option value="-1">All Delivery Orders</option>
-                        <c:forEach var="order" items="${allDeliveryOrders}">
-                            <option value="${order.deliveryOrderId}" ${order.deliveryOrderId == deliveryOrderId ? 'selected' : ''}>
-                                ${order.deliveryOrderId}
-                            </option>
-                        </c:forEach>
                     </select>
 
                     <input type="submit" value="Filter">
@@ -229,13 +145,13 @@
                             <td>${deliveryOrder.documentStatus}</td>
                             <td class="action-links">
                                 <a href="${pageContext.request.contextPath}/deliveryOrders?action=details&deliveryOrderId=${deliveryOrder.deliveryOrderId}">Details</a>
-                                <a href="javascript:void(0);" class="delete" onclick="confirmDelete(${deliveryOrder.deliveryOrderId});">Delete</a>
+                                <a href="javascript:void(0);" class="delete" onclick="return confirmDelete(${deliveryOrder.deliveryOrderId});">Delete</a>
                             </td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
-            
+
             <div class="pagination">
                 <c:forEach var="i" begin="1" end="${totalPages}">
                     <a href="${pageContext.request.contextPath}/deliveryOrders?page=${i}&warehouseId=${warehouseId}&deliveryOrderId=${deliveryOrderId}" 
@@ -247,6 +163,5 @@
         </div>
 
         <a href="${pageContext.request.contextPath}/createDeliveryOrder" class="button">Create Delivery Order</a>
-
     </body>
 </html>

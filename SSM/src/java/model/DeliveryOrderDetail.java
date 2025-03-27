@@ -10,6 +10,7 @@ public class DeliveryOrderDetail {
     private int quantityOrdered;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    
 
     public DeliveryOrderDetail() {
     }

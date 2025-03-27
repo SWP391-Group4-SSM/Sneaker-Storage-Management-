@@ -38,7 +38,7 @@ public class DeliveryOrderServlet extends HttpServlet {
             case "details":
                 showDeliveryOrderDetails(request, response);
                 break;
-            case "delete":  // Add this new case
+            case "delete":  
                 deleteDeliveryOrder(request, response);
                 break;
             case "list":
@@ -52,8 +52,8 @@ public class DeliveryOrderServlet extends HttpServlet {
             throws ServletException, IOException {
         int page = 1;
         int recordsPerPage = 10;
-        int warehouseId = -1; // Default: show all warehouses
-        int deliveryOrderId = -1; // Default: no search by ID
+        int warehouseId = -1; 
+        int deliveryOrderId = -1; 
         String page_raw = request.getParameter("page");
         String warehouseId_raw = request.getParameter("warehouseId");
         String deliveryOrderId_raw = request.getParameter("deliveryOrderId");
@@ -62,7 +62,6 @@ public class DeliveryOrderServlet extends HttpServlet {
             try {
                 page = Integer.parseInt(page_raw);
             } catch (NumberFormatException e) {
-                // Handle invalid page number
             }
         }
 
@@ -70,7 +69,6 @@ public class DeliveryOrderServlet extends HttpServlet {
             try {
                 warehouseId = Integer.parseInt(warehouseId_raw);
             } catch (NumberFormatException e) {
-                // Handle invalid warehouse ID
             }
         }
 
@@ -78,7 +76,6 @@ public class DeliveryOrderServlet extends HttpServlet {
             try {
                 deliveryOrderId = Integer.parseInt(deliveryOrderId_raw);
             } catch (NumberFormatException e) {
-                //Handle invalid delivery Order ID
             }
         }
 
@@ -98,16 +95,30 @@ public class DeliveryOrderServlet extends HttpServlet {
         // Get user names mapping
         Map<Integer, String> userNames = userDAO.getUserNamesMap();
 
-//Debug        
-//        System.out.println("Supplier names map size: " + supplierNames.size());
-//        if (!supplierNames.isEmpty()) {
-//            System.out.println("Sample supplier: " + supplierNames.entrySet().iterator().next());
-//        }
-//
-//        System.out.println("User names map size: " + userNames.size());
-//        if (!userNames.isEmpty()) {
-//            System.out.println("Sample user: " + userNames.entrySet().iterator().next());
-//        }
+        // Create a map of warehouse IDs to arrays of delivery order IDs
+        java.util.Map<Integer, java.util.List<Integer>> deliveryOrderIdsByWarehouse = new java.util.HashMap<>();
+
+        java.util.List<Integer> allOrderIds = new java.util.ArrayList<>();
+        for (DeliveryOrder order : allDeliveryOrders) {
+            allOrderIds.add(order.getDeliveryOrderId());
+        }
+        deliveryOrderIdsByWarehouse.put(-1, allOrderIds);
+
+        // Group delivery orders by warehouse
+        for (DeliveryOrder order : allDeliveryOrders) {
+            int orderWarehouseId = order.getWarehouseId();
+            if (!deliveryOrderIdsByWarehouse.containsKey(orderWarehouseId)) {
+                deliveryOrderIdsByWarehouse.put(orderWarehouseId, new java.util.ArrayList<>());
+            }
+            deliveryOrderIdsByWarehouse.get(orderWarehouseId).add(order.getDeliveryOrderId());
+        }
+
+        System.out.println("--- deliveryOrderIdsByWarehouse Map Debug ---");
+        System.out.println("Total warehouses in map: " + deliveryOrderIdsByWarehouse.size());
+        for (Map.Entry<Integer, List<Integer>> entry : deliveryOrderIdsByWarehouse.entrySet()) {
+            System.out.println("Warehouse ID " + entry.getKey() + " has " + entry.getValue().size() + " orders");
+        }
+
         for (DeliveryOrder order : deliveryOrders) {
             if (order.getSupplierId() != null) {
                 System.out.println("Order " + order.getDeliveryOrderId()
@@ -118,7 +129,15 @@ public class DeliveryOrderServlet extends HttpServlet {
             }
         }
 
-        // Set all attributes once
+        // debug code to listDeliveryOrders after fetching allDeliveryOrders
+        System.out.println("--- All Delivery Orders ---");
+        System.out.println("Found " + allDeliveryOrders.size() + " total delivery orders");
+        if (!allDeliveryOrders.isEmpty()) {
+            DeliveryOrder firstOrder = allDeliveryOrders.get(0);
+            System.out.println("Sample order: ID=" + firstOrder.getDeliveryOrderId()
+                    + ", WarehouseID=" + firstOrder.getWarehouseId());
+        }
+
         request.setAttribute("deliveryOrders", deliveryOrders);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
@@ -128,8 +147,8 @@ public class DeliveryOrderServlet extends HttpServlet {
         request.setAttribute("allDeliveryOrders", allDeliveryOrders);
         request.setAttribute("supplierNames", supplierNames);
         request.setAttribute("userNames", userNames);
+        request.setAttribute("deliveryOrderIdsByWarehouse", deliveryOrderIdsByWarehouse);
 
-        // Forward the request only once
         request.getRequestDispatcher("/view/delivery/deliveryOrders.jsp").forward(request, response);
     }
 

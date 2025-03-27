@@ -89,4 +89,30 @@ public class StockDAO {
             e.printStackTrace();
         }
     }
+
+    // Add to your existing StockDAO class
+    public List<Stock> getAllStocks() {
+        List<Stock> stocks = new ArrayList<>();
+        String sql = "SELECT * FROM Stock";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Stock stock = new Stock();
+                stock.setStockId(rs.getInt("StockID"));
+                stock.setProductDetailId(rs.getInt("ProductDetailID"));
+                stock.setWarehouseId(rs.getInt("WarehouseID"));
+                stock.setBinId(rs.getInt("BinID"));
+                stock.setQuantity(rs.getInt("Quantity"));
+                if (rs.getTimestamp("LastUpdated") != null) {
+                    stock.setLastUpdated(rs.getTimestamp("LastUpdated").toLocalDateTime());
+                }
+                stocks.add(stock);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return stocks;
+    }
 }

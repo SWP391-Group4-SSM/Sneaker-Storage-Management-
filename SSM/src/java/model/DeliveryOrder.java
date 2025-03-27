@@ -5,13 +5,14 @@ import java.time.LocalDateTime;
 public class DeliveryOrder {
 
     private int deliveryOrderId;
-    private Integer supplierId; // Can be null
+    private Integer supplierId;
     private int warehouseId;
     private int createdByUserId;
     private LocalDateTime documentDate;
     private String documentStatus;
     private LocalDateTime updatedAt;
     private Boolean isDeleted;
+    private Integer purchaseOrderId;
 
     public DeliveryOrder() {
 
@@ -26,6 +27,15 @@ public class DeliveryOrder {
         this.documentStatus = documentStatus;
         this.updatedAt = updatedAt;
         this.isDeleted = isDeleted;
+    }
+
+   public Integer getPurchaseOrderId() {
+    // Return a default value (0) instead of null
+    return (this.purchaseOrderId == null) ? 0 : this.purchaseOrderId;
+}
+
+    public void setPurchaseOrderId(Integer purchaseOrderId) {
+        this.purchaseOrderId = purchaseOrderId;
     }
 
     // Getters and setters
@@ -92,6 +102,5 @@ public class DeliveryOrder {
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
-    
 
 }

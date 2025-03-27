@@ -3,51 +3,7 @@
 <html>
     <head>
         <title>Delivery Order Details</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }
-            h1 {
-                color: #333;
-            }
-            .info-section {
-                margin-bottom: 30px;
-            }
-            .info-section h2 {
-                color: #555;
-                border-bottom: 1px solid #ddd;
-                padding-bottom: 5px;
-            }
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin-top: 10px;
-            }
-            th, td {
-                text-align: left;
-                padding: 8px;
-                border: 1px solid #ddd;
-            }
-            th {
-                background-color: #f2f2f2;
-            }
-            tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-            .button {
-                display: inline-block;
-                padding: 8px 16px;
-                background-color: #4CAF50;
-                color: white;
-                text-decoration: none;
-                border-radius: 4px;
-                margin-top: 20px;
-            }
-            .button:hover {
-                background-color: #45a049;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/deliveryOrder.css">
     </head>
     <body>
         <h1>Delivery Order #${deliveryOrder.deliveryOrderId} Details</h1>
