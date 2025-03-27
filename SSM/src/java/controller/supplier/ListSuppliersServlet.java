@@ -48,7 +48,7 @@ public class ListSuppliersServlet extends HttpServlet {
         request.setAttribute("searchSupplierName", searchSupplierName);
         request.setAttribute("searchContactEmail", searchContactEmail);
         request.setAttribute("searchContactPhone", searchContactPhone);
-        request.getRequestDispatcher("/view/supplier/listSuppliers.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/supplier/listSupplier.jsp").forward(request, response);
     }
 
     @Override
