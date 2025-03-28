@@ -1,59 +1,100 @@
 package dal;
 
 import model.Supplier;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SupplierDAO {
+    private Connection connection;
 
-    private final Connection connection; // Final connection field
-
-    public SupplierDAO() { // Constructor using DBContext
+    public SupplierDAO() {
         DBContext db = new DBContext();
         connection = db.connection;
     }
 
-    public Supplier getSupplierById(int supplierId) throws SQLException {
-        String sql = "SELECT SupplierID, SupplierName, ContactEmail, ContactPhone, Address, CreatedAt, UpdatedAt FROM Suppliers WHERE SupplierID = ?";
-        Supplier supplier = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, supplierId);
-            rs = pstmt.executeQuery();
+    public boolean addSupplier(Supplier supplier) {
+        String sql = "INSERT INTO Suppliers (SupplierID, SupplierName, ContactEmail, ContactPhone, Address, CreatedAt, UpdatedAt, isDeleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-            if (rs.next()) {
-                supplier = mapSupplier(rs);
-            }
-        } finally {
-            closeResources(pstmt, rs);
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, supplier.getSupplierID());
+            stmt.setString(2, supplier.getSupplierName());
+            stmt.setString(3, supplier.getContactEmail());
+            stmt.setString(4, supplier.getContactPhone());
+            stmt.setString(5, supplier.getAddress());
+            stmt.setTimestamp(6, supplier.getCreatedAt());
+            stmt.setTimestamp(7, supplier.getUpdatedAt());
+            stmt.setBoolean(8, supplier.isDeleted());
+
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
-        return supplier;
     }
 
+    public boolean isSupplierIdExist(int supplierID) {
+        String sql = "SELECT COUNT(*) FROM Suppliers WHERE SupplierID = ? AND isDeleted = 0";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, supplierID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<Supplier> getAll(int page, int pageSize) {
+        List<Supplier> suppliers = new ArrayList<>();
+        String sql = "SELECT * FROM Suppliers WHERE isDeleted = 0 ORDER BY SupplierID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, (page - 1) * pageSize);
+            stmt.setInt(2, pageSize);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Supplier supplier = new Supplier(
+                        rs.getInt("SupplierID"),
+                        rs.getString("SupplierName"),
+                        rs.getString("ContactEmail"),
+                        rs.getString("ContactPhone"),
+                        rs.getString("Address"),
+                        rs.getTimestamp("CreatedAt"),
+                        rs.getTimestamp("UpdatedAt"),
+                        rs.getBoolean("isDeleted")
+                    );
+                    suppliers.add(supplier);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return suppliers;
+    }
     public List<Supplier> getAllSuppliers() {
         List<Supplier> suppliers = new ArrayList<>();
-        String sql = "SELECT * FROM Suppliers";
+        String sql = "SELECT * FROM Suppliers ";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                Supplier supplier = new Supplier();
-                supplier.setSupplierID(rs.getInt("SupplierID"));
-                supplier.setSupplierName(rs.getString("SupplierName"));
-                supplier.setContactEmail(rs.getString("ContactEmail"));
-                supplier.setContactPhone(rs.getString("ContactPhone"));
-                supplier.setAddress(rs.getString("Address"));
-                supplier.setCreatedAt(rs.getTimestamp("CreatedAt"));
-                supplier.setUpdatedAt(rs.getTimestamp("UpdatedAt"));
-                suppliers.add(supplier);
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) { 
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Supplier supplier = new Supplier(
+                        rs.getInt("SupplierID"),
+                        rs.getString("SupplierName"),
+                        rs.getString("ContactEmail"),
+                        rs.getString("ContactPhone"),
+                        rs.getString("Address"),
+                        rs.getTimestamp("CreatedAt"),
+                        rs.getTimestamp("UpdatedAt"),
+                        rs.getBoolean("isDeleted")
+                    );
+                    suppliers.add(supplier);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,57 +102,107 @@ public class SupplierDAO {
         return suppliers;
     }
 
-    private Supplier mapSupplier(ResultSet rs) throws SQLException {
-        Supplier supplier = new Supplier();
-        supplier.setSupplierID(rs.getInt("SupplierID"));
-        supplier.setSupplierName(rs.getString("SupplierName"));
-        supplier.setContactEmail(rs.getString("ContactEmail"));
-        supplier.setContactPhone(rs.getString("ContactPhone"));
-        supplier.setAddress(rs.getString("Address"));
-        supplier.setCreatedAt(rs.getDate("CreatedAt"));
-        supplier.setUpdatedAt(rs.getDate("UpdatedAt"));
+    public Supplier getSupplierById(int supplierID) {
+        Supplier supplier = null;
+        String sql = "SELECT * FROM Suppliers WHERE SupplierID = ? AND isDeleted = 0";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, supplierID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    supplier = new Supplier(
+                        rs.getInt("SupplierID"),
+                        rs.getString("SupplierName"),
+                        rs.getString("ContactEmail"),
+                        rs.getString("ContactPhone"),
+                        rs.getString("Address"),
+                        rs.getTimestamp("CreatedAt"),
+                        rs.getTimestamp("UpdatedAt"),
+                        rs.getBoolean("isDeleted")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return supplier;
     }
-    
-    public Map<Integer, String> getSupplierNamesMap() {
-        Map<Integer, String> supplierMap = new HashMap<>();
-        String sql = "SELECT SupplierID, SupplierName FROM Suppliers";
-        
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        
-        try {
-            pstmt = connection.prepareStatement(sql);
-            rs = pstmt.executeQuery();
-            
-            while (rs.next()) {
-                int id = rs.getInt("SupplierID");
-                String name = rs.getString("SupplierName");
-                supplierMap.put(id, name);
-            }
+
+    public void updateSupplier(Supplier supplier) {
+        String sql = "UPDATE Suppliers SET SupplierName = ?, ContactEmail = ?, ContactPhone = ?, Address = ?, UpdatedAt = ? WHERE SupplierID = ? AND isDeleted = 0";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, supplier.getSupplierName());
+            stmt.setString(2, supplier.getContactEmail());
+            stmt.setString(3, supplier.getContactPhone());
+            stmt.setString(4, supplier.getAddress());
+            stmt.setTimestamp(5, supplier.getUpdatedAt());
+            stmt.setInt(6, supplier.getSupplierID());
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeResources(pstmt, rs);
         }
-        
-        return supplierMap;
     }
 
-    private void closeResources(PreparedStatement pstmt, ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
+    public void deleteSupplier(int supplierID) {
+        String sql = "UPDATE Suppliers SET isDeleted = 1 WHERE SupplierID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, supplierID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Supplier> searchSuppliers(String supplierName, String contactEmail, String contactPhone, int page, int pageSize) {
+        List<Supplier> suppliers = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM Suppliers WHERE isDeleted = 0");
+        
+        if (supplierName != null && !supplierName.isEmpty()) {
+            sql.append(" AND SupplierName LIKE ?");
+        }
+        if (contactEmail != null && !contactEmail.isEmpty()) {
+            sql.append(" AND ContactEmail LIKE ?");
+        }
+        if (contactPhone != null && !contactPhone.isEmpty()) {
+            sql.append(" AND ContactPhone LIKE ?");
+        }
+        
+        sql.append(" ORDER BY SupplierID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql.toString())) {
+            int index = 1;
+            if (supplierName != null && !supplierName.isEmpty()) {
+                stmt.setString(index++, "%" + supplierName + "%");
+            }
+            if (contactEmail != null && !contactEmail.isEmpty()) {
+                stmt.setString(index++, "%" + contactEmail + "%");
+            }
+            if (contactPhone != null && !contactPhone.isEmpty()) {
+                stmt.setString(index++, "%" + contactPhone + "%");
+            }
+            stmt.setInt(index++, (page - 1) * pageSize);
+            stmt.setInt(index, pageSize);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Supplier supplier = new Supplier(
+                        rs.getInt("SupplierID"),
+                        rs.getString("SupplierName"),
+                        rs.getString("ContactEmail"),
+                        rs.getString("ContactPhone"),
+                        rs.getString("Address"),
+                        rs.getTimestamp("CreatedAt"),
+                        rs.getTimestamp("UpdatedAt"),
+                        rs.getBoolean("isDeleted")
+                    );
+                    suppliers.add(supplier);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        try {
-            if (pstmt != null) {
-                pstmt.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return suppliers;
     }
 }

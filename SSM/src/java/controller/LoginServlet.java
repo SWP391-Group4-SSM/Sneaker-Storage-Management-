@@ -16,6 +16,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Forward request to login.jsp
         request.getRequestDispatcher("view/login.jsp").forward(request, response);
     }
 
@@ -33,12 +34,22 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("loggedUser", user);
 
-            // Nếu là Admin, chuyển hướng đến listusers
-            if ("Admin".equals(user.getRole())) {
-                response.sendRedirect("view/listusers.jsp");
-            } else {
-                // Nếu không phải Admin, chuyển đến trang chính
-                response.sendRedirect("view/error.jsp");
+            // Chuyển hướng dựa trên role
+            String role = user.getRole();
+            switch (role) {
+                case "Admin":
+                    response.sendRedirect(request.getContextPath() + "/listusers");
+                    break;
+                case "Supervisor":
+                    response.sendRedirect(request.getContextPath() + "/listsuppliers");
+                    break;
+                case "Staff":
+                    response.sendRedirect(request.getContextPath() + "/listbins");
+                    break;
+                default:
+                    // Nếu không phải Admin, Supervisor, hoặc Staff, chuyển đến trang chính
+                    response.sendRedirect("home.jsp");
+                    break;
             }
         } else {
             // Nếu đăng nhập thất bại, quay lại trang login với thông báo lỗi

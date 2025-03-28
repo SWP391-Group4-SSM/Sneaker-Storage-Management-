@@ -21,9 +21,33 @@ public class ProductDAO {
         conn = db.connection;
     }
 
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts(int page, int pageSize) {
+    List<Product> products = new ArrayList<>();
+    String sql = "SELECT * FROM Products WHERE isDeleted = 0 ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setInt(1, (page - 1) * pageSize);
+        pstmt.setInt(2, pageSize);
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            Product p = new Product();
+            p.setProductId(rs.getInt("ProductID"));
+            p.setName(rs.getString("Name"));
+            p.setDescription(rs.getString("Description"));
+            p.setSku(rs.getString("SKU"));
+            p.setPrice(rs.getBigDecimal("Price"));
+            p.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
+            p.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
+            products.add(p);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return products;
+}
+
+    public List<Product> getAllProductsInData() {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products WHERE isDeleted = 0";
+        String sql = "SELECT * FROM Products ";
         try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 Product p = new Product();
@@ -57,15 +81,41 @@ public class ProductDAO {
         return false;
     }
     
-    public void deleteProduct(int productId) {
+    public boolean deleteProduct(int productId) {
         String sql = "UPDATE Products SET isDeleted = 1 WHERE ProductID = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1,productId );
-            ps.executeUpdate();
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
-
+    public int getTotalProducts() {
+    int total = 0;
+    String sql = "SELECT COUNT(*) FROM Products WHERE isDeleted = 0";
+    try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+        if (rs.next()) {
+            total = rs.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return total;
+}
+    
+    public boolean isProductIdExists(int productId) {
+    String query = "SELECT COUNT(*) FROM Products WHERE ProductID = ?";
+    try (PreparedStatement ps = conn.prepareStatement(query)) {
+        ps.setInt(1, productId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
 
 }

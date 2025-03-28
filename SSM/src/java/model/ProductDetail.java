@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class ProductDetail {
     private int productDetailId;
     private int productId;
-    private String size;
+    private int size;
     private String color;
     private String imageUrl;
     private String status;
@@ -25,7 +25,7 @@ public class ProductDetail {
     public ProductDetail() {
     }
 
-    public ProductDetail(int productDetailId, int productId, String size, String color, String imageUrl, String status, String material, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted) {
+    public ProductDetail(int productDetailId, int productId, int size, String color, String imageUrl, String status, String material, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted) {
         this.productDetailId = productDetailId;
         this.productId = productId;
         this.size = size;
@@ -54,11 +54,11 @@ public class ProductDetail {
         this.productId = productId;
     }
 
-    public String getSize() {
+    public int getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(int size) {
         this.size = size;
     }
 

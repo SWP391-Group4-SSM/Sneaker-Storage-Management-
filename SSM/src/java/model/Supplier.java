@@ -1,5 +1,6 @@
 package model;
-import java.util.Date;
+
+import java.sql.Timestamp;
 
 public class Supplier {
     private int supplierID;
@@ -7,14 +8,11 @@ public class Supplier {
     private String contactEmail;
     private String contactPhone;
     private String address;
-    private Date createdAt;
-    private Date updatedAt;
-    
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private boolean isDeleted;
 
-    // Constructor
-    public Supplier() {}
-
-    public Supplier(int supplierID, String supplierName, String contactEmail, String contactPhone, String address, Date createdAt, Date updatedAt) {
+    public Supplier(int supplierID, String supplierName, String contactEmail, String contactPhone, String address, Timestamp createdAt, Timestamp updatedAt, boolean isDeleted) {
         this.supplierID = supplierID;
         this.supplierName = supplierName;
         this.contactEmail = contactEmail;
@@ -22,9 +20,9 @@ public class Supplier {
         this.address = address;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.isDeleted = isDeleted;
     }
 
-    // Getters and Setters
     public int getSupplierID() {
         return supplierID;
     }
@@ -65,32 +63,27 @@ public class Supplier {
         this.address = address;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return "Supplier{" +
-                "supplierID=" + supplierID +
-                ", supplierName='" + supplierName + '\'' +
-                ", contactEmail='" + contactEmail + '\'' +
-                ", contactPhone='" + contactPhone + '\'' +
-                ", address='" + address + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

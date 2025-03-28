@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class PurchaseOrderDetail {
-
     private int purchaseOrderDetailId;
     private int purchaseOrderId;
     private int productDetailId;
@@ -91,5 +90,8 @@ public class PurchaseOrderDetail {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+    
+    
+
 
 }

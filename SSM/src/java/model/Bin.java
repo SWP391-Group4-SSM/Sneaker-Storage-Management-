@@ -1,24 +1,20 @@
 package model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Bin {
-    private int binId;
-    private int sectionId;
+    private int binID;
+    private int sectionID;
     private String binName;
     private int capacity;
     private String description;
-    private LocalDateTime createdAt; 
-    private Boolean isDeleted;      
-    private boolean isLocked;       
+    private Timestamp createdAt;
+    private boolean isDeleted;
+    private boolean isLocked;
 
-    public Bin() {
-    }
-
-    public Bin(int binId, int sectionId, String binName, int capacity, String description, 
-               LocalDateTime createdAt, Boolean isDeleted, boolean isLocked) {
-        this.binId = binId;
-        this.sectionId = sectionId;
+    public Bin(int binID, int sectionID, String binName, int capacity, String description, Timestamp createdAt, boolean isDeleted, boolean isLocked) {
+        this.binID = binID;
+        this.sectionID = sectionID;
         this.binName = binName;
         this.capacity = capacity;
         this.description = description;
@@ -27,20 +23,21 @@ public class Bin {
         this.isLocked = isLocked;
     }
 
-    public int getBinId() {
-        return binId;
+    // Getters and setters
+    public int getBinID() {
+        return binID;
     }
 
-    public void setBinId(int binId) {
-        this.binId = binId;
+    public void setBinID(int binID) {
+        this.binID = binID;
     }
 
-    public int getSectionId() {
-        return sectionId;
+    public int getSectionID() {
+        return sectionID;
     }
 
-    public void setSectionId(int sectionId) {
-        this.sectionId = sectionId;
+    public void setSectionID(int sectionID) {
+        this.sectionID = sectionID;
     }
 
     public String getBinName() {
@@ -67,19 +64,19 @@ public class Bin {
         this.description = description;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Boolean getIsDeleted() {
+    public boolean isDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(Boolean isDeleted) {
+    public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
 
@@ -89,19 +86,5 @@ public class Bin {
 
     public void setLocked(boolean isLocked) {
         this.isLocked = isLocked;
-    }
-
-    @Override
-    public String toString() {
-        return "Bin{" +
-                "binId=" + binId +
-                ", sectionId=" + sectionId +
-                ", binName='" + binName + '\'' +
-                ", capacity=" + capacity +
-                ", description='" + description + '\'' +
-                ", createdAt=" + createdAt +
-                ", isDeleted=" + isDeleted +
-                ", isLocked=" + isLocked +
-                '}';
     }
 }

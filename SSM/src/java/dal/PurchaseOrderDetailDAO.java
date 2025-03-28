@@ -24,7 +24,7 @@ public class PurchaseOrderDetailDAO {
 
     public List<PurchaseOrderDetail> getPurchaseOrderDetailsByOrderId(int purchaseOrderId) {
         List<PurchaseOrderDetail> list = new ArrayList<>();
-        String sql = "SELECT * FROM PurchaseOrderDetails WHERE PurchaseOrderID = ?";
+        String sql = "SELECT * FROM PurchaseOrderDetails WHERE isDeleted = 0 and PurchaseOrderID = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, purchaseOrderId);
             ResultSet rs = pstmt.executeQuery();
@@ -80,7 +80,7 @@ public class PurchaseOrderDetailDAO {
 
     // Xóa chi tiết đơn hàng
     public boolean deletePurchaseOrderDetail(int purchaseOrderDetailId) {
-        String sql = "delete from PurchaseOrderDetails where PurchaseOrderDetailID =?";
+        String sql = "update PurchaseOrderDetails set isDeleted =1 where PurchaseOrderDetailID =?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, purchaseOrderDetailId);
             return pstmt.executeUpdate() > 0;
