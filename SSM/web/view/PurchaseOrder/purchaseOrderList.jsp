@@ -33,6 +33,9 @@
         </style>
     </head>
     <body class="bg-light">
+        <jsp:include page="../shared/header.jsp">
+            <jsp:param name="title" value="Shoes Management"/>
+        </jsp:include>
         <div class="container-fluid py-4">
             <!-- Header Section -->
             <div class="row mb-4">

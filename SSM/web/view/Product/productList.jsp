@@ -8,6 +8,9 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
+        <jsp:include page="../shared/header.jsp">
+            <jsp:param name="title" value="Shoes Management"/>
+        </jsp:include>
         <div class="container mt-4">
             <div class="row mb-4">
                 <div class="col">
@@ -41,7 +44,7 @@
                             <th>SKU</th>
                             <th>Created At</th>
                             <th>totalQuantity</th>
-                           
+
                             <th>Details</th>
                             <th>Actions</th>
                         </tr>
