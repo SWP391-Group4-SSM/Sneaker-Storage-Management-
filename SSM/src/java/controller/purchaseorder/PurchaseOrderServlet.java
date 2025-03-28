@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.purchaseorder;
+package controller.purchaseOrder;
 
 import dal.PurchaseOrderDAO;
 import dal.SupplierDAO;
 import dal.UserDAO;
 import dal.WarehouseDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,8 +34,24 @@ public class PurchaseOrderServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         PurchaseOrderDAO poDAO = new PurchaseOrderDAO();
+        SupplierDAO suDAO = new SupplierDAO();
+        WarehouseDAO wuDAO = new WarehouseDAO();
+        int page = 1;
+        int pageSize = 05;
+        String pageStr = request.getParameter("page");
+        if (pageStr != null && !pageStr.trim().isEmpty()) {
+            try {
+                page = Integer.parseInt(pageStr.trim());
+            } catch (NumberFormatException e) {
+                // Giữ mặc định page = 1
+            }
+        }
 
         if ("add".equals(action)) {
+            List<Supplier> suppliers = suDAO.getAllSuppliers();
+            request.setAttribute("suppliers", suppliers);
+            List<Warehouse> warehouses = wuDAO.getAllWarehouses();
+            request.setAttribute("warehouses", warehouses);
             request.getRequestDispatcher("view/PurchaseOrder/addPurchaseOrder.jsp").forward(request, response);
         } else if ("edit".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
@@ -50,15 +67,31 @@ public class PurchaseOrderServlet extends HttpServlet {
                 request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
             }
         } else {
-            List<PurchaseOrder> poList = poDAO.getAllPurchaseOrders();
+            String supplierName = request.getParameter("searchSupplierName");
+            String warehouseName = request.getParameter("searchWarehouseName");
+            List<PurchaseOrder> poList = poDAO.getAll(page, pageSize);
             List<Supplier> suppliers = new SupplierDAO().getAllSuppliers();
             List<Warehouse> warList = new WarehouseDAO().getAllWarehouses();
-            List<User> userList = new UserDAO().getAll();
+            List<User> userList = new UserDAO().getAllUsers();
+            int totalRecords = poDAO.getTotalNumberPurchaseOrders();
+            int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+            if ((supplierName != null && !supplierName.trim().isEmpty())
+                    || (warehouseName != null && !warehouseName.trim().isEmpty())) {
+                poList = poDAO.searchOrders(supplierName, warehouseName, page, pageSize);
+            } else {
+                poList = poDAO.getAll(page, pageSize);
+            }
 
             request.setAttribute("purchaseOrders", poList);
             request.setAttribute("suppliers", suppliers);
             request.setAttribute("warList", warList);
+            request.setAttribute("searchSupplierName", supplierName);
+            request.setAttribute("searchWarehouseName", warehouseName);
             request.setAttribute("userList", userList);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalRecords", totalRecords);
+            request.setAttribute("totalPages", totalPages);
             request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
         }
     }
@@ -71,57 +104,79 @@ public class PurchaseOrderServlet extends HttpServlet {
 
         if ("add".equals(action)) {
             int purchaseOrderId = Integer.parseInt(request.getParameter("purchaseOrderId"));
-        int supplierId = Integer.parseInt(request.getParameter("supplierId"));
-        int warehouseId = Integer.parseInt(request.getParameter("warehouseId"));
-        
-        BigDecimal totalAmount = new BigDecimal(request.getParameter("totalAmount"));
-        String orderDateStr = request.getParameter("orderDate");
-        LocalDateTime orderDate = LocalDateTime.parse(orderDateStr);
-        HttpSession session = request.getSession();
-        Integer userID = (Integer) session.getAttribute("userID");
-      
-        PurchaseOrder po = new PurchaseOrder();
-        po.setPurchaseOrderId(purchaseOrderId); // Người dùng nhập ID
-        po.setSupplierId(supplierId);
-        po.setWarehouseId(warehouseId);
-        po.setCreatedByUserId(userID);
-        po.setTotalAmount(totalAmount);
-        po.setOrderDate(orderDate);
-        PurchaseOrderDAO dao = new PurchaseOrderDAO();
+            int supplierId = Integer.parseInt(request.getParameter("supplierId"));
+            int warehouseId = Integer.parseInt(request.getParameter("warehouseId"));
+            String orderDateStr = request.getParameter("orderDate");
+            LocalDateTime orderDate = LocalDateTime.parse(orderDateStr);
+            HttpSession session = request.getSession();
+            Integer userID = (Integer) session.getAttribute("userID");
 
-        if (dao.isPurchaseOrderIdExists(purchaseOrderId)) {
-            request.setAttribute("errorMessage", "ID này đã tồn tại! Vui lòng chọn ID khác.");
-            request.getRequestDispatcher("view/PurchaseOrder/addPurchaseOrder.jsp").forward(request, response);
-            return;
-        }
+            PurchaseOrder po = new PurchaseOrder();
+            po.setPurchaseOrderId(purchaseOrderId); // Người dùng nhập ID
+            po.setSupplierId(supplierId);
+            po.setWarehouseId(warehouseId);
+            po.setCreatedByUserId(userID);
+            po.setOrderDate(orderDate);
+            PurchaseOrderDAO dao = new PurchaseOrderDAO();
+            if (dao.isPurchaseOrderIdExists(purchaseOrderId)) {
 
-        boolean success = dao.addPurchaseOrder(po);
-        if (success) {
-            response.sendRedirect("purchaseOrder");
-        } else {
-            request.setAttribute("errorMessage", "Thêm đơn hàng thất bại!");
-            request.getRequestDispatcher("view/PurchaseOrder/addPurchaseOrder.jsp").forward(request, response);
-        }
+                session.setAttribute("errorMessage", "ID này đã tồn tại! Vui lòng chọn ID khác.");
+                response.sendRedirect("purchaseOrder?action=add");
+                return;
+            }
+
+            boolean success = dao.addPurchaseOrder(po);
+            if (success) {
+                response.sendRedirect("purchaseOrder");
+            } else {
+                session.setAttribute("errorMessage", "Thêm đơn hàng thất bại!");
+                response.sendRedirect("purchaseOrder?action=add");
+            }
         } else if ("edit".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             int supplierId = Integer.parseInt(request.getParameter("supplierId"));
             int warehouseId = Integer.parseInt(request.getParameter("warehouseId"));
-            int createdByUserId = Integer.parseInt(request.getParameter("createdByUserId"));
-            BigDecimal totalAmount = new BigDecimal(request.getParameter("totalAmount"));
-            String purchaseOrderStatus = request.getParameter("purchaseOrderStatus");
 
             PurchaseOrder po = new PurchaseOrder();
             po.setPurchaseOrderId(id);
             po.setSupplierId(supplierId);
             po.setWarehouseId(warehouseId);
-            po.setCreatedByUserId(createdByUserId);
-            po.setTotalAmount(totalAmount);
-            po.setPurchaseOrderStatus(purchaseOrderStatus);
 
             PurchaseOrderDAO dao = new PurchaseOrderDAO();
             dao.updatePurchaseOrder(po);
 
             response.sendRedirect("purchaseOrder");
+        } else if ("updateStatus".equals(action)) {
+            try {
+                int orderId = Integer.parseInt(request.getParameter("orderId"));
+                String currentStatus = request.getParameter("currentStatus");
+                String newStatus = getNextStatus(currentStatus);
+
+                PurchaseOrder po = new PurchaseOrder();
+                po.setPurchaseOrderId(orderId);
+                po.setPurchaseOrderStatus(newStatus);
+
+                boolean updated = poDAO.updatePurchaseOrderStatus(po);
+                if (updated) {
+                    response.sendRedirect("purchaseOrder"); // Chuyển hướng về danh sách đơn hàng
+                } else {
+                    request.setAttribute("errorMessage", "Cập nhật trạng thái thất bại!");
+                    request.getRequestDispatcher("view/PurchaseOrder/purchaseOrderList.jsp").forward(request, response);
+                }
+            } catch (Exception e) {
+                e.printStackTrace(); // In lỗi ra console
+            }
+        }
+    }
+
+    private String getNextStatus(String currentStatus) {
+        switch (currentStatus) {
+            case "Draft":
+                return "Approved";
+            case "Approved":
+                return "Ordered";
+            default:
+                return currentStatus;
         }
     }
 
