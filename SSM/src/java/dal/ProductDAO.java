@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,15 @@ public class ProductDAO {
 
     public List<Product> getAllProducts(int page, int pageSize) {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products WHERE isDeleted = 0 ORDER BY ProductID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT p.*, " +
+                    "ISNULL((SELECT SUM(s.Quantity) " +
+                    "        FROM Stock s " +
+                    "        JOIN ProductDetails pd ON s.ProductDetailID = pd.ProductDetailID " +
+                    "        WHERE pd.ProductID = p.ProductID), 0) as TotalQuantity " +
+                    "FROM Products p " +
+                    "WHERE p.isDeleted = 0 " +
+                    "ORDER BY p.ProductID " +
+                    "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, (page - 1) * pageSize);
             pstmt.setInt(2, pageSize);
@@ -37,6 +47,8 @@ public class ProductDAO {
                 p.setPrice(rs.getBigDecimal("Price"));
                 p.setCreatedAt(rs.getTimestamp("CreatedAt").toLocalDateTime());
                 p.setUpdatedAt(rs.getTimestamp("UpdatedAt").toLocalDateTime());
+                p.setIsDeleted(rs.getBoolean("isDeleted"));
+                p.setTotalQuantity(rs.getInt("TotalQuantity"));
                 products.add(p);
             }
         } catch (SQLException e) {
@@ -171,6 +183,72 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return false;
+    }
+    public static void main(String[] args) {
+        try {
+            // Tạo instance của ProductDAO
+            ProductDAO productDAO = new ProductDAO();
+            
+            // Test các tham số
+            int page = 1;
+            int pageSize = 7;
+            
+            System.out.println("=== Testing ProductDAO.getAllProducts ===");
+            System.out.println("Current Date and Time (UTC): 2025-03-28 17:54:49");
+            System.out.println("Current User: ducws17");
+            System.out.println("Page: " + page);
+            System.out.println("PageSize: " + pageSize);
+            System.out.println("=====================================\n");
+
+            // Lấy danh sách sản phẩm
+            List<Product> products = productDAO.getAllProducts(page, pageSize);
+            
+            if (products.isEmpty()) {
+                System.out.println("No products found!");
+            } else {
+                System.out.println("Found " + products.size() + " products:\n");
+                
+                // In header
+                System.out.printf("%-5s | %-30s | %-10s | %-15s | %-8s | %-20s | %-20s%n",
+                        "ID", "Name", "SKU", "Price", "Quantity", "Created At", "Updated At");
+                System.out.println("=".repeat(120));
+
+                // In dữ liệu
+                for (Product p : products) {
+                    System.out.printf("%-5d | %-30s | %-10s | %,15.2f | %-8d | %-20s | %-20s%n",
+                            p.getProductId(),
+                            truncateString(p.getName(), 30),
+                            p.getSku(),
+                            p.getPrice(),
+                            p.getTotalQuantity(),
+                            formatDateTime(p.getCreatedAt()),
+                            formatDateTime(p.getUpdatedAt())
+                    );
+                }
+            }
+
+            // Test getTotalRecords
+            int totalRecords = productDAO.getTotalRecords(null);
+            System.out.println("\nTotal Records: " + totalRecords);
+            int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+            System.out.println("Total Pages: " + totalPages);
+
+        } catch (Exception e) {
+            System.err.println("Error testing ProductDAO:");
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method để cắt chuỗi nếu quá dài
+    private static String truncateString(String str, int length) {
+        if (str == null) return "";
+        return str.length() > length ? str.substring(0, length - 3) + "..." : str;
+    }
+
+    // Helper method để format DateTime
+    private static String formatDateTime(LocalDateTime dateTime) {
+        if (dateTime == null) return "N/A";
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 }

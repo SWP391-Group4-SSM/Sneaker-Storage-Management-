@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Thêm đơn hàng</title>
+        <title>Add shoes</title>
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap Icons -->
@@ -24,7 +24,7 @@
                     <div class="card custom-card">
                         <div class="card-header bg-primary text-white">
                             <h2 class="card-title mb-0">
-                                <i class="bi bi-plus-circle me-2"></i>Thêm sản phẩm
+                                <i class="bi bi-plus-circle me-2"></i>Add shoes
                             </h2>
                         </div>
                         <div class="card-body">
@@ -43,7 +43,7 @@
                                 <input type="hidden" name="action" value="add">
                                 
                                 <div class="mb-3">
-                                    <label for="productId" class="form-label">Mã sản phẩm:</label>
+                                    <label for="productId" class="form-label">Shoes ID:</label>
                                     <input type="number" 
                                            class="form-control" 
                                            id="productId" 
@@ -55,7 +55,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Tên sản phẩm:</label>
+                                    <label for="name" class="form-label">Name:</label>
                                     <input type="text" 
                                            class="form-control" 
                                            id="name" 
@@ -67,7 +67,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="description" class="form-label">Mô tả:</label>
+                                    <label for="description" class="form-label">Description:</label>
                                     <textarea class="form-control" 
                                               id="description" 
                                               name="description" 
@@ -79,7 +79,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="sku" class="form-label">Mã SKU:</label>
+                                    <label for="sku" class="form-label">SKU:</label>
                                     <input type="text" 
                                            class="form-control" 
                                            id="sku" 
@@ -91,9 +91,8 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="price" class="form-label">Giá:</label>
+                                    <label for="price" class="form-label">Price:</label>
                                     <div class="input-group">
-                                        <span class="input-group-text">₫</span>
                                         <input type="number" 
                                                class="form-control" 
                                                id="price" 
@@ -108,10 +107,10 @@
 
                                 <div class="d-flex gap-2">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-plus-circle me-2"></i>Thêm đơn hàng
+                                        <i class="bi bi-plus-circle me-2"></i>Add shoes
                                     </button>
                                     <a href="productList" class="btn btn-secondary">
-                                        <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách
+                                        <i class="bi bi-arrow-left me-2"></i>Back
                                     </a>
                                 </div>
                             </form>

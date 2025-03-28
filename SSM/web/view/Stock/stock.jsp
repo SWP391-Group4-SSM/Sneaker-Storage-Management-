@@ -11,12 +11,7 @@
     </head>
     <body class="bg-light">
         <div class="container mt-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="mb-0">Stock List</h2>
-                <a href="${pageContext.request.contextPath}/listusers?action=logout" class="btn btn-danger">
-                    <i class="bi bi-box-arrow-right"></i> Logout
-                </a>
-            </div>
+            
 
             <form action="${pageContext.request.contextPath}/stock" method="get" class="mb-3 d-flex gap-2">
                 <input type="text" name="searchProductName" class="form-control" 
@@ -44,7 +39,6 @@
                         <th>Bin</th>
                         <th>Quantity</th>
                         <th>Last Updated</th>
-                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,12 +53,7 @@
                                 <td>${stock.binName}</td>
                                 <td>${stock.quantity}</td>
                                 <td>${stock.lastUpdated}</td>
-                                <td class="text-center">
-                                    <a href="${pageContext.request.contextPath}/editstock?stockID=${stock.stockID}" 
-                                       class="btn btn-warning btn-sm">
-                                        <i class="bi bi-pencil"></i> Edit
-                                    </a>
-                                </td>
+                                
                             </tr>
                         </c:forEach>
                     </c:if>

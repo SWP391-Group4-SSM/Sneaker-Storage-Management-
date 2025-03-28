@@ -21,6 +21,7 @@ public class ProductDetail {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private boolean isDeleted;
+    private int totalQuantity;
 
     public ProductDetail() {
     }
@@ -116,6 +117,14 @@ public class ProductDetail {
 
     public void setIsDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
     
     

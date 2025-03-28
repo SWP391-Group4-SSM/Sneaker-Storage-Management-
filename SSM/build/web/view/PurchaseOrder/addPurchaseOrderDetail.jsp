@@ -122,13 +122,10 @@
                                         <i class="bi bi-tag me-2"></i>Giá mỗi đơn vị:
                                     </label>
                                     <div class="input-group">
-                                        <span class="input-group-text">₫</span>
                                         <input type="number" 
                                                class="form-control" 
                                                id="unitPrice" 
                                                name="unitPrice" 
-                                               min="0"
-                                               step="1000"
                                                required>
                                         <div class="invalid-feedback">
                                             Vui lòng nhập giá hợp lệ

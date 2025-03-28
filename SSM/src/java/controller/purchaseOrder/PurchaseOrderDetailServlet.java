@@ -57,7 +57,9 @@ public class PurchaseOrderDetailServlet extends HttpServlet {
             request.setAttribute("purchaseOrderDetail", pod);
             request.getRequestDispatcher("view/PurchaseOrder/updatePurchaseOrderDetail.jsp").forward(request, response);
         } else {
+            
             int purchaseOrderId = Integer.parseInt(request.getParameter("poId"));
+            dao.updateTotalAmount(purchaseOrderId);
             List<PurchaseOrderDetail> podList = dao.getPurchaseOrderDetailsByOrderId(purchaseOrderId);
             List<ProductDetail> prdList = proDAO.getAllProductDetailsInData();
             List<Product> proList = prDAO.getAllProductsInData();

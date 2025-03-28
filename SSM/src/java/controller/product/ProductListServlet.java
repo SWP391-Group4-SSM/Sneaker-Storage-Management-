@@ -82,7 +82,7 @@ public class ProductListServlet extends HttpServlet {
             BigDecimal price = new BigDecimal(request.getParameter("price"));
 
             if (dao.isProductIdExists(productId)) {
-                request.setAttribute("errorMessage", "ID sản phẩm đã tồn tại! Vui lòng nhập ID khác.");
+                request.setAttribute("errorMessage", "ID is exist! Please ReEnter.");
 
                 request.getRequestDispatcher("view/Product/addProduct.jsp").forward(request, response);
                 return;

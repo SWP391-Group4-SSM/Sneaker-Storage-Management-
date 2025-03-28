@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Danh sách PO</title>
+        <title>Purchase Order List</title>
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap Icons -->
@@ -41,11 +41,15 @@
                     <div class="card-body d-flex justify-content-between align-items-center">
 
                         <a href="purchaseOrder?action=add" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-2"></i>Thêm mới
+                            <i class="bi bi-plus-circle me-2"></i>Add
                         </a>
                     </div>
 
                 </div>
+            </div>
+            <div>
+                <h1>PurchaseOrder List</h1>
+                
             </div>
 
             <!-- Error Message Display -->

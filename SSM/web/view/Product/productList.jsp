@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Product List</title>
+        <title>Shoes List</title>
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
@@ -11,10 +11,10 @@
         <div class="container mt-4">
             <div class="row mb-4">
                 <div class="col">
-                    <h2>Product List</h2>
+                    <h2>Shoes List</h2>
                 </div>
                 <div class="col text-end">
-                    <a href="productList?action=add" class="btn btn-primary">Add</a>
+                    <a href="productList?action=add" class="btn btn-primary">Add shoes</a>
                 </div>
             </div>
             <form action="${pageContext.request.contextPath}/productList" method="get" class="mb-3">
@@ -40,6 +40,8 @@
                             <th>Price</th>
                             <th>SKU</th>
                             <th>Created At</th>
+                            <th>totalQuantity</th>
+                           
                             <th>Details</th>
                             <th>Actions</th>
                         </tr>
@@ -53,6 +55,7 @@
                                 <td>${product.price}</td>
                                 <td>${product.sku}</td>
                                 <td>${product.createdAt}</td>
+                                <td>${product.totalQuantity}</td>
                                 <td>
                                     <a href="productDetails?proId=${product.productId}" class="btn btn-info btn-sm">View Details</a>
                                 </td>

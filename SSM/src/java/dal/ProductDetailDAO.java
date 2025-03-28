@@ -74,10 +74,14 @@ public class ProductDetailDAO {
 
     public List<ProductDetail> getProductDetailByProId(int proId, int page, int pageSize) {
         List<ProductDetail> productDetails = new ArrayList<>();
-        String sql = "SELECT * FROM ProductDetails "
-                + "WHERE isDeleted = 0 AND ProductID = ? "
-                + "ORDER BY ProductDetailID "
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT pd.*, ISNULL(SUM(s.Quantity), 0) as TotalQuantity " +
+                    "FROM ProductDetails pd " +
+                    "LEFT JOIN Stock s ON pd.ProductDetailID = s.ProductDetailID " +
+                    "WHERE pd.isDeleted = 0 AND pd.ProductID = ? " +
+                    "GROUP BY pd.ProductDetailID, pd.ProductID, pd.Size, pd.Color, " +
+                    "pd.ImageURL, pd.Status, pd.Material, pd.CreatedAt, pd.UpdatedAt, pd.isDeleted " +
+                    "ORDER BY pd.ProductDetailID " +
+                    "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, proId);
@@ -102,6 +106,7 @@ public class ProductDetailDAO {
                     }
                     
                     pd.setIsDeleted(rs.getBoolean("isDeleted"));
+                    pd.setTotalQuantity(rs.getInt("TotalQuantity"));
                     productDetails.add(pd);
                 }
             }
@@ -270,6 +275,23 @@ public class ProductDetailDAO {
     }
     return false;
 }
+    public int getTotalQuantityByProductDetailId(int productDetailId) {
+        int totalQuantity = 0;
+        String sql = "SELECT ISNULL(SUM(Quantity), 0) as TotalQuantity " +
+                    "FROM Stock " +
+                    "WHERE ProductDetailID = ?";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, productDetailId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                totalQuantity = rs.getInt("TotalQuantity");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalQuantity;
+    }
 
 
 }

@@ -127,5 +127,27 @@ public class PurchaseOrderDetailDAO {
         }
         return false;
     }
+    public boolean updateTotalAmount(int purchaseOrderId) {
+        String updateSql = "UPDATE PurchaseOrders " +
+                          "SET TotalAmount = (" +
+                          "    SELECT ISNULL(SUM(TotalPrice), 0) " +
+                          "    FROM PurchaseOrderDetails " +
+                          "    WHERE PurchaseOrderID = ? " +
+                          "    AND isDeleted = 0" +
+                          "), " +
+                          "UpdatedAt = GETDATE() " +
+                          "WHERE PurchaseOrderID = ?";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(updateSql)) {
+            stmt.setInt(1, purchaseOrderId);
+            stmt.setInt(2, purchaseOrderId);
+            
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

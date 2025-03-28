@@ -22,21 +22,13 @@
         <div class="container mt-4">
             <div class="row mb-4">
                 <div class="col">
-                    <h2>Product Detail</h2>
+                    <h2>Shoes Detail</h2>
                 </div>
-                <td>
-                    <c:set var="productName" value="Không xác định" />
-                    <c:forEach var="p" items="${proList}">
-                        <c:if test="${p.productId == productId}">
-                            <c:set var="productName" value="${p.name}" />
-                        </c:if>
-                    </c:forEach>
-                    ${productName}
-                </td>
+                
                 <div class="col text-end">
                     <a href="productDetails?action=add&proId=<%= request.getAttribute("productId") %>" 
                        class="btn btn-primary mb-3">
-                        <i class="bi bi-plus-circle"></i> Thêm mới
+                        <i class="bi bi-plus-circle"></i> Add
                     </a>
                 </div>
             </div>
@@ -82,6 +74,7 @@
                                     <th>Size</th>
                                     <th>Color</th>
                                     <th>Material</th>
+                                    <th>Quantity</th>
                                     <th>Image</th>
                                     <th>Actions</th>
                                 </tr>
@@ -96,6 +89,12 @@
                                         </td>
                                         <td>${prd.material}</td>
                                         <td>
+                                            <!-- Hiển thị số lượng với định dạng -->
+                                            <span class="badge ${prd.totalQuantity > 0 ? 'bg-success' : 'bg-danger'}">
+                                                ${prd.totalQuantity}
+                                            </span>
+                                        </td>
+                                        <td>
                                             <img src="${prd.imageUrl}" 
                                                  alt="Product Image" 
                                                  class="img-thumbnail product-image" 
@@ -105,10 +104,17 @@
                                                  data-bs-target="#imageModal${prd.productDetailId}">
                                         </td>
                                         <td>
-                                            <button onclick="confirmDelete(<%= request.getAttribute("productId") %>, ${prd.productDetailId})" 
-                                                    class="btn btn-danger btn-sm">
-                                                <i class="bi bi-trash"></i> Xóa
-                                            </button>
+                                            <!-- Chỉ hiện nút xóa khi quantity = 0 -->
+                                            <c:if test="${prd.totalQuantity == 0}">
+                                                <button onclick="confirmDelete(<%= request.getAttribute("productId") %>, ${prd.productDetailId})" 
+                                                        class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-trash"></i> Delete
+                                                </button>
+                                            </c:if>
+                                            <!-- Hiện thông báo khi quantity > 0 -->
+                                            <c:if test="${prd.totalQuantity > 0}">
+                                                
+                                            </c:if>
                                         </td>
                                     </tr>
 
@@ -167,7 +173,7 @@
 
             <div class="mt-4">
                 <a href="productList" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> Quay lại danh sách
+                    <i class="bi bi-arrow-left"></i> Back to Shoes List
                 </a>
             </div>
         </div>
@@ -178,11 +184,11 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 
         <script>
-                                                function confirmDelete(proId, id) {
-                                                    if (confirm("Bạn có chắc muốn xóa đơn hàng này không?")) {
-                                                        window.location.href = "productDetails?action=delete&proId=" + proId + "&id=" + id;
-                                                    }
-                                                }
+            function confirmDelete(proId, id) {
+                if (confirm("Bạn có chắc muốn xóa đơn hàng này không?")) {
+                    window.location.href = "productDetails?action=delete&proId=" + proId + "&id=" + id;
+                }
+            }
         </script>
     </body>
 </html>

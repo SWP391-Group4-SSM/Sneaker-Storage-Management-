@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
             // Lưu thông tin người dùng vào session
             HttpSession session = request.getSession();
             session.setAttribute("loggedUser", user);
+            session.setAttribute("userID", user.getUserID());
 
             // Chuyển hướng dựa trên role
             String role = user.getRole();

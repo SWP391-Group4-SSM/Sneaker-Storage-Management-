@@ -31,7 +31,7 @@ public class PurchaseOrderDAO {
                 + "JOIN Warehouses w ON po.WarehouseID = w.WarehouseID "
                 + "JOIN Users u ON po.CreatedByUserID = u.UserID "
                 + "WHERE po.isDeleted = 0 "
-                + "ORDER BY po.PurchaseOrderID "
+                + "ORDER BY po.CreatedAt DESC "
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {

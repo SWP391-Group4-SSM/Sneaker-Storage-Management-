@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Chi tiết đơn hàng</title>
+        <title>PurchaseOrder Details</title>
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap Icons -->
@@ -39,13 +39,10 @@
                     <div class="row align-items-center">
                         <div class="col-md-6">
                             <h2 class="card-title h4 mb-0">
-                                <i class="bi bi-cart-check me-2"></i>Chi tiết đơn hàng
-                                <span class="badge bg-primary ms-2">Mã: ${purchaseOrderId}</span>
+                                <i class="bi bi-cart-check me-2"></i>Purchase Order Details
+                                <span class="badge bg-primary ms-2">Code: ${purchaseOrderId}</span>
                             </h2>
-                            <p class="text-muted small mb-0 mt-2">
-                                <i class="bi bi-clock me-1"></i>2025-03-27 00:47:54
-                                <i class="bi bi-person ms-3 me-1"></i>ducws17
-                            </p>
+                            
                         </div>
                         <div class="col-md-6 text-md-end mt-3 mt-md-0">
                             <c:if test="${po.purchaseOrderStatus ne 'Ordered' && 
@@ -53,7 +50,7 @@
                                           po.purchaseOrderStatus ne 'Partially Received'}">
                                   <a href="purchaseOrderDetail?action=add&poId=${purchaseOrderId}" 
                                      class="btn btn-success me-2">
-                                      <i class="bi bi-plus-circle me-2"></i>Thêm mới
+                                      <i class="bi bi-plus-circle me-2"></i>Add
                                   </a>
                             </c:if>
 
@@ -79,14 +76,14 @@
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Mã Chi Tiết</th>
-                                    <th>Tên sản phẩm</th>
-                                    <th >Kích cỡ</th>
-                                    <th >Màu</th>
-                                    <th>Số Lượng</th>
-                                    <th >Đơn Giá</th>
-                                    <th >Thành Tiền</th>
-                                    <th >Hành Động</th>
+                                    <th>Id</th>
+                                    <th>Product</th>
+                                    <th >Size</th>
+                                    <th >Color</th>
+                                    <th>Quantity</th>
+                                    <th >Price</th>
+                                    <th >Total Price</th>
+                                    <th >Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -96,7 +93,7 @@
                                             <td colspan="8" class="text-center py-4">
                                                 <div class="text-muted">
                                                     <i class="bi bi-inbox fs-2 d-block mb-2"></i>
-                                                    Không có chi tiết đơn hàng nào
+                                                    No purchaseOrder
                                                 </div>
                                             </td>
                                         </tr>
@@ -143,8 +140,8 @@
                                                     <c:if test="${po.purchaseOrderStatus ne 'Ordered'&& 
                                                                   po.purchaseOrderStatus ne 'Goods Received'&& 
                                                                   po.purchaseOrderStatus ne 'Partially Received'}">
-                                                          <a href="purchaseOrderDetail?action=edit&poId=${purchaseOrderId}&id=${pod.purchaseOrderDetailId}" class="btn-edit">Sửa</a>
-                                                          <a href="javascript:void(0);" onclick="confirmDelete(${purchaseOrderId}, ${pod.purchaseOrderDetailId})" class="btn-delete">Xóa</a>
+                                                          <a href="purchaseOrderDetail?action=edit&poId=${purchaseOrderId}&id=${pod.purchaseOrderDetailId}" class="btn-edit">Edit</a>
+                                                          <a href="javascript:void(0);" onclick="confirmDelete(${purchaseOrderId}, ${pod.purchaseOrderDetailId})" class="btn-delete">Delete</a>
                                                     </c:if>
 
                                                 </td>
@@ -155,7 +152,7 @@
                             </tbody>
                             <tfoot class="table-light fw-bold">
                                 <tr>
-                                    <td colspan="4" class="text-end">Tổng cộng:</td>
+                                    <td colspan="4" class="text-end">Total:</td>
                                     <td ">
                                         <c:choose>
                                             <c:when test="${empty podList}">0</c:when>
@@ -177,7 +174,7 @@
             <!-- Back Button -->
             <div class="mt-4">
                 <a href="purchaseOrder" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách
+                    <i class="bi bi-arrow-left me-2"></i>Back to Purchase Order List
                 </a>
             </div>
         </div>
@@ -198,10 +195,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle me-2"></i>Hủy
+                            <i class="bi bi-x-circle me-2"></i>Cancel
                         </button>
                         <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
-                            <i class="bi bi-trash me-2"></i>Xóa
+                            <i class="bi bi-trash me-2"></i>Delete
                         </button>
                     </div>
                 </div>

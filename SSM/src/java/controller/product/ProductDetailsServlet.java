@@ -42,7 +42,7 @@ public class ProductDetailsServlet extends HttpServlet {
             }
         } else {
             int page = 1;
-            int pageSize = 4;
+            int pageSize = 5;
             ProductDAO proDAO = new ProductDAO();
             ProductDetailDAO prd = new ProductDetailDAO();
             int proId = Integer.parseInt(request.getParameter("proId"));
