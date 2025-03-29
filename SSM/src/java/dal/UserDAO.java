@@ -252,6 +252,76 @@ public class UserDAO {
         return false;
     }
 
+    // Kiểm tra trùng lặp email
+    public boolean isEmailExist(String email) {
+        String sql = "SELECT COUNT(*) FROM Users WHERE Email = ? AND isDeleted = 0";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            System.out.println(">>> SQL: " + stmt.toString());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Kiểm tra trùng lặp số điện thoại
+    public boolean isNumberPhoneExist(String numberPhone) {
+        String sql = "SELECT COUNT(*) FROM Users WHERE NumberPhone = ? AND isDeleted = 0";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, numberPhone);
+            System.out.println(">>> SQL: " + stmt.toString());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Kiểm tra trùng lặp email khi cập nhật thông tin người dùng
+    public boolean isEmailExistExcludingUserId(String email, int userId) {
+        String sql = "SELECT COUNT(*) FROM Users WHERE Email = ? AND isDeleted = 0 AND UserID != ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setInt(2, userId);
+            System.out.println(">>> SQL: " + stmt.toString());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Kiểm tra trùng lặp số điện thoại khi cập nhật thông tin người dùng
+    public boolean isNumberPhoneExistExcludingUserId(String numberPhone, int userId) {
+        String sql = "SELECT COUNT(*) FROM Users WHERE NumberPhone = ? AND isDeleted = 0 AND UserID != ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, numberPhone);
+            stmt.setInt(2, userId);
+            System.out.println(">>> SQL: " + stmt.toString());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     // Lấy thông tin người dùng theo tên đăng nhập
     public User getUserByUsername(String username) {
         User user = null;

@@ -49,6 +49,20 @@ public class AddUserServlet extends HttpServlet {
                 return;
             }
 
+            // Kiểm tra trùng lặp email
+            if (userDAO.isEmailExist(email)) {
+                request.setAttribute("error", "Email đã tồn tại!");
+                request.getRequestDispatcher("/view/user/addUser.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra trùng lặp số điện thoại
+            if (userDAO.isNumberPhoneExist(numberPhone)) {
+                request.setAttribute("error", "Số điện thoại đã tồn tại!");
+                request.getRequestDispatcher("/view/user/addUser.jsp").forward(request, response);
+                return;
+            }
+
             // Tạo đối tượng User
             User newUser = new User(userId, username, password, role, new Timestamp(System.currentTimeMillis()), false, name, email, numberPhone, address);
 

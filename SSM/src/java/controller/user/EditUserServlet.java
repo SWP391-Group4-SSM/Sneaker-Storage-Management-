@@ -58,6 +58,20 @@ public class EditUserServlet extends HttpServlet {
             return;
         }
 
+        // Kiểm tra trùng lặp email
+        if (userDAO.isEmailExistExcludingUserId(email, userID)) {
+            request.setAttribute("error", "Email đã tồn tại!");
+            request.getRequestDispatcher("/view/user/editUser.jsp").forward(request, response);
+            return;
+        }
+
+        // Kiểm tra trùng lặp số điện thoại
+        if (userDAO.isNumberPhoneExistExcludingUserId(numberPhone, userID)) {
+            request.setAttribute("error", "Số điện thoại đã tồn tại!");
+            request.getRequestDispatcher("/view/user/editUser.jsp").forward(request, response);
+            return;
+        }
+
         // Cập nhật thông tin người dùng (không thay đổi username)
         existingUser.setPasswordHash(password); // Cập nhật mật khẩu
         existingUser.setRole(role); // Cập nhật vai trò
